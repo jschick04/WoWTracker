@@ -69,6 +69,8 @@
     <Build Include="dbo\Tables\Professions.sql" />
     <Build Include="dbo\Tables\EquipmentSlots.sql" />
     <Build Include="dbo\Tables\Items.sql" />
+    <Build Include="dbo\Stored Procedures\spCharacters_GetAll.sql" />
+    <Build Include="dbo\Stored Procedures\spProfessions_GetAll.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="DeploymentScripts\Script.PostDeployment.sql" />
