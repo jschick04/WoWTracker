@@ -13,6 +13,9 @@ namespace TrackerApi.Library.DataAccess {
             _db = db;
         }
 
+        public Task<List<CharacterModel>> GetCharacterByName(string name) =>
+            _db.LoadData<CharacterModel, dynamic>("spCharacters_GetByName", new { name });
+
         public Task<List<CharacterModel>> GetCharacters() =>
             _db.LoadData<CharacterModel, dynamic>("spCharacters_GetAll", new { });
 

@@ -74,6 +74,7 @@
     <Build Include="dbo\Stored Procedures\spItems_GetByProfession.sql" />
     <Build Include="dbo\Stored Procedures\spItems_GetBySlot.sql" />
     <Build Include="dbo\Stored Procedures\spSpecs_GetByClass.sql" />
+    <Build Include="dbo\Stored Procedures\spCharacters_GetByName.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="DeploymentScripts\Script.PostDeployment.sql" />
