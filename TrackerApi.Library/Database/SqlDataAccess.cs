@@ -16,28 +16,28 @@ namespace TrackerApi.Library.Database {
             _configuration = configuration;
         }
 
-        public string ConnectionStringName { get; set; } = "Default";
+        public string ConnectionStringName { get; set; } = "TrackerDb";
 
         public async Task<List<T>> LoadData<T, TU>(string storedProcedure, TU parameters) {
             string connectionString = _configuration.GetConnectionString(ConnectionStringName);
 
-            using (IDbConnection db = new SqlConnection(connectionString)) {
-                IEnumerable<T> data = await db.QueryAsync<T>(
-                    storedProcedure,
-                    parameters,
-                    commandType:CommandType.StoredProcedure
-                );
+            using IDbConnection db = new SqlConnection(connectionString);
 
-                return data.ToList();
-            }
+            IEnumerable<T> data = await db.QueryAsync<T>(
+                storedProcedure,
+                parameters,
+                commandType:CommandType.StoredProcedure
+            );
+
+            return data.ToList();
         }
 
         public async Task SaveData<T>(string storedProcedure, T parameters) {
             string connectionString = _configuration.GetConnectionString(ConnectionStringName);
 
-            using (IDbConnection db = new SqlConnection(connectionString)) {
-                await db.ExecuteAsync(storedProcedure, parameters, commandType:CommandType.StoredProcedure);
-            }
+            using IDbConnection db = new SqlConnection(connectionString);
+
+            await db.ExecuteAsync(storedProcedure, parameters, commandType:CommandType.StoredProcedure);
         }
 
     }

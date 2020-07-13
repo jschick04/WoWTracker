@@ -17,10 +17,11 @@ namespace TrackerApi.Controllers {
         }
 
         // GET: api/Character
-        [HttpGet] public async Task<List<CharacterModel>> Get() => await _data.GetCharacters();
+        [HttpGet]
+        public async Task<List<CharacterModel>> Get() => await _data.GetCharacters();
 
-        // GET: api/Character/Name
-        [HttpGet("{name}", Name = "Get")]
+        // GET: api/Character/{name}
+        [HttpGet("{name}")]
         public async Task<List<CharacterModel>> Get(string name) => await _data.GetCharacterByName(name);
 
     }

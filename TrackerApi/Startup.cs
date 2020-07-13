@@ -36,6 +36,8 @@ namespace TrackerApi {
             services.AddControllers();
             services.AddTransient<ISqlDataAccess, SqlDataAccess>();
             services.AddTransient<ICharacterData, CharacterData>();
+            services.AddTransient<IItemData, ItemData>();
+            services.AddTransient<IProfessionData, ProfessionData>();
         }
 
     }

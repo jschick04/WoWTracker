@@ -6,8 +6,6 @@
 
         public string Name { get; set; }
 
-        public string SlotName { get; set; }
-
         #endregion
 
     }
