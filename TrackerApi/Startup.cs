@@ -38,6 +38,7 @@ namespace TrackerApi {
             services.AddTransient<ICharacterData, CharacterData>();
             services.AddTransient<IItemData, ItemData>();
             services.AddTransient<IProfessionData, ProfessionData>();
+            services.AddTransient<ICraftingData, CraftingData>();
         }
 
     }

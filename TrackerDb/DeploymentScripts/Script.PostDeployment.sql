@@ -148,3 +148,13 @@ BEGIN
     (N'Moutagg', 9, 3, 1, 1),
     (N'Mout', 1, 6, NULL, 0);
 END;
+
+IF NOT EXISTS (SELECT * FROM dbo.Crafting)
+BEGIN
+    INSERT INTO dbo.Crafting (ItemId, Quantity, CharacterId)
+    VALUES
+    (601, 2, 1),
+    (325, 1, 2),
+    (321, 1, 2),
+    (101, 5, 2);
+END;
