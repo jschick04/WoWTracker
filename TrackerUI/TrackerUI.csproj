@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Remove="Fonts\FontAwesome5Regular.otf" />
+        <None Remove="Fonts\FontAwesome5Solid.otf" />
+        <None Remove="Fonts\FrizQuadrataRegular.ttf" />
+        <None Remove="Fonts\Morpheus.ttf" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Models\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Resource Include="Fonts\FontAwesome5Regular.otf">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </Resource>
+        <Resource Include="Fonts\FontAwesome5Solid.otf">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </Resource>
+        <Resource Include="Fonts\FrizQuadrataRegular.ttf">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </Resource>
+        <Resource Include="Fonts\Morpheus.ttf">
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </Resource>
+    </ItemGroup>
+
+</Project>

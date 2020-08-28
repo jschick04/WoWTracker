@@ -1,0 +1,42 @@
+﻿<Window x:Class="TrackerUI.Views.ShellView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:TrackerUI.Views"
+    xmlns:valueConverters="clr-namespace:TrackerUI.ValueConverters"
+    mc:Ignorable="d"
+    WindowStartupLocation="CenterScreen"
+    Title="WoW Tracker" MinHeight="400" Height="600" MinWidth="600" Width="800">
+
+    <DockPanel>
+
+        <Menu DockPanel.Dock="Top">
+
+            <MenuItem Header="_File">
+                <MenuItem Header="E_xit" Command="{Binding ExitCommand}" />
+            </MenuItem>
+
+            <MenuItem Header="_Characters">
+                <MenuItem Header="_Summary" Command="{Binding SummaryCommand}" />
+            </MenuItem>
+
+            <MenuItem Header="_Account">
+                <MenuItem Header="_Log In" Command="{Binding LogInCommand}" />
+                <MenuItem Header="_Log Out" Command="{Binding LogOutCommand}" />
+            </MenuItem>
+
+        </Menu>
+
+        <Border Background="{StaticResource WordBlueBrush}">
+            <Grid>
+
+                <ContentControl x:Name="ActiveItem"
+                    Content="{Binding CurrentPage, Converter={valueConverters:ApplicationPageValueConverter}}" />
+
+            </Grid>
+        </Border>
+
+    </DockPanel>
+
+</Window>
