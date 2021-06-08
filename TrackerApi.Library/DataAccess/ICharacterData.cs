@@ -6,9 +6,9 @@ namespace TrackerApi.Library.DataAccess {
 
     public interface ICharacterData {
 
-        Task<List<CharacterModel>> GetCharacterByName(string name);
+        Task<List<CharacterModel>> GetAll();
 
-        Task<List<CharacterModel>> GetCharacters();
+        Task<List<CharacterModel>> GetById(int id);
 
     }
 

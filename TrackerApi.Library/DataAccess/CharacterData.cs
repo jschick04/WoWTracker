@@ -9,15 +9,14 @@ namespace TrackerApi.Library.DataAccess {
 
         private readonly ISqlDataAccess _db;
 
-        public CharacterData(ISqlDataAccess db) {
-            _db = db;
-        }
+        public CharacterData(ISqlDataAccess db) => _db = db;
 
-        public Task<List<CharacterModel>> GetCharacterByName(string name) =>
-            _db.LoadData<CharacterModel, dynamic>("spCharacters_GetByName", new { name });
-
-        public Task<List<CharacterModel>> GetCharacters() =>
+        public Task<List<CharacterModel>> GetAll() =>
             _db.LoadData<CharacterModel, dynamic>("spCharacters_GetAll", new { });
+
+        // TODO: Fix the stored procedure to take ID not Name
+        public Task<List<CharacterModel>> GetById(int id) =>
+            _db.LoadData<CharacterModel, dynamic>("spCharacters_GetByName", new { id });
 
     }
 
