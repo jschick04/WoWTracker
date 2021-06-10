@@ -7,7 +7,7 @@ namespace TrackerUI.Animations {
 
     public static class PageAnimations {
 
-        public static async Task SlideAndFadeInFromRight(this UserControl control, float seconds) {
+        public static async Task SlideAndFadeInFromRightAsync(this UserControl control, float seconds) {
             var storyboard = new Storyboard();
             var offset = (double)control.Parent.GetValue(FrameworkElement.ActualWidthProperty);
 
@@ -21,7 +21,7 @@ namespace TrackerUI.Animations {
             await Task.Delay((int)seconds * 1000);
         }
 
-        public static async Task SlideAndFadeOutToLeft(this UserControl control, float seconds) {
+        public static async Task SlideAndFadeOutToLeftAsync(this UserControl control, float seconds) {
             var storyboard = new Storyboard();
             var offset = (double)control.Parent.GetValue(FrameworkElement.ActualWidthProperty);
 

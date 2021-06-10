@@ -1,4 +1,5 @@
-﻿using TrackerUI.ViewModels;
+﻿using TrackerUI.Animations;
+using TrackerUI.Core.ViewModels;
 
 namespace TrackerUI.Views {
 
@@ -7,6 +8,7 @@ namespace TrackerUI.Views {
 
         public SummaryView() {
             InitializeComponent();
+            PageUnloadAnimation = PageAnimation.SlideAndFadeOutToRight;
         }
 
     }

@@ -1,15 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
+using TrackerUI.Core;
+using TrackerUI.Views;
 
 namespace TrackerUI {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
+
+    /// <summary>Interaction logic for App.xaml</summary>
     public partial class App : Application {
+
+        protected override void OnStartup(StartupEventArgs e) {
+            base.OnStartup(e);
+
+            IoC.Initialize();
+
+            Current.MainWindow = new ShellView();
+            Current.MainWindow.Show();
+        }
+
     }
+
 }

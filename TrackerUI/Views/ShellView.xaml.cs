@@ -1,5 +1,6 @@
 ﻿using System.Windows;
-using TrackerUI.ViewModels;
+using TrackerUI.Core;
+using TrackerUI.Core.ViewModels;
 
 namespace TrackerUI.Views {
 
@@ -9,7 +10,7 @@ namespace TrackerUI.Views {
         public ShellView() {
             InitializeComponent();
 
-            DataContext = new ShellViewModel();
+            DataContext = IoC.Get<ShellViewModel>();
         }
 
     }

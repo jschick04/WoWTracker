@@ -1,5 +1,5 @@
 ﻿using System.Security;
-using TrackerUI.ViewModels;
+using TrackerUI.Core.ViewModels;
 
 namespace TrackerUI.Views {
 
