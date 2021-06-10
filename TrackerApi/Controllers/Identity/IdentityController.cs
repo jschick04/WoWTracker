@@ -31,7 +31,7 @@ namespace TrackerApi.Controllers.Identity {
 
         [Authorize]
         [HttpDelete(ApiRoutes.Identity.Delete)]
-        public async Task<IActionResult> Delete(int id) {
+        public async Task<IActionResult> Delete([FromRoute] int id) {
             if (id != Account.Id && Account.Role != Role.Admin) {
                 return Unauthorized();
             }

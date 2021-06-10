@@ -9,11 +9,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrackerApi.Library", "Track
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrackerUI", "TrackerUI\TrackerUI.csproj", "{8FAA8A5F-6537-4052-BD53-A972FAFC495E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrackerApi", "TrackerApi\TrackerApi.csproj", "{77C11B3D-6D00-4CA4-9712-6184D31B64C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrackerApi", "TrackerApi\TrackerApi.csproj", "{77C11B3D-6D00-4CA4-9712-6184D31B64C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrackerApi.Contracts", "TrackerApi.Contracts\TrackerApi.Contracts.csproj", "{3CDDFA6C-B0CB-4570-B464-44DCDBD5E6C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrackerApi.Contracts", "TrackerApi.Contracts\TrackerApi.Contracts.csproj", "{3CDDFA6C-B0CB-4570-B464-44DCDBD5E6C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrackerApi.Tests", "TrackerApi.Tests\TrackerApi.Tests.csproj", "{209E9A00-4614-4D55-B4B9-AE0A5EE5D788}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrackerApi.Tests", "TrackerApi.Tests\TrackerApi.Tests.csproj", "{209E9A00-4614-4D55-B4B9-AE0A5EE5D788}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4AEF0A37-BA06-4C53-A5EA-AF35A794EB5F}"
+	ProjectSection(SolutionItems) = preProject
+		build.cake = build.cake
+		build.ps1 = build.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
