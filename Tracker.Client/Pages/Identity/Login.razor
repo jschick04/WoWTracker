@@ -1,0 +1,48 @@
+﻿@page "/login"
+
+@attribute [AllowAnonymous]
+
+<EditForm Model="_request" OnValidSubmit="SubmitAsync">
+
+    <MudContainer MaxWidth="MaxWidth.Small">
+        <MudGrid>
+
+            <MudItem xs="12" Class="pa-1 d-flex justify-center">
+                <MudText Typo="Typo.h4">Login</MudText>
+            </MudItem>
+
+            <DataAnnotationsValidator />
+
+            <MudItem xs="12" Class="pa-1 d-flex justify-center">
+                <MudText>Welcome Back</MudText>
+            </MudItem>
+
+            <MudItem xs="12" Class="pa-1">
+                <MudTextField Label="Username" Variant="Variant.Outlined" @bind-Value="_request.Username" For="@(() => _request.Username)" />
+            </MudItem>
+
+            <MudItem xs="12" Class="pa-1">
+                <MudTextField Label="Password" Variant="Variant.Outlined" @bind-Value="_request.Password" For="@(() => _request.Password)"
+                    InputType="@_passwordInput" Adornment="Adornment.End" AdornmentIcon="@_passwordIcon"
+                    OnAdornmentClick="TogglePasswordVisibility" />
+            </MudItem>
+
+            <MudItem xs="12" Class="pa-1 d-flex justify-space-between align-center">
+                <MudCheckBox T="bool" Label="Remember Me?" Color="Color.Primary" />
+                <MudLink Href="/account/forgot">Forgot password?</MudLink>
+            </MudItem>
+
+            <MudItem xs="12" Class="pa-1 d-flex justify-center">
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Tertiary" Size="Size.Large" Style="width: 100%">
+                    Sign In
+                </MudButton>
+            </MudItem>
+
+            <MudItem xs="12" Class="pa-1 d-flex justify-center">
+                <MudText>Don't have an account? <MudLink Href="/register">Register Here</MudLink></MudText>
+            </MudItem>
+
+        </MudGrid>
+    </MudContainer>
+
+</EditForm>

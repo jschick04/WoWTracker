@@ -1,0 +1,56 @@
+﻿@inherits LayoutComponentBase
+
+<MudThemeProvider Theme="_currentTheme" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+
+    <MudAppBar Elevation="1" Dense="true">
+        <AuthorizeView>
+            <Authorized>
+
+                <MudGrid>
+                    <MudIconButton Icon="@Icons.Material.Filled.Menu" Edge="Edge.Start" OnClick="@(() => DrawerToggle())" />
+                    <MudText Typo="Typo.h5" Class="align-self-center ml-3">WoW Tracker</MudText>
+                    <MudSpacer />
+                    <MudItem>
+                        <MudButton OnClick="@(() => Logout())" Variant="Variant.Filled" Color="Color.Tertiary">Log Out</MudButton>
+                    </MudItem>
+                </MudGrid>
+
+            </Authorized>
+            <NotAuthorized>
+
+                <MudGrid Spacing="1">
+                    <MudText Typo="Typo.h5" Class="align-self-center ml-3">WoW Tracker</MudText>
+                    <MudSpacer />
+                    <MudItem>
+                        <MudButton Link="/login" Variant="Variant.Filled" Color="Color.Primary">Log In</MudButton>
+                    </MudItem>
+                    <MudItem>
+                        <MudButton Link="/register" Variant="Variant.Filled" Color="Color.Tertiary">Sign Up</MudButton>
+                    </MudItem>
+                </MudGrid>
+
+            </NotAuthorized>
+        </AuthorizeView>
+    </MudAppBar>
+
+    <AuthorizeView>
+        <Authorized>
+
+            <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+                <NavMenu />
+            </MudDrawer>
+
+        </Authorized>
+    </AuthorizeView>
+
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.False">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+
+</MudLayout>
