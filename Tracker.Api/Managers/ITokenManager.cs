@@ -10,9 +10,11 @@ namespace Tracker.Api.Managers {
 
         RefreshToken GenerateRefreshToken(string ipAddress);
 
-        void RemoveOldRefreshTokens(User user);
+        bool GetUserId(string token, out int id);
 
-        int? ValidateToken(string token);
+        bool IsAdminClaim(string token);
+
+        void RemoveOldRefreshTokens(User user);
 
     }
 

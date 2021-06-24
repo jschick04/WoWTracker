@@ -1,8 +1,7 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using Tracker.Api.Contracts.V1;
+using Tracker.Api.Contracts.Routes;
 using Tracker.Api.Contracts.V1.Requests;
 using Tracker.Api.Contracts.V1.Responses;
 using Tracker.Library.Helpers;
@@ -11,22 +10,22 @@ namespace Tracker.Library.Managers {
 
     public class UserManager : IUserManager {
 
-        private readonly IConfiguration _config;
         private readonly HttpClient _httpClient;
 
-        public UserManager(IConfiguration config, HttpClient httpClient) {
-            _config = config;
-            _httpClient = httpClient;
-        }
+        public UserManager(HttpClient httpClient) => _httpClient = httpClient;
 
-        public async Task<Result<UserResponse>> GetAsync(string id) {
-            if (string.IsNullOrWhiteSpace(id)) {
-                return await Result<UserResponse>.FailAsync("Invalid ID");
+        public async Task<IResult> ForgotPasswordAsync(ForgotPasswordRequest request) {
+            var response = await _httpClient.PostAsJsonAsync(ApiRoutes.Account.ForgotPassword, request);
+
+            if (!response.IsSuccessStatusCode) {
+                return await Result.FailAsync(await response.Content.ReadAsStringAsync());
             }
 
-            var api = _config["Api"] + ApiRoutes.Account.GetById.Replace("{id}", id);
+            return await Result.SuccessAsync(await response.Content.ReadAsStringAsync());
+        }
 
-            var response = await _httpClient.GetAsync(api);
+        public async Task<Result<UserResponse>> GetAsync(int id) {
+            var response = await _httpClient.GetAsync(ApiRoutes.Account.GetByIdReplace(id));
 
             if (!response.IsSuccessStatusCode) {
                 return await Result<UserResponse>.FailAsync(await response.Content.ReadAsStringAsync());
@@ -36,9 +35,7 @@ namespace Tracker.Library.Managers {
         }
 
         public async Task<IResult> RegisterAsync(RegistrationRequest request) {
-            var api = _config["Api"] + ApiRoutes.Identity.Register;
-
-            var response = await _httpClient.PostAsJsonAsync(api, request);
+            var response = await _httpClient.PostAsJsonAsync(ApiRoutes.Identity.Register, request);
 
             if (!response.IsSuccessStatusCode) {
                 return await Result.FailAsync(await response.Content.ReadAsStringAsync());

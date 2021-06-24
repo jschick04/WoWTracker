@@ -12,12 +12,12 @@ namespace Tracker.Api.Services {
     public class DbService : IServiceInstaller {
 
         public void InstallService(IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env) {
-            if (env.IsProduction()) {
+            if (env.IsDevelopment()) {
+                services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase(new Guid().ToString()));
+            } else {
                 services.AddDbContext<DataContext>(
                     options => options.UseSqlServer(configuration.GetConnectionString("AuthDb"))
                 );
-            } else {
-                services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase(new Guid().ToString()));
             }
 
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)

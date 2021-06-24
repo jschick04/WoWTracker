@@ -51,7 +51,7 @@ namespace Tracker.Client.Core.Managers.Authentication {
 
         public void MarkUserAsAuthenticated(int id) {
             var user = new ClaimsPrincipal(
-                new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, id.ToString()) }, "jwt")
+                new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, id.ToString()) }, "jwt")
             );
 
             var authState = Task.FromResult(new AuthenticationState(user));

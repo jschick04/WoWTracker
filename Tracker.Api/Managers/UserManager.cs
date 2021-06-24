@@ -43,7 +43,7 @@ namespace Tracker.Api.Managers {
             _data.Users.Update(user);
             await _data.SaveChangesAsync();
 
-            _emailManager.SendPasswordResetEmail(user, origin);
+            _emailManager.SendForgotPassword(user, origin);
         }
 
         public async Task<IEnumerable<UserResponse>> GetAllAsync() {
@@ -100,7 +100,9 @@ namespace Tracker.Api.Managers {
             await _data.Users.AddAsync(user);
             await _data.SaveChangesAsync();
 
-            _emailManager.SendVerificationEmail(user, origin);
+            if (!isFirstAccount) {
+                _emailManager.SendVerification(user, origin);
+            }
         }
 
         public async Task ResetPasswordAsync(ResetPasswordRequest request) {

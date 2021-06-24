@@ -6,7 +6,7 @@
 
 <MudLayout>
 
-    <MudAppBar Elevation="1" Dense="true">
+    <MudAppBar Elevation="1" Dense="true" Fixed="false">
         <AuthorizeView>
             <Authorized>
 
@@ -47,10 +47,8 @@
         </Authorized>
     </AuthorizeView>
 
-    <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.False">
-            @Body
-        </MudContainer>
+    <MudMainContent Style="height: calc(100vh - 48px);" Class="pt-0">
+        @Body
     </MudMainContent>
 
 </MudLayout>

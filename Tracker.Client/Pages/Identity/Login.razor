@@ -2,10 +2,10 @@
 
 @attribute [AllowAnonymous]
 
-<EditForm Model="_request" OnValidSubmit="SubmitAsync">
+<MudContainer MaxWidth="MaxWidth.Small" Class="d-flex align-center" Style="height: 100%">
+    <MudGrid Justify="Justify.Center" Style="display: block">
 
-    <MudContainer MaxWidth="MaxWidth.Small">
-        <MudGrid>
+        <EditForm Model="_request" OnValidSubmit="SubmitAsync">
 
             <MudItem xs="12" Class="pa-1 d-flex justify-center">
                 <MudText Typo="Typo.h4">Login</MudText>
@@ -42,7 +42,7 @@
                 <MudText>Don't have an account? <MudLink Href="/register">Register Here</MudLink></MudText>
             </MudItem>
 
-        </MudGrid>
-    </MudContainer>
+        </EditForm>
 
-</EditForm>
+    </MudGrid>
+</MudContainer>

@@ -3,7 +3,7 @@ using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
-using Tracker.Api.Contracts.V1;
+using Tracker.Api.Contracts.Routes;
 using Tracker.Library.Constants.Storage;
 
 namespace Tracker.Client.Core.Handlers {

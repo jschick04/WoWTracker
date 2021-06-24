@@ -7,7 +7,9 @@ namespace Tracker.Library.Managers {
 
     public interface IUserManager {
 
-        Task<Result<UserResponse>> GetAsync(string id);
+        Task<IResult> ForgotPasswordAsync(ForgotPasswordRequest request);
+
+        Task<Result<UserResponse>> GetAsync(int id);
 
         Task<IResult> RegisterAsync(RegistrationRequest request);
 

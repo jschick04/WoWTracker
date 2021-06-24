@@ -11,7 +11,8 @@ namespace Tracker.Api.Services {
         public void InstallService(IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env) {
             var emailSettings = new EmailSettings();
             configuration.Bind(nameof(EmailSettings), emailSettings);
-            services.AddSingleton(emailSettings);
+
+            services.AddFluentEmail(emailSettings.From, env.ApplicationName).AddSendGridSender(emailSettings.ApiKey);
 
             services.AddTransient<IEmailManager, EmailManager>();
         }

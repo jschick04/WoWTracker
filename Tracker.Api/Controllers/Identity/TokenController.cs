@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Tracker.Api.Authorization;
-using Tracker.Api.Contracts.V1;
+using Tracker.Api.Contracts.Routes;
 using Tracker.Api.Contracts.V1.Requests;
 using Tracker.Api.Entities;
 using Tracker.Api.Managers;

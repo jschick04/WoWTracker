@@ -35,6 +35,7 @@ namespace Tracker.Api {
                 app.ConfigureSwagger(Configuration);
             } else {
                 data.Database.Migrate();
+                app.UseHsts();
             }
 
             app.UseHttpsRedirection();
@@ -46,6 +47,7 @@ namespace Tracker.Api {
             app.UseAuthorization();
 
             app.ConfigureMiddleware();
+            app.ConfigureHangfire(Configuration);
 
             app.UseEndpoints(endpoints => endpoints.MapControllers());
         }

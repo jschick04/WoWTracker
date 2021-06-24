@@ -22,7 +22,11 @@ namespace Tracker.Api.Managers {
 
         public string GenerateJwtToken(User user) {
             var claims = new List<Claim> {
-                new(ClaimTypes.Name, user.Id.ToString())
+                new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new(ClaimTypes.Name, user.Username),
+                new(ClaimTypes.GivenName, user.FirstName),
+                new(ClaimTypes.Surname, user.LastName),
+                new(ClaimTypes.Role, user.Role.ToString())
             };
 
             var token = GenerateEncryptedToken(GetSigningCredentials(), claims);
@@ -47,29 +51,41 @@ namespace Tracker.Api.Managers {
                 CreatedByIp = ipAddress
             };
 
+        public bool GetUserId(string token, out int id) {
+            try {
+                var principal = GetPrincipal(token);
+
+                id = int.Parse(principal.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                return true;
+            } catch {
+                id = 0;
+
+                return false;
+            }
+        }
+
+        public bool IsAdminClaim(string token) {
+            try {
+                var principal = GetPrincipal(token);
+
+                return principal.IsInRole(Role.Admin.ToString());
+            } catch {
+                return false;
+            }
+        }
+
         public void RemoveOldRefreshTokens(User user) {
             user.RefreshTokens.RemoveAll(
                 token => !token.IsActive && token.Created.Add(_jwtSettings.RefreshTokenLifetime) <= DateTime.UtcNow
             );
         }
 
-        public int? ValidateToken(string token) {
-            try {
-                var principal = GetPrincipalFromToken(token);
-
-                var userId = int.Parse(principal.FindFirstValue(ClaimTypes.Name));
-
-                return userId;
-            } catch {
-                return null;
-            }
-        }
-
         private static string GenerateEncryptedToken(SigningCredentials signingCredentials, IEnumerable<Claim> claims) {
             var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.UtcNow.Add(_jwtSettings.TokenLifetime),
-                signingCredentials: signingCredentials
+                claims:claims,
+                expires:DateTime.UtcNow.Add(_jwtSettings.TokenLifetime),
+                signingCredentials:signingCredentials
             );
 
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -78,7 +94,7 @@ namespace Tracker.Api.Managers {
             return encryptedToken;
         }
 
-        private static ClaimsPrincipal GetPrincipalFromToken(string token) {
+        private static ClaimsPrincipal GetPrincipal(string token) {
             var tokenHandler = new JwtSecurityTokenHandler();
             var principal = tokenHandler.ValidateToken(token, _validationParameters, out SecurityToken securityToken);
 

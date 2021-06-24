@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using MudBlazor;
 using Tracker.Client.Core.Settings;
 using Tracker.Client.Shared.Dialogs;
-using Tracker.Library.Helpers;
 
 namespace Tracker.Client.Shared {
 

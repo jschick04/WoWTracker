@@ -7,7 +7,7 @@
 
     <PropertyGroup>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <NoWarn>$(NoWarn);1591</NoWarn>
+        <NoWarn>$(NoWarn);1591,NU1701</NoWarn>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -16,6 +16,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="FluentEmail.SendGrid" Version="3.0.0" />
+        <PackageReference Include="FluentEmail.Smtp" Version="3.0.0" />
+        <PackageReference Include="Hangfire.AspNetCore" Version="1.7.23" />
+        <PackageReference Include="Hangfire.Dashboard.Authorization" Version="3.0.0" />
+        <PackageReference Include="Hangfire.Dashboard.Basic.Authentication" Version="5.0.0" />
+        <PackageReference Include="Hangfire.SqlServer" Version="1.7.23" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.6" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.6" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.6" />

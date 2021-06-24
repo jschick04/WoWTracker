@@ -7,15 +7,13 @@ namespace Tracker.Client.Shared {
 
         private string CurrentUsername { get; set; }
 
+        // TODO: Extract this content into its own page
+
         protected override async Task OnInitializedAsync() {
             var user = await _stateProvider.GetAuthenticationStateProviderUserAsync();
 
             if (user.Identity?.IsAuthenticated is true) {
-                var result = await _userManager.GetAsync(user.GetId());
-
-                if (result.Succeeded) {
-                    CurrentUsername = result.Data.Username;
-                }
+                CurrentUsername = user.GetUsername();
             }
         }
 

@@ -1,5 +1,4 @@
 ﻿@page "/verifyauth" 
-@using Tracker.Library.Helpers
 
 <h3>VerifyAuth</h3>
 
@@ -13,11 +12,7 @@
         var user = await _stateProvider.GetAuthenticationStateProviderUserAsync();
 
         if (user.Identity?.IsAuthenticated is true) {
-            var result = await _userManager.GetAsync(user.GetId());
-
-            if (result.Succeeded) {
-                CurrentUsername = result.Data.Username;
-            }
+            CurrentUsername = user.GetUsername();
         }
     }
 

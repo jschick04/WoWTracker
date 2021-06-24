@@ -14,9 +14,10 @@ namespace Tracker.Api.Middleware {
 
         public async Task Invoke(HttpContext context, DataContext data, ITokenManager tokenManager) {
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-            var userId = tokenManager.ValidateToken(token);
 
-            if (userId is not null) { context.Items["Account"] = await data.Users.FindAsync(userId); }
+            if (!string.IsNullOrEmpty(token) && tokenManager.GetUserId(token, out var userId)) {
+                context.Items["Account"] = await data.Users.FindAsync(userId);
+            }
 
             await _next(context);
         }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Tracker.Api.Contracts.V1;
+using Tracker.Api.Contracts.Routes;
 using Tracker.Api.Contracts.V1.Requests;
 using Tracker.Api.Contracts.V1.Responses;
 using Tracker.Api.Data;

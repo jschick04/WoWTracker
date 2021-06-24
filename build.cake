@@ -15,7 +15,7 @@ Task("Restore").Does(() => { DotNetCoreRestore(); });
 
 Task("BuildApi")
     .Does(() => {
-        DotNetCoreBuild(api, new DotNetCoreBuildSettings {
+        DotNetCoreBuild(apiTest, new DotNetCoreBuildSettings {
             NoRestore = true, Configuration = configuration
         });
     });
