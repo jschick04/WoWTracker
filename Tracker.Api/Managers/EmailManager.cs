@@ -47,7 +47,7 @@ namespace Tracker.Api.Managers {
                 var resetUri = $"{origin}/{ClientRoutes.Account.ResetPassword}?token={user.ResetToken}";
 
                 builder.AppendLine("<p>Please click the below link to reset your password.</p>");
-                builder.AppendFormat("<p><a href=\"{0}\">Verify</a></p>", resetUri).AppendLine();
+                builder.AppendFormat("<p><a href=\"{0}\">Reset</a></p>", resetUri).AppendLine();
             } else {
                 builder.AppendLine("<p>Please use the following API to reset your password</p>");
                 builder.AppendFormat("<p>API Route: {0}</p>", ApiRoutes.Account.ResetPassword).AppendLine();

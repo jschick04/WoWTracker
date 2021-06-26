@@ -37,7 +37,7 @@ namespace Tracker.Api.Managers {
 
             if (user is null) { throw new ApiException("An error has occured"); }
 
-            user.ResetToken = _tokenManager.GenerateRandomTokenString();
+            user.ResetToken = _tokenManager.GenerateEmailToken(user.Username);
             user.ResetTokenExpires = DateTime.UtcNow.AddDays(1);
 
             _data.Users.Update(user);
@@ -94,7 +94,7 @@ namespace Tracker.Api.Managers {
                 Role = isFirstAccount ? Role.Admin : Role.User,
                 Created = DateTime.UtcNow,
                 Verified = isFirstAccount ? DateTime.UtcNow : null,
-                VerificationToken = isFirstAccount ? null : _tokenManager.GenerateRandomTokenString()
+                VerificationToken = isFirstAccount ? null : _tokenManager.GenerateEmailToken(request.Username)
             };
 
             await _data.Users.AddAsync(user);
@@ -171,8 +171,6 @@ namespace Tracker.Api.Managers {
         }
 
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt) {
-            if (password is null) { throw new ArgumentNullException(nameof(password)); }
-
             if (string.IsNullOrWhiteSpace(password)) {
                 throw new ArgumentException("Value cannot be empty or contain only whitespace", nameof(password));
             }

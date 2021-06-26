@@ -1,5 +1,7 @@
 ﻿@page "/register"
 
+@inherits PasswordForm
+
 @attribute [AllowAnonymous]
 
 <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex align-center" Style="height: 100%">
@@ -29,14 +31,14 @@
 
             <MudItem xs="12" Class="pa-1">
                 <MudTextField Label="Password" Variant="Variant.Outlined" @bind-Value="_request.Password" For="@(() => _request.Password)"
-                    InputType="@_passwordInput" Adornment="Adornment.End" AdornmentIcon="@_passwordIcon"
+                    InputType="@passwordInput" Adornment="Adornment.End" AdornmentIcon="@passwordIcon"
                     OnAdornmentClick="TogglePasswordVisibility" />
             </MudItem>
 
             <MudItem xs="12" Class="pa-1">
                 <MudTextField Label="Confirm Password" Variant="Variant.Outlined" @bind-Value="_request.ConfirmPassword"
-                    For="@(() => _request.ConfirmPassword)" InputType="@_confirmInput" Adornment="Adornment.End"
-                    AdornmentIcon="@_confirmIcon" OnAdornmentClick="ToggleConfirmVisibility" />
+                    For="@(() => _request.ConfirmPassword)" InputType="@confirmInput" Adornment="Adornment.End"
+                    AdornmentIcon="@confirmIcon" OnAdornmentClick="ToggleConfirmVisibility" />
             </MudItem>
 
             <MudItem xs="12" Class="pa-1 d-flex justify-center">

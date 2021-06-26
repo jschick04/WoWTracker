@@ -73,6 +73,7 @@ namespace Tracker.Client.Core.Managers.Authentication {
         }
 
         public async Task<string> RefreshToken() {
+            // TODO: Implement some check to hold refresh if one is in progress
             var response = await _httpClient.PostAsync(ApiRoutes.Identity.RefreshToken, null);
 
             if (!response.IsSuccessStatusCode) {

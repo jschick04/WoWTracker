@@ -13,6 +13,8 @@ namespace Tracker.Library.Managers {
 
         Task<IResult> RegisterAsync(RegistrationRequest request);
 
+        Task<IResult> ResetPasswordAsync(ResetPasswordRequest request);
+
     }
 
 }

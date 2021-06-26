@@ -1,16 +1,13 @@
 ﻿using System.Threading.Tasks;
 using MudBlazor;
 using Tracker.Api.Contracts.V1.Requests;
+using Tracker.Client.Shared.Base;
 
 namespace Tracker.Client.Pages.Identity {
 
-    public partial class Login {
+    public partial class Login : PasswordForm {
 
         private readonly AuthenticationRequest _request = new();
-
-        private string _passwordIcon = Icons.Material.Filled.VisibilityOff;
-        private InputType _passwordInput = InputType.Password;
-        private bool _passwordVisibility;
 
         protected override async Task OnInitializedAsync() {
             await _stateProvider.GetAuthenticationStateAsync();
@@ -29,18 +26,6 @@ namespace Tracker.Client.Pages.Identity {
                 foreach (var message in result.Messages) {
                     _snackbar.Add(message, Severity.Error);
                 }
-            }
-        }
-
-        private void TogglePasswordVisibility() {
-            if (_passwordVisibility) {
-                _passwordVisibility = false;
-                _passwordIcon = Icons.Material.Filled.VisibilityOff;
-                _passwordInput = InputType.Password;
-            } else {
-                _passwordVisibility = true;
-                _passwordIcon = Icons.Material.Filled.Visibility;
-                _passwordInput = InputType.Text;
             }
         }
 

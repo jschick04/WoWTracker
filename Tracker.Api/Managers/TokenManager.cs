@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.IdentityModel.Tokens;
 using Tracker.Api.Entities;
 using Tracker.Api.Settings;
@@ -20,6 +21,20 @@ namespace Tracker.Api.Managers {
             _validationParameters = validationParameters;
         }
 
+        public string GenerateEmailToken(string username) {
+            if (string.IsNullOrWhiteSpace(username)) {
+                throw new ArgumentException("Value cannot be empty or contain only whitespace", nameof(username));
+            }
+
+            var token = GenerateRandomTokenString() + username;
+
+            using var hmac = new HMACSHA512();
+
+            var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(token));
+
+            return WebEncoders.Base64UrlEncode(hash);
+        }
+
         public string GenerateJwtToken(User user) {
             var claims = new List<Claim> {
                 new(ClaimTypes.NameIdentifier, user.Id.ToString()),
@@ -32,15 +47,6 @@ namespace Tracker.Api.Managers {
             var token = GenerateEncryptedToken(GetSigningCredentials(), claims);
 
             return token;
-        }
-
-        public string GenerateRandomTokenString() {
-            var randomBytes = new byte[32];
-
-            using var rngCryptoServiceProvider = new RNGCryptoServiceProvider();
-            rngCryptoServiceProvider.GetBytes(randomBytes);
-
-            return Convert.ToBase64String(randomBytes);
         }
 
         public RefreshToken GenerateRefreshToken(string ipAddress) =>
@@ -92,6 +98,15 @@ namespace Tracker.Api.Managers {
             var encryptedToken = tokenHandler.WriteToken(token);
 
             return encryptedToken;
+        }
+
+        private static string GenerateRandomTokenString() {
+            var randomBytes = new byte[32];
+
+            using var rngCryptoServiceProvider = new RNGCryptoServiceProvider();
+            rngCryptoServiceProvider.GetBytes(randomBytes);
+
+            return Convert.ToBase64String(randomBytes);
         }
 
         private static ClaimsPrincipal GetPrincipal(string token) {

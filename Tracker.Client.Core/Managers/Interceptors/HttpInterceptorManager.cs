@@ -68,8 +68,9 @@ namespace Tracker.Client.Core.Managers.Interceptors {
         private static bool ValidatePath(string uri) {
             var ignorePaths = new[] {
                 ApiRoutes.Identity.PathUri,
-                ApiRoutes.Account.VerifyEmail,
-                ApiRoutes.Account.ResetPassword
+                ApiRoutes.Account.ForgotPassword,
+                ApiRoutes.Account.ResetPassword,
+                ApiRoutes.Account.VerifyEmail
             };
 
             if (uri is null) { return false; }

@@ -4,9 +4,9 @@ namespace Tracker.Api.Managers {
 
     public interface ITokenManager {
 
-        string GenerateJwtToken(User user);
+        string GenerateEmailToken(string username);
 
-        string GenerateRandomTokenString();
+        string GenerateJwtToken(User user);
 
         RefreshToken GenerateRefreshToken(string ipAddress);
 

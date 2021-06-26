@@ -13,12 +13,13 @@ namespace Tracker.Client.Pages.Account {
 
             if (result.Succeeded) {
                 _snackbar.Add("Password request has been sent", Severity.Success);
-                _navigationManager.NavigateTo("/");
             } else {
                 foreach (var message in result.Messages) {
                     _snackbar.Add(message, Severity.Error);
                 }
             }
+
+            _navigationManager.NavigateTo("/");
         }
 
     }
