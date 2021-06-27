@@ -1,0 +1,30 @@
+﻿@page "/account/verify"
+@using Tracker.Api.Contracts.V1.Responses
+
+@attribute [AllowAnonymous]
+
+@code {
+
+    protected override async Task OnInitializedAsync() {
+        var token = _navigationManager.QueryString("token");
+
+        if (string.IsNullOrWhiteSpace(token)) {
+            _snackbar.Add("Invalid Token", Severity.Error);
+            return;
+        }
+
+        var api = $"{ApiRoutes.Account.VerifyEmail}?token={token}";
+
+        var result = await _httpClient.PostAsync(api, null);
+
+        if (result.IsSuccessStatusCode) {
+            _snackbar.Add("Account successfully verified", Severity.Success);
+        } else {
+            var response = await result.Content.ReadFromJsonAsync<ErrorResponse>();
+            _snackbar.Add(response?.Error, Severity.Error);
+        }
+
+        _navigationManager.NavigateTo("/");
+    }
+
+}

@@ -1,0 +1,60 @@
+﻿@page "/register"
+
+@inherits PasswordForm
+
+@attribute [AllowAnonymous]
+
+<MudContainer MaxWidth="MaxWidth.Small" Class="d-flex align-center" Style="height: 100%">
+    <MudGrid Justify="Justify.Center" Style="display: block">
+
+        <EditForm Model="@_request" OnValidSubmit="@SubmitAsync">
+
+            <MudItem xs="12" Class="pa-1 d-flex justify-center">
+                <MudText Typo="Typo.h4">Register</MudText>
+            </MudItem>
+
+            <MudItem xs="12" Class="pa-1 d-flex justify-center">
+                <MudText>Already have an account? <MudLink Href="/login">Sign In</MudLink></MudText>
+            </MudItem>
+
+            <MudItem xs="12" Class="pa-1">
+                <MudTextField Label="First Name" Variant="Variant.Outlined" @bind-Value="_request.FirstName" For="@(() => _request.FirstName)" />
+            </MudItem>
+
+            <MudItem xs="12" Class="pa-1">
+                <MudTextField Label="Last Name" Variant="Variant.Outlined" @bind-Value="_request.LastName" For="@(() => _request.LastName)" />
+            </MudItem>
+
+            <MudItem xs="12" Class="pa-1">
+                <MudTextField Label="Username" Variant="Variant.Outlined" @bind-Value="_request.Username" For="@(() => _request.Username)" />
+            </MudItem>
+
+            <MudItem xs="12" Class="pa-1">
+                <MudTextField Label="Password" Variant="Variant.Outlined" @bind-Value="_request.Password" For="@(() => _request.Password)"
+                    InputType="@passwordInput" Adornment="Adornment.End" AdornmentIcon="@passwordIcon"
+                    OnAdornmentClick="TogglePasswordVisibility" />
+            </MudItem>
+
+            <MudItem xs="12" Class="pa-1">
+                <MudTextField Label="Confirm Password" Variant="Variant.Outlined" @bind-Value="_request.ConfirmPassword"
+                    For="@(() => _request.ConfirmPassword)" InputType="@confirmInput" Adornment="Adornment.End"
+                    AdornmentIcon="@confirmIcon" OnAdornmentClick="ToggleConfirmVisibility" />
+            </MudItem>
+
+            <MudItem xs="12" Class="pa-1 d-flex justify-center">
+                <MudCheckBox Color="Color.Primary" @bind-Checked="_request.AcceptTerms">
+                    I agree to the <MudLink Href="/terms">Terms of Use</MudLink>
+                </MudCheckBox>
+            </MudItem>
+
+            <MudItem xs="12" Class="pa-1 d-flex justify-center">
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Tertiary"
+                    Size="Size.Large" Disabled="!_request.AcceptTerms" Style="width: 100%">
+                    Create Account
+                </MudButton>
+            </MudItem>
+
+        </EditForm>
+
+    </MudGrid>
+</MudContainer>

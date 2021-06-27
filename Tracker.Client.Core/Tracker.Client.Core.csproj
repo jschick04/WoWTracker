@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <DebugType>none</DebugType>
+        <DebugSymbols>false</DebugSymbols>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Blazored.LocalStorage" Version="4.1.2" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
+        <PackageReference Include="MudBlazor" Version="5.0.13" />
+        <PackageReference Include="Toolbelt.Blazor.HttpClientInterceptor" Version="9.2.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Tracker.Library\Tracker.Library.csproj" />
+    </ItemGroup>
+
+</Project>

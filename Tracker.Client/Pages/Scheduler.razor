@@ -1,0 +1,13 @@
+﻿@page "/scheduler"
+
+@attribute [Authorize(Roles = "Admin")]
+
+<iframe src="@Uri" width="100%" height="100%"></iframe>
+
+@code {
+
+    private string Uri { get; set; }
+
+    protected override void OnInitialized() => Uri = $"{_httpClient.BaseAddress}scheduler";
+
+}
