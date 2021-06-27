@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Net;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 using MudBlazor;
 using Toolbelt.Blazor;
 using Tracker.Api.Contracts.Routes;
@@ -14,12 +14,14 @@ namespace Tracker.Client.Core.Managers.Interceptors {
 
         private readonly IAuthenticationManager _authenticationManager;
         private readonly HttpClientInterceptor _interceptor;
+        private readonly ILogger<HttpInterceptorManager> _logger;
         private readonly NavigationManager _navigationManager;
         private readonly ISnackbar _snackbar;
 
         public HttpInterceptorManager(
             IAuthenticationManager authenticationManager,
             HttpClientInterceptor interceptor,
+            ILogger<HttpInterceptorManager> logger,
             NavigationManager navigationManager,
             ISnackbar snackbar
         ) {
@@ -27,19 +29,11 @@ namespace Tracker.Client.Core.Managers.Interceptors {
             _interceptor = interceptor;
             _navigationManager = navigationManager;
             _snackbar = snackbar;
+            _logger = logger;
         }
 
         public void DisposeEvent() {
             _interceptor.BeforeSendAsync -= InterceptBeforeHttpAsync;
-            _interceptor.AfterSendAsync -= InterceptAfterHttpAsync;
-        }
-
-        public async Task InterceptAfterHttpAsync(object sender, HttpClientInterceptorEventArgs e) {
-            if (e.Response.StatusCode == HttpStatusCode.Unauthorized) {
-                _snackbar.Add("You are not Logged In", Severity.Error);
-                await _authenticationManager.Logout();
-                _navigationManager.NavigateTo("/");
-            }
         }
 
         public async Task InterceptBeforeHttpAsync(object sender, HttpClientInterceptorEventArgs e) {
@@ -48,11 +42,11 @@ namespace Tracker.Client.Core.Managers.Interceptors {
                     var token = await _authenticationManager.TryRefreshToken();
 
                     if (!string.IsNullOrEmpty(token)) {
-                        //_snackbar.Add("Refreshed Token", Severity.Success);
+                        _logger.LogDebug("InterceptBeforeHttpAsync: Successfully Refreshed Token");
                         e.Request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
                     }
                 } catch (Exception exception) {
-                    Console.WriteLine($"BeforeSendAsync Failure: {exception.Message}");
+                    _logger.LogError("InterceptBeforeHttpAsync Failure: {0}", exception.Message);
                     _snackbar.Add("You are not Logged In", Severity.Error);
                     await _authenticationManager.Logout();
                     _navigationManager.NavigateTo("/");
@@ -62,7 +56,6 @@ namespace Tracker.Client.Core.Managers.Interceptors {
 
         public void RegisterEvent() {
             _interceptor.BeforeSendAsync += InterceptBeforeHttpAsync;
-            _interceptor.AfterSendAsync += InterceptAfterHttpAsync;
         }
 
         private static bool ValidatePath(string uri) {

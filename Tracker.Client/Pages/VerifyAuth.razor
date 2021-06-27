@@ -1,21 +1,25 @@
 ﻿@page "/verifyauth"
 @using Tracker.Library.Models
 
-<h3>VerifyAuth</h3>
+<MudContainer>
 
-<p>Username: @CurrentUsername</p><br>
+    <h3>VerifyAuth</h3>
 
-<p>Group1</p>
+    <p>Username: @CurrentUsername</p><br>
 
-@foreach (var character in Characters1) {
-    <p>Name: @character.Name</p>
-}
-<br>
-<p>Group2</p>
+    <p>Group1</p>
 
-@foreach (var character in Characters2) {
-    <p>Name: @character.Name</p>
-}
+    @foreach (var character in Characters1) {
+        <p>Name: @character.Name</p>
+    }
+    <br>
+    <p>Group2</p>
+
+    @foreach (var character in Characters2) {
+        <p>Name: @character.Name</p>
+    }
+
+</MudContainer>
 
 @code {
 
@@ -35,8 +39,10 @@
         var response1 = await _httpClient.GetAsync(ApiRoutes.Character.GetAll);
         var response2 = await _httpClient.GetAsync(ApiRoutes.Character.GetAll);
 
-        Characters1 = await response1.Content.ReadFromJsonAsync<List<CharacterModel>>();
-        Characters2 = await response2.Content.ReadFromJsonAsync<List<CharacterModel>>();
+        if (response1.IsSuccessStatusCode && response2.IsSuccessStatusCode) {
+            Characters1 = await response1.Content.ReadFromJsonAsync<List<CharacterModel>>();
+            Characters2 = await response2.Content.ReadFromJsonAsync<List<CharacterModel>>();
+        }
     }
 
 }

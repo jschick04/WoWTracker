@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Tracker.Api.Services.Extensions;
 
 namespace Tracker.Api {
 
@@ -15,7 +16,7 @@ namespace Tracker.Api {
                     webBuilder => {
                         webBuilder.UseStartup<Startup>();
                     }
-                );
+                ).UseSerilog();
 
     }
 
