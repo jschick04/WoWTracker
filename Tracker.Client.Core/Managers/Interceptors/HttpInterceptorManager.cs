@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
@@ -33,7 +34,15 @@ namespace Tracker.Client.Core.Managers.Interceptors {
         }
 
         public void DisposeEvent() {
+            _interceptor.AfterSend -= InterceptAfterHttp;
             _interceptor.BeforeSendAsync -= InterceptBeforeHttpAsync;
+        }
+
+        public void InterceptAfterHttp(object sender, HttpClientInterceptorEventArgs e) {
+            if (e.Response.StatusCode != HttpStatusCode.Unauthorized) { return; }
+
+            _snackbar.Add("You do not have permissions to access this resource", Severity.Error);
+            _navigationManager.NavigateTo("/", true);
         }
 
         public async Task InterceptBeforeHttpAsync(object sender, HttpClientInterceptorEventArgs e) {
@@ -55,6 +64,7 @@ namespace Tracker.Client.Core.Managers.Interceptors {
         }
 
         public void RegisterEvent() {
+            _interceptor.AfterSend += InterceptAfterHttp;
             _interceptor.BeforeSendAsync += InterceptBeforeHttpAsync;
         }
 
