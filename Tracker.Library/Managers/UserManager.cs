@@ -1,9 +1,9 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Tracker.Api.Contracts.Identity.Requests;
+using Tracker.Api.Contracts.Identity.Responses;
 using Tracker.Api.Contracts.Routes;
-using Tracker.Api.Contracts.V1.Requests;
-using Tracker.Api.Contracts.V1.Responses;
 using Tracker.Library.Helpers;
 
 namespace Tracker.Library.Managers {

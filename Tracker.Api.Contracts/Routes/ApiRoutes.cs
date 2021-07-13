@@ -2,31 +2,29 @@
 
     public static class ApiRoutes {
 
-        private const string RootUri = Uri + "/" + Version;
-        private const string Uri = "api";
         private const string Version = "v1";
 
         public static class Account {
 
-            public const string Delete = PathUri + "/{id}";
-            public const string GetAll = PathUri;
-            public const string GetById = PathUri + "/{id}";
-            public const string PathUri = Uri + "/" + Root;
-            public const string Update = PathUri + "/{id}";
-            public const string VerifyEmail = PathUri + "/verify";
+            public const string Delete = Uri + "/{id}";
+            public const string GetAll = Uri;
+            public const string GetById = Uri + "/{id}";
+            public const string Update = Uri + "/{id}";
+            public const string Uri = Root;
+            public const string VerifyEmail = Uri + "/verify";
 
             private const string Root = "account";
 
-            public static string DeleteReplace(int id) => $"{PathUri}/{id}";
+            public static string DeleteReplace(int id) => $"{Uri}/{id}";
 
-            public static string GetByIdReplace(int id) => $"{PathUri}/{id}";
+            public static string GetByIdReplace(int id) => $"{Uri}/{id}";
 
-            public static string UpdateReplace(int id) => $"{PathUri}/{id}";
+            public static string UpdateReplace(int id) => $"{Uri}/{id}";
 
             #region Passwords
 
-            public const string ForgotPassword = PathUri + "/forgot";
-            public const string ResetPassword = PathUri + "/reset";
+            public const string ForgotPassword = Uri + "/forgot";
+            public const string ResetPassword = Uri + "/reset";
 
             #endregion
 
@@ -34,36 +32,36 @@
 
         public static class Character {
 
-            public const string Create = PathUri;
-            public const string Delete = PathUri + "/{id}";
-            public const string GetAll = PathUri;
-            public const string GetById = PathUri + "/{id}";
-            public const string PathUri = RootUri + "/" + Root;
-            public const string Update = PathUri + "/{id}";
+            public const string Create = Uri;
+            public const string Delete = Uri + "/{id}";
+            public const string GetAll = Uri;
+            public const string GetById = Uri + "/{id}";
+            public const string Update = Uri + "/{id}";
+            public const string Uri = Version + "/" + Root;
 
             private const string Root = "character";
 
-            public static string DeleteReplace(int id) => $"{PathUri}/{id}";
+            public static string DeleteReplace(int id) => $"{Uri}/{id}";
 
-            public static string GetByIdReplace(int id) => $"{PathUri}/{id}";
+            public static string GetByIdReplace(int id) => $"{Uri}/{id}";
 
-            public static string UpdateReplace(int id) => $"{PathUri}/{id}";
+            public static string UpdateReplace(int id) => $"{Uri}/{id}";
 
         }
 
         public static class Identity {
 
-            public const string Authenticate = PathUri + "/authenticate";
-            public const string PathUri = Uri + "/" + Root;
-            public const string Register = PathUri + "/register";
+            public const string Authenticate = Uri + "/authenticate";
+            public const string Register = Uri + "/register";
+            public const string Uri = Root;
 
             private const string Root = "identity";
 
             #region Tokens
 
-            public const string RefreshToken = PathUri + "/token/refresh";
-            public const string RevokeToken = PathUri + "/token/revoke";
-            public const string ValidateToken = PathUri + "/token/validate";
+            public const string RefreshToken = Uri + "/token/refresh";
+            public const string RevokeToken = Uri + "/token/revoke";
+            public const string ValidateToken = Uri + "/token/validate";
 
             #endregion
 
@@ -71,22 +69,22 @@
 
         public static class Item {
 
-            public const string GetByProfession = PathUri + "/profession/{name}";
-            public const string GetBySlot = PathUri + "/slot/{name}";
-            public const string PathUri = RootUri + "/" + Root;
+            public const string GetByProfession = Uri + "/profession/{name}";
+            public const string GetBySlot = Uri + "/slot/{name}";
+            public const string Uri = Version + "/" + Root;
 
             private const string Root = "item";
 
-            public static string GetByProfessionReplace(string name) => $"{PathUri}/profession/{name}";
+            public static string GetByProfessionReplace(string name) => $"{Uri}/profession/{name}";
 
-            public static string GetBySlotReplace(string name) => $"{PathUri}/slot/{name}";
+            public static string GetBySlotReplace(string name) => $"{Uri}/slot/{name}";
 
         }
 
         public static class Profession {
 
-            public const string GetAll = PathUri;
-            public const string PathUri = RootUri + "/" + Root;
+            public const string GetAll = Uri;
+            public const string Uri = Version + "/" + Root;
 
             private const string Root = "profession";
 

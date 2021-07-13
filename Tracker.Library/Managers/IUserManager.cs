@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Tracker.Api.Contracts.V1.Requests;
-using Tracker.Api.Contracts.V1.Responses;
+using Tracker.Api.Contracts.Identity.Requests;
+using Tracker.Api.Contracts.Identity.Responses;
 using Tracker.Library.Helpers;
 
 namespace Tracker.Library.Managers {

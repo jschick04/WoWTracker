@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{bc65be6a-03bf-46ea-ac00-135c3317bc96}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql150DatabaseSchemaProvider</DSP>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
@@ -75,12 +75,15 @@
     <Build Include="dbo\Stored Procedures\spItems_GetByProfession.sql" />
     <Build Include="dbo\Stored Procedures\spItems_GetBySlot.sql" />
     <Build Include="dbo\Stored Procedures\spSpecs_GetByClass.sql" />
-    <Build Include="dbo\Stored Procedures\spCharacters_GetByName.sql" />
+    <Build Include="dbo\Stored Procedures\spCharacters_GetById.sql" />
+    <Build Include="dbo\Stored Procedures\spCharacters_Insert.sql" />
+    <Build Include="dbo\Stored Procedures\spCharacters_Delete.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="DeploymentScripts\Script.PostDeployment.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishingProfile\TrackerDb.publish.xml" />
+    <None Include="PublishingProfile\TrackerDb.Azure.publish.xml" />
   </ItemGroup>
 </Project>

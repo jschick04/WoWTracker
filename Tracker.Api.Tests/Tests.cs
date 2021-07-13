@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Tracker.Api.Contracts.Identity.Requests;
+using Tracker.Api.Contracts.Identity.Responses;
 using Tracker.Api.Contracts.Routes;
-using Tracker.Api.Contracts.V1.Requests;
-using Tracker.Api.Contracts.V1.Responses;
 using Tracker.Api.Data;
 
 namespace Tracker.Api.Tests {
@@ -62,10 +62,7 @@ namespace Tracker.Api.Tests {
 
             var authenticateResponse = await testClient.PostAsJsonAsync(
                 ApiRoutes.Identity.Authenticate,
-                new AuthenticationRequest {
-                    Username = Username,
-                    Password = Password
-                }
+                new AuthenticationRequest { Username = Username, Password = Password }
             );
 
             var results = await authenticateResponse.Content.ReadFromJsonAsync<AuthenticationResponse>();

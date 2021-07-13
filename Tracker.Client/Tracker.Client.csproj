@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
@@ -17,15 +17,15 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Tracker.Client.Core\Tracker.Client.Core.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
         <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="wwwroot\css\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Tracker.Client.Library\Tracker.Client.Library.csproj" />
     </ItemGroup>
 
 </Project>

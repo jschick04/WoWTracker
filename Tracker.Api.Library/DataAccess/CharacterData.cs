@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Tracker.Api.Library.Database;
 using Tracker.Api.Library.Models;
@@ -11,12 +12,15 @@ namespace Tracker.Api.Library.DataAccess {
 
         public CharacterData(ISqlDataAccess db) => _db = db;
 
-        public Task<List<CharacterModel>> GetAll() =>
-            _db.LoadData<CharacterModel, dynamic>("spCharacters_GetAll", new { });
+        public async Task Create(CharacterModel request) => await _db.SaveData("spCharacters_Insert", request);
 
-        // TODO: Fix the stored procedure to take ID not Name
-        public Task<List<CharacterModel>> GetById(int id) =>
-            _db.LoadData<CharacterModel, dynamic>("spCharacters_GetByName", new { id });
+        public async Task Delete(int id) => await _db.SaveData("spCharacters_Delete", new { id });
+
+        public async Task<List<CharacterModel>> GetAll(int userId) =>
+            await _db.LoadData<CharacterModel, dynamic>("spCharacters_GetAll", new { userId });
+
+        public async Task<CharacterModel> GetById(int id, int userId) =>
+            (await _db.LoadData<CharacterModel, dynamic>("spCharacters_GetById", new { id, userId })).FirstOrDefault();
 
     }
 

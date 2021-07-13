@@ -1,5 +1,4 @@
 ﻿@page "/verifyauth"
-@using Tracker.Library.Models
 
 <MudContainer>
 
@@ -7,42 +6,26 @@
 
     <p>Username: @CurrentUsername</p><br>
 
-    <p>Group1</p>
+    <p>Group1</p><br>
 
     @foreach (var character in Characters1) {
         <p>Name: @character.Name</p>
+        <p>Class: @character.Class</p>
+        <p>Primary Profession: @character.FirstProfession</p>
+        <p>Secondary Professsion: @character.SecondProfession</p>
+        <p>Cooking: @character.HasCooking</p>
+        <br>
     }
     <br>
-    <p>Group2</p>
+    <p>Group2</p><br>
 
     @foreach (var character in Characters2) {
         <p>Name: @character.Name</p>
+        <p>Class: @character.Class</p>
+        <p>Primary Profession: @character.FirstProfession</p>
+        <p>Secondary Professsion: @character.SecondProfession</p>
+        <p>Cooking: @character.HasCooking</p>
+        <br>
     }
 
 </MudContainer>
-
-@code {
-
-    private string CurrentUsername { get; set; }
-
-    private List<CharacterModel> Characters1 { get; set; } = new();
-
-    private List<CharacterModel> Characters2 { get; set; } = new();
-
-    protected override async Task OnInitializedAsync() {
-        var user = await _stateProvider.GetAuthenticationStateProviderUserAsync();
-
-        if (user.Identity?.IsAuthenticated is true) {
-            CurrentUsername = user.GetUsername();
-        }
-
-        var response1 = await _httpClient.GetAsync(ApiRoutes.Character.GetAll);
-        var response2 = await _httpClient.GetAsync(ApiRoutes.Character.GetAll);
-
-        if (response1.IsSuccessStatusCode && response2.IsSuccessStatusCode) {
-            Characters1 = await response1.Content.ReadFromJsonAsync<List<CharacterModel>>();
-            Characters2 = await response2.Content.ReadFromJsonAsync<List<CharacterModel>>();
-        }
-    }
-
-}

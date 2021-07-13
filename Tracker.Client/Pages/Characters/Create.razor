@@ -1,0 +1,49 @@
+﻿@page "/character/create"
+
+<MudContainer MaxWidth="MaxWidth.Small" Class="d-flex align-center" Style="height: 100%">
+    <MudGrid Justify="Justify.Center" Style="display: block">
+
+        <EditForm Model="_request" OnValidSubmit="@SubmitAsync">
+
+            <MudItem xs="12" Class="pa-1 d-flex justify-center">
+                <MudText Typo="Typo.h4">Create Character</MudText>
+            </MudItem>
+
+            <DataAnnotationsValidator />
+
+            <MudItem xs="12" Class="pa-1">
+                <MudTextField Label="Name" Variant="Variant.Outlined" @bind-Value="_request.Name" For="@(() => _request.Name)" />
+            </MudItem>
+
+            <MudItem xs="12" Class="pa-1 d-flex justify-center">
+                <MudSelect T="string" Label="Class" Variant="Variant.Outlined" @bind-Value="_request.Class" For="@(() => _request.Class)">
+                    @foreach (var classes in Converter.AvailableClasses()) {
+                        <MudSelectItem Value="classes" />
+                    }
+                </MudSelect>
+                <MudCheckBox Color="Color.Primary" @bind-Checked="_request.HasCooking">Cooking</MudCheckBox>
+            </MudItem>
+
+            <MudItem xs="12" Class="pa-1 d-flex justify-center">
+                <MudSelect T="string" Label="Primary Profession" Variant="Variant.Outlined" @bind-Value="_request.FirstProfession">
+                    @foreach (var profession in Converter.AvailableProfessions()) {
+                        <MudSelectItem Value="profession" />
+                    }
+                </MudSelect>
+                <MudSelect T="string" Label="Secondary Profession" Variant="Variant.Outlined" @bind-Value="_request.SecondProfession">
+                    @foreach (var profession in Converter.AvailableProfessions()) {
+                        <MudSelectItem Value="profession" />
+                    }
+                </MudSelect>
+            </MudItem>
+
+            <MudItem xs="12" Class="pa-1 d-flex justify-center">
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Tertiary" Size="Size.Large" Style="width: 100%">
+                    Create
+                </MudButton>
+            </MudItem>
+
+        </EditForm>
+
+    </MudGrid>
+</MudContainer>

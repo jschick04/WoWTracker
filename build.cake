@@ -4,7 +4,7 @@ var configuration = Argument("Configuration", "Release");
 var solutionFolder = Directory("./");
 var api = Directory("./Tracker.Api/Tracker.Api.csproj");
 var apiTest = Directory("./Tracker.Api.Tests/Tracker.Api.Tests.csproj");
-var client = Directory("./Tracker.Client/Tracker.Client.csproj");
+var client = Directory("./Tracker.Client.Core/Tracker.Client.Core.csproj");
 
 var outputFolder = Directory("./artifacts");
 var apiOutputFolder = Directory("./artifacts/Tracker.Api");

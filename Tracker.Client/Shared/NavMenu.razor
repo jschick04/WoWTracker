@@ -1,11 +1,16 @@
 ﻿<MudNavMenu Class="mud-width-full">
 
     <MudText Class="d-flex justify-center">
-        <MudLink Typo="Typo.h6" Href="/verifyauth">@CurrentUsername</MudLink>
+        <MudLink Typo="Typo.h6" Href="/verifyauth">@Welcome</MudLink>
     </MudText>
+
     <MudDivider />
+
     <MudNavGroup Title="Characters" Icon="@Icons.Filled.People" Expanded="true">
-        <MudNavLink Href="/character" Icon="@Icons.Filled.PeopleOutline">Character</MudNavLink>
+        @foreach (var character in Characters) {
+            <MudNavLink @onclick="@(() => Delete(character.Id, character.Name))" Icon="@Icons.Filled.PeopleOutline">@character.Name</MudNavLink>
+        }
+        <MudNavLink Href="/character/create" Icon="@Icons.Filled.Add" IconColor="Color.Primary">Create Character</MudNavLink>
     </MudNavGroup>
 
 </MudNavMenu>

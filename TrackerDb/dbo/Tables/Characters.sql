@@ -1,5 +1,6 @@
 ﻿CREATE TABLE [dbo].[Characters] (
     [Id] INT NOT NULL IDENTITY PRIMARY KEY,
+    [UserId] INT NOT NULL,
     [Name] NVARCHAR(50) NOT NULL UNIQUE,
     [ClassId] INT NOT NULL,
     [FirstProfessionId] INT NULL DEFAULT NULL,

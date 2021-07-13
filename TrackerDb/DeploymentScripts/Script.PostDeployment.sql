@@ -143,8 +143,9 @@ END;
 
 IF NOT EXISTS (SELECT * FROM dbo.Characters)
 BEGIN
-    INSERT INTO dbo.Characters (Name, ClassId, FirstProfessionId, SecondProfessionId, HasCooking)
+    INSERT INTO dbo.Characters (UserId, Name, ClassId, FirstProfessionId, SecondProfessionId, HasCooking)
     VALUES
-    (N'Moutagg', 9, 3, 1, 1),
-    (N'Mout', 1, 6, NULL, 0);
+    (1, N'Moutagg', 9, 3, 1, 1),
+    (1, N'Mout', 1, 6, 2, 0),
+    (2, N'Dasaji', 10, 7, NULL, 0);
 END;

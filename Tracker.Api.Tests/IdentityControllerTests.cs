@@ -2,9 +2,9 @@
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Tracker.Api.Contracts.Identity.Responses;
 using Tracker.Api.Contracts.Routes;
 using Tracker.Api.Contracts.V1.Requests;
-using Tracker.Api.Contracts.V1.Responses;
 using Tracker.Api.Entities;
 using Xunit;
 

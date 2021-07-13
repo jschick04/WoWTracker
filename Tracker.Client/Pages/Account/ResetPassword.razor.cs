@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using MudBlazor;
-using Tracker.Api.Contracts.V1.Requests;
+using Tracker.Api.Contracts.Identity.Requests;
 using Tracker.Client.Shared.Base;
 using Tracker.Library.Helpers;
 

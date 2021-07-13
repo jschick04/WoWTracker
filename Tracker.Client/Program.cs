@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Tracker.Client.Core.Helpers;
+using Tracker.Client.Helpers;
 
 namespace Tracker.Client {
 

@@ -4,24 +4,12 @@
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-<MudLayout>
+<AuthorizeView>
+    <NotAuthorized>
 
-    <MudAppBar Elevation="1" Dense="true" Fixed="false">
-        <AuthorizeView>
-            <Authorized>
+        <MudLayout>
 
-                <MudGrid>
-                    <MudIconButton Icon="@Icons.Material.Filled.Menu" Edge="Edge.Start" OnClick="@(() => DrawerToggle())" />
-                    <MudText Typo="Typo.h5" Class="align-self-center ml-3">WoW Tracker</MudText>
-                    <MudSpacer />
-                    <MudItem>
-                        <MudButton OnClick="@(() => Logout())" Variant="Variant.Filled" Color="Color.Tertiary">Log Out</MudButton>
-                    </MudItem>
-                </MudGrid>
-
-            </Authorized>
-            <NotAuthorized>
-
+            <MudAppBar Elevation="1" Dense="true" Fixed="false">
                 <MudGrid Spacing="1">
                     <MudText Typo="Typo.h5" Class="align-self-center ml-3">WoW Tracker</MudText>
                     <MudSpacer />
@@ -32,23 +20,41 @@
                         <MudButton Link="/register" Variant="Variant.Filled" Color="Color.Tertiary">Sign Up</MudButton>
                     </MudItem>
                 </MudGrid>
+            </MudAppBar>
 
-            </NotAuthorized>
-        </AuthorizeView>
-    </MudAppBar>
+            <MudMainContent Style="height: calc(100vh - 48px);" Class="pt-0">
+                @Body
+            </MudMainContent>
 
-    <AuthorizeView>
-        <Authorized>
+        </MudLayout>
+
+    </NotAuthorized>
+    <Authorized>
+
+        <MudLayout>
+
+            <MudAppBar Elevation="1" Dense="true">
+
+                <MudGrid>
+                    <MudIconButton Icon="@Icons.Material.Filled.Menu" Edge="Edge.Start" OnClick="@DrawerToggle" />
+                    <MudText Typo="Typo.h5" Class="align-self-center ml-3">WoW Tracker</MudText>
+                    <MudSpacer />
+                    <MudItem>
+                        <MudButton OnClick="@Logout" Variant="Variant.Filled" Color="Color.Tertiary">Log Out</MudButton>
+                    </MudItem>
+                </MudGrid>
+
+            </MudAppBar>
 
             <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
                 <NavMenu />
             </MudDrawer>
 
-        </Authorized>
-    </AuthorizeView>
+            <MudMainContent Style="height: calc(100vh - 48px);">
+                @Body
+            </MudMainContent>
 
-    <MudMainContent Style="height: calc(100vh - 48px);" Class="pt-0">
-        @Body
-    </MudMainContent>
+        </MudLayout>
 
-</MudLayout>
+    </Authorized>
+</AuthorizeView>

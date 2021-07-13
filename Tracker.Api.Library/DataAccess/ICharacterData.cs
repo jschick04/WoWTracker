@@ -6,9 +6,13 @@ namespace Tracker.Api.Library.DataAccess {
 
     public interface ICharacterData {
 
-        Task<List<CharacterModel>> GetAll();
+        Task Create(CharacterModel request);
 
-        Task<List<CharacterModel>> GetById(int id);
+        Task Delete(int id);
+
+        Task<List<CharacterModel>> GetAll(int userId);
+
+        Task<CharacterModel> GetById(int id, int userId);
 
     }
 

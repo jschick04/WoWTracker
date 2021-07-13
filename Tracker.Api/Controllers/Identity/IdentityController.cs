@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Tracker.Api.Contracts.Identity.Requests;
 using Tracker.Api.Contracts.Routes;
-using Tracker.Api.Contracts.V1.Requests;
 using Tracker.Api.Managers;
 
 namespace Tracker.Api.Controllers.Identity {

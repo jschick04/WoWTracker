@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using MudBlazor;
-using Tracker.Api.Contracts.V1.Requests;
+using Tracker.Api.Contracts.Identity.Requests;
 using Tracker.Client.Shared.Base;
 
 namespace Tracker.Client.Pages.Identity {
@@ -21,7 +21,7 @@ namespace Tracker.Client.Pages.Identity {
             var result = await _authenticationManager.Login(_request);
 
             if (result.Succeeded) {
-                _navigationManager.NavigateTo("/", true);
+                _navigationManager.NavigateTo("/");
             } else {
                 foreach (var message in result.Messages) {
                     _snackbar.Add(message, Severity.Error);

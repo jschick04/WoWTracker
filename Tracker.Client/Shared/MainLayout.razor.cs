@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using MudBlazor;
-using Tracker.Client.Core.Settings;
+using Tracker.Client.Library.Settings;
 using Tracker.Client.Shared.Dialogs;
+using Tracker.Library.Helpers;
 
 namespace Tracker.Client.Shared {
 
@@ -16,14 +17,28 @@ namespace Tracker.Client.Shared {
             _interceptor.DisposeEvent();
         }
 
-        protected override Task OnInitializedAsync() {
+        protected override async Task OnInitializedAsync() {
             _currentTheme = TrackerTheme.DefaultTheme;
+
             _interceptor.RegisterEvent();
 
-            return Task.CompletedTask;
+            await LoadDataAsync();
         }
 
         private void DrawerToggle() => _drawerOpen = !_drawerOpen;
+
+        private async Task LoadDataAsync() {
+            var user = await _stateProvider.GetAuthenticationStateProviderUserAsync();
+
+            if (user?.Identity?.IsAuthenticated is not true) { return; }
+
+            var result = await _userManager.GetAsync(user.GetId());
+
+            if (!result.Succeeded || result.Data is null) {
+                _snackbar.Add("You are not Logged In", Severity.Error);
+                await _authenticationManager.Logout();
+            }
+        }
 
         private void Logout() {
             var parameters = new DialogParameters {

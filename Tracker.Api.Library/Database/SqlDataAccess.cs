@@ -12,9 +12,7 @@ namespace Tracker.Api.Library.Database {
 
         private readonly IConfiguration _configuration;
 
-        public SqlDataAccess(IConfiguration configuration) {
-            _configuration = configuration;
-        }
+        public SqlDataAccess(IConfiguration configuration) => _configuration = configuration;
 
         public string ConnectionStringName { get; set; } = "TrackerDb";
 
