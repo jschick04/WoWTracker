@@ -52,7 +52,7 @@ namespace Tracker.Api.Managers {
         public RefreshToken GenerateRefreshToken(string ipAddress) =>
             new() {
                 Token = GenerateRandomTokenString(),
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenLifetimeDays),
                 Created = DateTime.UtcNow,
                 CreatedByIp = ipAddress
             };
@@ -83,14 +83,14 @@ namespace Tracker.Api.Managers {
 
         public void RemoveOldRefreshTokens(User user) {
             user.RefreshTokens.RemoveAll(
-                token => !token.IsActive && token.Created.Add(_jwtSettings.RefreshTokenLifetime) <= DateTime.UtcNow
+                token => !token.IsActive && token.Created.AddDays(_jwtSettings.RefreshTokenHistoryDays) <= DateTime.UtcNow
             );
         }
 
         private static string GenerateEncryptedToken(SigningCredentials signingCredentials, IEnumerable<Claim> claims) {
             var token = new JwtSecurityToken(
                 claims:claims,
-                expires:DateTime.UtcNow.Add(_jwtSettings.TokenLifetime),
+                expires:DateTime.UtcNow.AddMinutes(_jwtSettings.TokenLifetimeMinutes),
                 signingCredentials:signingCredentials
             );
 

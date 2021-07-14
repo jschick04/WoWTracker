@@ -51,7 +51,6 @@ namespace Tracker.Client.Library.Managers.Interceptors {
                     var token = await _authenticationManager.TryRefreshToken();
 
                     if (!string.IsNullOrEmpty(token)) {
-                        _logger.LogInformation("InterceptBeforeHttpAsync: Successfully Refreshed Token");
                         e.Request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
                     }
                 } catch (Exception exception) {
