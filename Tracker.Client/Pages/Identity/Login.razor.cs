@@ -18,7 +18,11 @@ namespace Tracker.Client.Pages.Identity {
         }
 
         private async Task SubmitAsync() {
+            isLoading = true;
+
             var result = await _authenticationManager.Login(_request);
+
+            isLoading = false;
 
             if (result.Succeeded) {
                 _navigationManager.NavigateTo("/");

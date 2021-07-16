@@ -10,7 +10,11 @@ namespace Tracker.Client.Pages.Identity {
         private readonly RegistrationRequest _request = new();
 
         private async Task SubmitAsync() {
+            isLoading = true;
+
             var result = await _userManager.RegisterAsync(_request);
+
+            isLoading = false;
 
             if (result.Succeeded) {
                 foreach (var message in result.Messages) {

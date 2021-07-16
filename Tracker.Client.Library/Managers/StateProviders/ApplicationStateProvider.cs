@@ -10,25 +10,31 @@ namespace Tracker.Client.Library.Managers.StateProviders {
 
         private readonly ICharacterManager _characterManager;
 
+        private List<CharacterResponse> _characters = new();
+
         public ApplicationStateProvider(ICharacterManager characterManager) => _characterManager = characterManager;
 
-        public event Action OnChange;
+        public event Func<Task> OnChangeAsync;
 
-        public List<CharacterResponse> Characters { get; private set; } = new();
+        public async Task<List<CharacterResponse>> GetCharactersAsync() {
+            if (_characters.Count == 0) { await UpdateCharactersAsync(); }
+
+            return _characters;
+        }
 
         public async Task UpdateCharactersAsync() {
             var result = await _characterManager.GetAllAsync();
 
             if (result.Succeeded) {
-                Characters = result.Data;
+                _characters = result.Data;
             } else {
-                Characters.Clear();
+                _characters.Clear();
             }
 
-            NotifyStateChanged();
+            await NotifyStateChangeAsync();
         }
 
-        private void NotifyStateChanged() => OnChange?.Invoke();
+        private Task NotifyStateChangeAsync() => OnChangeAsync?.Invoke();
 
     }
 

@@ -13,7 +13,13 @@
 
     <DialogActions>
         <MudButton OnClick="@Cancel">Cancel</MudButton>
-        <MudButton Color="@Color" Variant="Variant.Filled" OnClick="@Submit">@ButtonText</MudButton>
+        @if (_isLoading) {
+            <MudButton Variant="Variant.Filled" Disabled="true">
+                <MudProgressCircular Color="@Color" Size="Size.Small" Indeterminate="true" />
+            </MudButton>
+        } else {
+            <MudButton Color="@Color" Variant="Variant.Filled" OnClick="@Submit">@ButtonText</MudButton>
+        }
     </DialogActions>
 
 </MudDialog>

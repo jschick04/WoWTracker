@@ -8,24 +8,34 @@
 
     <p>Group1</p><br>
 
-    @foreach (var character in Characters1) {
-        <p>Name: @character.Name</p>
-        <p>Class: @character.Class</p>
-        <p>Primary Profession: @character.FirstProfession</p>
-        <p>Secondary Professsion: @character.SecondProfession</p>
-        <p>Cooking: @character.HasCooking</p>
-        <br>
+    @if (_isLoading) {
+        <p>Loading...</p>
+        <br />
+    } else {
+        @foreach (var character in Characters1) {
+            <p>Name: @character.Name</p>
+            <p>Class: @character.Class</p>
+            <p>Primary Profession: @character.FirstProfession</p>
+            <p>Secondary Professsion: @character.SecondProfession</p>
+            <p>Cooking: @character.HasCooking</p>
+            <br />
+        }
     }
-    <br>
+
     <p>Group2</p><br>
 
-    @foreach (var character in Characters2) {
-        <p>Name: @character.Name</p>
-        <p>Class: @character.Class</p>
-        <p>Primary Profession: @character.FirstProfession</p>
-        <p>Secondary Professsion: @character.SecondProfession</p>
-        <p>Cooking: @character.HasCooking</p>
-        <br>
+    @if (_isLoading) {
+        <p>Loading...</p>
+        <br />
+    } else {
+        @foreach (var character in Characters2) {
+            <p>Name: @character.Name</p>
+            <p>Class: @character.Class</p>
+            <p>Primary Profession: @character.FirstProfession</p>
+            <p>Secondary Professsion: @character.SecondProfession</p>
+            <p>Cooking: @character.HasCooking</p>
+            <br />
+        }
     }
 
 </MudContainer>

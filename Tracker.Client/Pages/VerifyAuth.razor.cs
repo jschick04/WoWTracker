@@ -8,28 +8,39 @@ namespace Tracker.Client.Pages {
 
     public partial class VerifyAuth : IDisposable {
 
+        private bool _isLoading;
+
         private string CurrentUsername { get; set; } = "";
 
         private List<CharacterResponse> Characters1 { get; set; } = new();
 
         private List<CharacterResponse> Characters2 { get; set; } = new();
 
-        public void Dispose() => _appStateProvider.OnChange -= UpdateCharacters;
+        public void Dispose() => _appStateProvider.OnChangeAsync -= UpdateCharactersAsync;
 
         protected override async Task OnInitializedAsync() {
             var user = await _stateProvider.GetAuthenticationStateProviderUserAsync();
 
-            _appStateProvider.OnChange += UpdateCharacters;
+            _appStateProvider.OnChangeAsync += UpdateCharactersAsync;
 
             if (user.Identity?.IsAuthenticated is true) {
                 CurrentUsername = user.GetUsername();
+
+                _isLoading = true;
+                StateHasChanged();
+
                 await _appStateProvider.UpdateCharactersAsync();
             }
         }
 
-        private void UpdateCharacters() {
-            Characters1 = _appStateProvider.Characters;
-            Characters2 = _appStateProvider.Characters;
+        private async Task UpdateCharactersAsync() {
+            _isLoading = true;
+            StateHasChanged();
+
+            Characters1 = await _appStateProvider.GetCharactersAsync();
+            Characters2 = await _appStateProvider.GetCharactersAsync();
+
+            _isLoading = false;
             StateHasChanged();
         }
 

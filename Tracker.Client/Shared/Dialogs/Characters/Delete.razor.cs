@@ -6,6 +6,8 @@ namespace Tracker.Client.Shared.Dialogs.Characters {
 
     public partial class Delete {
 
+        private bool _isLoading;
+
         [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
 
         [Parameter] public string ContextText { get; set; }
@@ -19,7 +21,11 @@ namespace Tracker.Client.Shared.Dialogs.Characters {
         private void Cancel() => MudDialog.Cancel();
 
         private async Task Submit() {
+            _isLoading = true;
+
             var response = await _characterManager.DeleteAsync(Id);
+
+            _isLoading = false;
 
             if (response.Succeeded) {
                 _snackbar.Add("Deletion Successful", Severity.Success);

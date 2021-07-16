@@ -9,6 +9,8 @@ namespace Tracker.Client.Shared.Base {
         protected InputType confirmInput = InputType.Password;
         protected bool confirmVisibility;
 
+        protected bool isLoading;
+
         protected string passwordIcon = Icons.Material.Filled.VisibilityOff;
         protected InputType passwordInput = InputType.Password;
         protected bool passwordVisibility;

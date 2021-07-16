@@ -48,10 +48,16 @@
             </MudItem>
 
             <MudItem xs="12" Class="pa-1 d-flex justify-center">
-                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Tertiary"
-                    Size="Size.Large" Disabled="!_request.AcceptTerms" Style="width: 100%">
-                    Create Account
-                </MudButton>
+                @if (isLoading) {
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Disabled="true" Size="Size.Large" Style="width: 100%">
+                        <MudProgressCircular Color="Color.Tertiary" Size="Size.Small" Indeterminate="true" />
+                    </MudButton>
+                } else {
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Tertiary"
+                        Size="Size.Large" Disabled="!_request.AcceptTerms" Style="width: 100%">
+                        Create Account
+                    </MudButton>
+                }
             </MudItem>
 
         </EditForm>

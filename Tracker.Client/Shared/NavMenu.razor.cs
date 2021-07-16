@@ -10,22 +10,27 @@ namespace Tracker.Client.Shared {
 
     public partial class NavMenu : IDisposable {
 
+        private bool _isLoading;
+
         private List<CharacterResponse> Characters { get; set; } = new();
 
         private string Welcome { get; set; } = "";
 
-        public void Dispose() => _appStateProvider.OnChange -= UpdateCharacters;
+        public void Dispose() => _appStateProvider.OnChangeAsync -= UpdateCharactersAsync;
 
         protected override async Task OnInitializedAsync() {
             var user = await _stateProvider.GetAuthenticationStateProviderUserAsync();
-            
-            _appStateProvider.OnChange += UpdateCharacters;
+
+            _appStateProvider.OnChangeAsync += UpdateCharactersAsync;
 
             if (user.Identity?.IsAuthenticated is true) {
                 Welcome = $"Welcome {user.GetFirstName()}";
+
+                _isLoading = true;
+                StateHasChanged();
+
                 await _appStateProvider.UpdateCharactersAsync();
             }
-
         }
 
         private async Task Delete(int id, string name) {
@@ -46,8 +51,13 @@ namespace Tracker.Client.Shared {
             }
         }
 
-        private void UpdateCharacters() {
-            Characters = _appStateProvider.Characters;
+        private async Task UpdateCharactersAsync() {
+            _isLoading = true;
+            StateHasChanged();
+
+            Characters = await _appStateProvider.GetCharactersAsync();
+
+            _isLoading = false;
             StateHasChanged();
         }
 
