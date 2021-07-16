@@ -1,12 +1,11 @@
 ﻿<MudNavMenu Class="mud-width-full">
 
-    <MudText Class="d-flex justify-center">
-        <MudLink Typo="Typo.h5" Href="/verifyauth">@Welcome</MudLink>
-    </MudText>
-
-    <MudDivider />
-    
     <MudNavLink Href="/" Icon="@Icons.Filled.Home">Home</MudNavLink>
+    
+    <MudDivider />
+
+    <MudNavLink Href="/verifyauth" Icon="@Icons.Filled.Dashboard">Test Page</MudNavLink>
+    
     <MudNavGroup Title="Characters" Icon="@Icons.Filled.People" Expanded="true">
         @if (_isLoading) {
             <MudText Align="Align.Center">Loading...</MudText>

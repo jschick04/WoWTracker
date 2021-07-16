@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using MudBlazor;
 using Tracker.Api.Contracts.V1.Responses;
 using Tracker.Client.Shared.Dialogs.Characters;
-using Tracker.Library.Helpers;
 
 namespace Tracker.Client.Shared {
 
@@ -14,23 +13,15 @@ namespace Tracker.Client.Shared {
 
         private List<CharacterResponse> Characters { get; set; } = new();
 
-        private string Welcome { get; set; } = "";
-
         public void Dispose() => _appStateProvider.OnChangeAsync -= UpdateCharactersAsync;
 
         protected override async Task OnInitializedAsync() {
-            var user = await _stateProvider.GetAuthenticationStateProviderUserAsync();
-
             _appStateProvider.OnChangeAsync += UpdateCharactersAsync;
 
-            if (user.Identity?.IsAuthenticated is true) {
-                Welcome = $"Welcome {user.GetFirstName()}";
+            _isLoading = true;
+            StateHasChanged();
 
-                _isLoading = true;
-                StateHasChanged();
-
-                await _appStateProvider.UpdateCharactersAsync();
-            }
+            await _appStateProvider.UpdateCharactersAsync();
         }
 
         private async Task Delete(int id, string name) {
