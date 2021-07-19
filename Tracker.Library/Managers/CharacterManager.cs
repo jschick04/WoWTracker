@@ -50,6 +50,29 @@ namespace Tracker.Library.Managers {
             return await Result<List<CharacterResponse>>.FailAsync(message?.Error);
         }
 
+        public async Task<Result<CharacterResponse>> GetByIdAsync(int id) {
+            var response = await _httpClient.GetAsync(ApiRoutes.Character.GetByIdReplace(id));
+
+            if (response.IsSuccessStatusCode) {
+                var data = await response.Content.ReadFromJsonAsync<CharacterResponse>();
+                return await Result<CharacterResponse>.SuccessAsync(data);
+            }
+
+            var message = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+            return await Result<CharacterResponse>.FailAsync(message?.Error);
+        }
+
+        public async Task<IResult> UpdateAsync(int id, UpdateCharacterRequest request) {
+            var response = await _httpClient.PutAsJsonAsync(ApiRoutes.Character.UpdateReplace(id), request);
+
+            if (response.IsSuccessStatusCode) {
+                return await Result.SuccessAsync();
+            }
+
+            var message = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+            return await Result.FailAsync(message?.Error);
+        }
+
     }
 
 }

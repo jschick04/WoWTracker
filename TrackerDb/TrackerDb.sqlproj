@@ -78,6 +78,7 @@
     <Build Include="dbo\Stored Procedures\spCharacters_GetById.sql" />
     <Build Include="dbo\Stored Procedures\spCharacters_Insert.sql" />
     <Build Include="dbo\Stored Procedures\spCharacters_Delete.sql" />
+    <Build Include="dbo\Stored Procedures\spCharacters_Update.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="DeploymentScripts\Script.PostDeployment.sql" />

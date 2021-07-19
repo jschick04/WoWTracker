@@ -14,6 +14,10 @@ namespace Tracker.Library.Managers {
 
         Task<Result<List<CharacterResponse>>> GetAllAsync();
 
+        Task<Result<CharacterResponse>> GetByIdAsync(int id);
+
+        Task<IResult> UpdateAsync(int id, UpdateCharacterRequest request);
+
     }
 
 }

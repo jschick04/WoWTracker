@@ -91,6 +91,33 @@ namespace Tracker.Api.Controllers.V1 {
             return Ok(response);
         }
 
+        [HttpPut(ApiRoutes.Character.Update)]
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCharacterRequest request) {
+            var model = await _data.GetById(id, Account.Id);
+
+            if (model is null) { return NotFound(); }
+
+            model.Name = request.Name ?? model.Name;
+
+            if (Converter.TryParseWithMemberName(request.Class, out Classes classId)) {
+                model.ClassId = classId;
+            }
+
+            if (Converter.TryParseWithMemberName(request.FirstProfession, out Professions firstProfessionId)) {
+                model.FirstProfessionId = firstProfessionId;
+            }
+
+            if (Converter.TryParseWithMemberName(request.SecondProfession, out Professions secondProfessionId)) {
+                model.SecondProfessionId = secondProfessionId;
+            }
+
+            model.HasCooking = request.HasCooking ?? model.HasCooking;
+
+            await _data.Update(model);
+
+            return Ok();
+        }
+
     }
 
 }

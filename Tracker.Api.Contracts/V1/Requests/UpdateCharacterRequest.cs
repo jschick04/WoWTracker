@@ -27,7 +27,7 @@
             set => _secondProfession = ReplaceEmptyWithNull(value);
         }
 
-        public bool HasCooking { get; set; }
+        public bool? HasCooking { get; set; }
 
         private static string ReplaceEmptyWithNull(string value) => string.IsNullOrWhiteSpace(value) ? null : value;
 

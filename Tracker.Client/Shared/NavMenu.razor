@@ -1,17 +1,19 @@
 ﻿<MudNavMenu Class="mud-width-full">
 
     <MudNavLink Href="/" Icon="@Icons.Filled.Home">Home</MudNavLink>
-    
+
     <MudDivider />
 
     <MudNavLink Href="/verifyauth" Icon="@Icons.Filled.Dashboard">Test Page</MudNavLink>
-    
+
     <MudNavGroup Title="Characters" Icon="@Icons.Filled.People" Expanded="true">
         @if (_isLoading) {
             <MudText Align="Align.Center">Loading...</MudText>
         } else {
             @foreach (var character in Characters) {
-                <MudNavLink @onclick="@(() => Delete(character.Id, character.Name))" Icon="@Icons.Filled.PeopleOutline">@character.Name</MudNavLink>
+                <MudNavLink @onclick="@(() => LoadCharacter(character.Id))" Icon="@Icons.Filled.PeopleOutline">
+                    @character.Name
+                </MudNavLink>
             }
         }
         <MudNavLink Href="/character/create" Icon="@Icons.Filled.Add" IconColor="Color.Primary">Create Character</MudNavLink>

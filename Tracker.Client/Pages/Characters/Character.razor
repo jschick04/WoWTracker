@@ -1,0 +1,139 @@
+﻿@page "/character/{id:int}"
+
+<MudContainer>
+
+    @if (_isLoading) {
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+    } else {
+        <MudGrid Style="display: block">
+
+            @if (_isEditing) {
+                <EditForm Model="_request" OnValidSubmit="@UpdateAsync">
+
+                    <DataAnnotationsValidator />
+
+                    <MudItem xs="12" Class="pa-1 d-flex justify-center">
+                        <MudTextField Label="@_character.Name" Variant="Variant.Outlined" @bind-Value="_request.Name" For="@(() => _request.Name)" />
+                        <MudSpacer />
+                        <MudSelect T="string" Label="@_character.Class" Variant="Variant.Outlined"
+                            @bind-Value="_request.Class" For="@(() => _request.Class)">
+                            @foreach (var classes in Converter.AvailableClasses()) {
+                                <MudSelectItem Value="classes" />
+                            }
+                        </MudSelect>
+                        <MudSpacer />
+
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Success" Class="mr-1">
+                            Save
+                        </MudButton>
+                        <MudButton @onclick="@(() => Delete(_character.Id, _character.Name))" Variant="Variant.Filled" Color="Color.Error">
+                            Delete
+                        </MudButton>
+
+                    </MudItem>
+
+                    <MudItem xs="12">
+                        <MudDivider DividerType="DividerType.Middle" />
+                    </MudItem>
+
+                    <MudItem xs="12" Class="pa-1 d-flex justify-center">
+                        <MudSelect T="string" Label="Primary Profession" Variant="Variant.Outlined" @bind-Value="_request.FirstProfession">
+                            @foreach (var profession in Converter.AvailableProfessions()) {
+                                <MudSelectItem Value="profession" />
+                            }
+                        </MudSelect>
+                        <MudIconButton @onclick="@(() => _request.FirstProfession = "")" Icon="@Icons.Filled.Remove" Color="Color.Error" />
+                        <MudSpacer />
+                        <MudCheckBox Color="Color.Primary" @bind-Checked="_request.HasCooking">Cooking</MudCheckBox>
+                        <MudSpacer />
+                        <MudSelect T="string" Label="Secondary Profession" Variant="Variant.Outlined" @bind-Value="_request.SecondProfession">
+                            @foreach (var profession in Converter.AvailableProfessions()) {
+                                <MudSelectItem Value="profession" />
+                            }
+                        </MudSelect>
+                        <MudIconButton @onclick="@(() => _request.SecondProfession = "")" Icon="@Icons.Filled.Remove" Color="Color.Error" />
+                    </MudItem>
+
+                </EditForm>
+            } else {
+                <MudItem xs="12" Class="pa-1 d-flex justify-center">
+                    <MudText Typo="Typo.h5">@_character.Name</MudText>
+                    <MudSpacer />
+                    <MudText>@_character.Class</MudText>
+                    <MudSpacer />
+                    <MudButton @onclick="@ToggleEditing" Variant="Variant.Filled" Color="Color.Tertiary">Edit</MudButton>
+                </MudItem>
+
+                <MudItem xs="12">
+                    <MudDivider DividerType="DividerType.Middle" />
+                </MudItem>
+
+                <MudItem xs="12" Class="pa-1 d-flex justify-center">
+                    @if (string.IsNullOrWhiteSpace(_character.FirstProfession)) {
+                        <MudText>No Primary Profession</MudText>
+                    } else {
+                        <MudText>@_character.FirstProfession</MudText>
+                    }
+                    <MudSpacer />
+                    @if (_character.HasCooking) {
+                        <MudText>Cooking</MudText>
+                        <MudSpacer />
+                    }
+                    @if (string.IsNullOrWhiteSpace(_character.SecondProfession)) {
+                        <MudText>No Secondary Profession</MudText>
+                    } else {
+                        <MudText>@_character.SecondProfession</MudText>
+                    }
+                </MudItem>
+            }
+
+        </MudGrid>
+
+        <MudDivider DividerType="DividerType.Middle" Class="my-5" />
+
+        <MudGrid>
+
+            <MudItem xs="12" Class="pa-1 d-flex justify-center">
+                <MudText>Needed Items</MudText>
+            </MudItem>
+
+            <MudItem xs="6" Class="pa-1 d-flex justify-center">
+                <MudButton Variant="Variant.Text" StartIcon="@Icons.Filled.Remove">Test Item</MudButton>
+            </MudItem>
+
+            <MudItem xs="6" Class="pa-1 d-flex justify-center">
+                <MudButton Variant="Variant.Text" StartIcon="@Icons.Filled.Remove">Test Item</MudButton>
+            </MudItem>
+
+            <MudItem xs="6" Class="pa-1 d-flex justify-center">
+                <MudButton Variant="Variant.Text" StartIcon="@Icons.Filled.Remove">Test Item</MudButton>
+            </MudItem>
+
+            <MudItem xs="6" Class="pa-1 d-flex justify-center">
+                <MudButton Variant="Variant.Text" StartIcon="@Icons.Filled.Remove">Test Item</MudButton>
+            </MudItem>
+
+            <MudItem xs="6" Class="pa-1 d-flex justify-center">
+                <MudButton Variant="Variant.Text" StartIcon="@Icons.Filled.Remove">Test Item</MudButton>
+            </MudItem>
+
+            <MudItem xs="6" Class="pa-1 d-flex justify-center">
+                <MudButton Variant="Variant.Text" StartIcon="@Icons.Filled.Remove">Test Item</MudButton>
+            </MudItem>
+
+            <MudItem xs="6" Class="pa-1 d-flex justify-center">
+                <MudButton Variant="Variant.Text" StartIcon="@Icons.Filled.Add" Color="Color.Success">Add Item</MudButton>
+            </MudItem>
+
+            <MudItem xs="12">
+                <MudDivider DividerType="DividerType.Middle" />
+            </MudItem>
+
+            <MudItem xs="12" Class="pa-1 d-flex justify-center">
+                <MudText>Items to Craft</MudText>
+            </MudItem>
+
+        </MudGrid>
+    }
+
+</MudContainer>

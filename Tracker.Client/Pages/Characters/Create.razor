@@ -30,11 +30,13 @@
                         <MudSelectItem Value="profession" />
                     }
                 </MudSelect>
+                <MudIconButton @onclick="@(() => _request.FirstProfession = "")" Icon="@Icons.Filled.Remove" Color="Color.Error" />
                 <MudSelect T="string" Label="Secondary Profession" Variant="Variant.Outlined" @bind-Value="_request.SecondProfession">
                     @foreach (var profession in Converter.AvailableProfessions()) {
                         <MudSelectItem Value="profession" />
                     }
                 </MudSelect>
+                <MudIconButton @onclick="@(() => _request.SecondProfession = "")" Icon="@Icons.Filled.Remove" Color="Color.Error" />
             </MudItem>
 
             <MudItem xs="12" Class="pa-1 d-flex justify-center">

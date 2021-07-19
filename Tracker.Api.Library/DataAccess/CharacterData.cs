@@ -12,7 +12,7 @@ namespace Tracker.Api.Library.DataAccess {
 
         public CharacterData(ISqlDataAccess db) => _db = db;
 
-        public async Task Create(CharacterModel request) => await _db.SaveData("spCharacters_Insert", request);
+        public async Task Create(CharacterModel model) => await _db.SaveData("spCharacters_Insert", model);
 
         public async Task Delete(int id) => await _db.SaveData("spCharacters_Delete", new { id });
 
@@ -21,6 +21,8 @@ namespace Tracker.Api.Library.DataAccess {
 
         public async Task<CharacterModel> GetById(int id, int userId) =>
             (await _db.LoadData<CharacterModel, dynamic>("spCharacters_GetById", new { id, userId })).FirstOrDefault();
+
+        public async Task Update(CharacterModel model) => await _db.SaveData("spCharacters_Update", model);
 
     }
 
