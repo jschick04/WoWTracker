@@ -1,5 +1,57 @@
-﻿<h3>CreateCharacter</h3>
+﻿<MudDialog>
 
-@code {
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Create" Class="mr-3 mb-n1" />
+            Create Character
+        </MudText>
+    </TitleContent>
 
-}
+    <DialogContent>
+        <EditForm id="CharacterCreation" Model="_request" OnValidSubmit="Submit">
+
+            <DataAnnotationsValidator />
+
+            <MudItem xs="12" Class="pa-1">
+                <MudTextField Label="Name" Variant="Variant.Outlined" @bind-Value="_request.Name" For="@(() => _request.Name)" />
+            </MudItem>
+
+            <MudItem xs="12" Class="pa-1 d-flex justify-center">
+                <MudSelect T="string" Label="Class" Variant="Variant.Outlined" @bind-Value="_request.Class" For="@(() => _request.Class)">
+                    @foreach (var classes in Converter.AvailableClasses()) {
+                        <MudSelectItem Value="classes" />
+                    }
+                </MudSelect>
+                <MudCheckBox Color="Color.Primary" @bind-Checked="_request.HasCooking">Cooking</MudCheckBox>
+            </MudItem>
+
+            <MudItem xs="12" Class="pa-1 d-flex justify-center">
+                <MudSelect T="string" Label="Primary Profession" Variant="Variant.Outlined" @bind-Value="_request.FirstProfession">
+                    @foreach (var profession in Converter.AvailableProfessions()) {
+                        <MudSelectItem Value="profession" />
+                    }
+                </MudSelect>
+                <MudIconButton @onclick="@(() => _request.FirstProfession = "")" Icon="@Icons.Filled.Remove" Color="Color.Error" />
+                <MudSelect T="string" Label="Secondary Profession" Variant="Variant.Outlined" @bind-Value="_request.SecondProfession">
+                    @foreach (var profession in Converter.AvailableProfessions()) {
+                        <MudSelectItem Value="profession" />
+                    }
+                </MudSelect>
+                <MudIconButton @onclick="@(() => _request.SecondProfession = "")" Icon="@Icons.Filled.Remove" Color="Color.Error" />
+            </MudItem>
+
+        </EditForm>
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton OnClick="@Cancel">Cancel</MudButton>
+        @if (_isLoading) {
+            <MudButton Variant="Variant.Filled" Disabled="true">
+                <MudProgressCircular Color="@Color" Size="Size.Small" Indeterminate="true" />
+            </MudButton>
+        } else {
+            <MudButton form="CharacterCreation" ButtonType="ButtonType.Submit" Color="@Color" Variant="Variant.Filled">@ButtonText</MudButton>
+        }
+    </DialogActions>
+
+</MudDialog>

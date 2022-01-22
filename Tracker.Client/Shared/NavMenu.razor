@@ -16,7 +16,7 @@
                 </MudNavLink>
             }
         }
-        <MudNavLink Href="/character/create" Icon="@Icons.Filled.Add" IconColor="Color.Primary">Create Character</MudNavLink>
+        <MudNavLink @onclick="@(() => CreateCharacter())" Icon="@Icons.Filled.Add" IconColor="Color.Primary">Create Character</MudNavLink>
     </MudNavGroup>
 
 </MudNavMenu>

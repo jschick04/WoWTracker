@@ -103,12 +103,18 @@ namespace Tracker.Api.Controllers.V1 {
                 model.ClassId = classId;
             }
 
+            // TODO: Figure out a better way to do this to allow dropping a profession without specifying all params
+            // Maybe just set an Enum value of 0 = None
             if (Converter.TryParseWithMemberName(request.FirstProfession, out Professions firstProfessionId)) {
                 model.FirstProfessionId = firstProfessionId;
+            } else {
+                model.FirstProfessionId = null;
             }
 
             if (Converter.TryParseWithMemberName(request.SecondProfession, out Professions secondProfessionId)) {
                 model.SecondProfessionId = secondProfessionId;
+            } else {
+                model.SecondProfessionId = null;
             }
 
             model.HasCooking = request.HasCooking ?? model.HasCooking;
