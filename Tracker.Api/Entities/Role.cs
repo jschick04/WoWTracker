@@ -1,5 +1,3 @@
-﻿namespace Tracker.Api.Entities {
+﻿namespace Tracker.Api.Entities;
 
-    public enum Role { Admin, User }
-
-}
+public enum Role { Admin, User }

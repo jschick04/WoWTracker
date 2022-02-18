@@ -1,22 +1,16 @@
-﻿using System;
-using Hangfire;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Hangfire;
 
-namespace Tracker.Api.Services {
+namespace Tracker.Api.Services;
 
-    public class HangfireService : IServiceInstaller {
+public class HangfireService : IServiceInstaller {
 
-        public void InstallService(IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env) {
-            services.AddHangfire(
-                config => config.UseSqlServerStorage(configuration.GetConnectionString("TrackerDb"))
-                    .WithJobExpirationTimeout(TimeSpan.FromDays(7))
-            );
+    public void InstallService(IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env) {
+        services.AddHangfire(
+            config => config.UseSqlServerStorage(configuration.GetConnectionString("TrackerDb"))
+                .WithJobExpirationTimeout(TimeSpan.FromDays(7))
+        );
 
-            services.AddHangfireServer();
-        }
-
+        services.AddHangfireServer();
     }
 
 }

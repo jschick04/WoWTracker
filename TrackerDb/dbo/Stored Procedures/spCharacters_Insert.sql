@@ -11,6 +11,5 @@ BEGIN
     SET NOCOUNT ON;
 
     INSERT INTO dbo.Characters (UserId, Name, ClassId, FirstProfessionId, SecondProfessionId, HasCooking)
-    VALUES
-    (@userId, @name, @classId, @firstProfessionId, @secondProfessionId, @hasCooking);
+    VALUES (@userId, @name, @classId, @firstProfessionId, @secondProfessionId, @hasCooking);
 END;

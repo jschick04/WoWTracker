@@ -1,8 +1,4 @@
-﻿using System;
+﻿namespace Tracker.Api.Authorization;
 
-namespace Tracker.Api.Authorization {
-
-    [AttributeUsage(AttributeTargets.Method)]
-    public class AnonymousAttribute : Attribute { }
-
-}
+[AttributeUsage(AttributeTargets.Method)]
+public class AnonymousAttribute : Attribute { }

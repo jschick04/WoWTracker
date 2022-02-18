@@ -1,15 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Tracker.Api.Library.Models;
+﻿using Tracker.Api.Library.Models;
 
-namespace Tracker.Api.Library.DataAccess {
+namespace Tracker.Api.Library.DataAccess;
 
-    public interface IItemData {
+public interface IItemData {
 
-        Task<List<ItemModel>> GetItemsByProfession(string profession);
+    Task<List<ItemModel>> GetItemsByProfession(string profession);
 
-        Task<List<ItemModel>> GetItemsBySlot(string slot);
-
-    }
+    Task<List<ItemModel>> GetItemsBySlot(string slot);
 
 }

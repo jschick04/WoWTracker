@@ -1,85 +1,82 @@
 ﻿using System.Text;
-using System.Threading.Tasks;
 using FluentEmail.Core;
 using Hangfire;
 using Tracker.Api.Contracts.Routes;
 using Tracker.Api.Entities;
 
-namespace Tracker.Api.Managers {
+namespace Tracker.Api.Managers;
 
-    public class EmailManager : IEmailManager {
+public class EmailManager : IEmailManager {
 
-        private readonly IFluentEmail _sender;
+    private readonly IFluentEmail _sender;
 
-        public EmailManager(IFluentEmail sender) => _sender = sender;
+    public EmailManager(IFluentEmail sender) => _sender = sender;
 
-        public void SendAlreadyRegistered(User user, string origin) {
-            var builder = new StringBuilder();
+    public void SendAlreadyRegistered(User user, string origin) {
+        var builder = new StringBuilder();
 
-            builder.AppendLine("<h4>Your account has already been created.</h4>");
+        builder.AppendLine("<h4>Your account has already been created.</h4>");
 
-            if (!string.IsNullOrEmpty(origin)) {
-                var verifyUri = $"{origin}/{ClientRoutes.Account.Verify}?token={user.VerificationToken}";
-                
-                builder.AppendLine("<p>Please click the below link to confirm you account.</p>");
-                builder.AppendFormat("<p><a href=\"{0}\">Verify</a></p>", verifyUri).AppendLine();
-            } else {
-                builder.AppendLine("<p>Please use the following API to confirm your account.</p>");
-                builder.AppendFormat("<p>API Route: {0}</p>", ApiRoutes.Account.VerifyEmail).AppendLine();
-                builder.AppendFormat("<p>Token: <code>{0}</code></p>", user.VerificationToken).AppendLine();
-            }
+        if (!string.IsNullOrEmpty(origin)) {
+            var verifyUri = $"{origin}/{ClientRoutes.Account.Verify}?token={user.VerificationToken}";
 
-            builder.AppendLine("<p>- WoW Tracker Team</p>");
-
-            BackgroundJob.Enqueue(() => SendAsync(user.Username, "Confirm Registration", builder.ToString(), null));
+            builder.AppendLine("<p>Please click the below link to confirm you account.</p>");
+            builder.AppendFormat("<p><a href=\"{0}\">Verify</a></p>", verifyUri).AppendLine();
+        } else {
+            builder.AppendLine("<p>Please use the following API to confirm your account.</p>");
+            builder.AppendFormat("<p>API Route: {0}</p>", ApiRoutes.Account.VerifyEmail).AppendLine();
+            builder.AppendFormat("<p>Token: <code>{0}</code></p>", user.VerificationToken).AppendLine();
         }
 
-        public async Task SendAsync(string to, string subject, string html, string from = null) {
-            await _sender.To(to).Subject(subject).Body(html, true).SendAsync();
+        builder.AppendLine("<p>- WoW Tracker Team</p>");
+
+        BackgroundJob.Enqueue(() => SendAsync(user.Username, "Confirm Registration", builder.ToString(), null!));
+    }
+
+    public async Task SendAsync(string to, string subject, string html, string from = null!) {
+        await _sender.To(to).Subject(subject).Body(html, true).SendAsync();
+    }
+
+    public void SendForgotPassword(User user, string origin) {
+        var builder = new StringBuilder();
+
+        builder.AppendLine("<h4>A request to reset your password has been submitted.</h4>");
+
+        if (!string.IsNullOrEmpty(origin)) {
+            var resetUri = $"{origin}/{ClientRoutes.Account.ResetPassword}?token={user.ResetToken}";
+
+            builder.AppendLine("<p>Please click the below link to reset your password.</p>");
+            builder.AppendFormat("<p><a href=\"{0}\">Reset</a></p>", resetUri).AppendLine();
+        } else {
+            builder.AppendLine("<p>Please use the following API to reset your password</p>");
+            builder.AppendFormat("<p>API Route: {0}</p>", ApiRoutes.Account.ResetPassword).AppendLine();
+            builder.AppendFormat("<p>Token: <code>{0}</code></p>", user.ResetToken).AppendLine();
         }
 
-        public void SendForgotPassword(User user, string origin) {
-            var builder = new StringBuilder();
+        builder.AppendLine("<p>- WoW Tracker Team</p>");
 
-            builder.AppendLine("<h4>A request to reset your password has been submitted.</h4>");
+        BackgroundJob.Enqueue(() => SendAsync(user.Username, "Forgot Password", builder.ToString(), null!));
+    }
 
-            if (!string.IsNullOrEmpty(origin)) {
-                var resetUri = $"{origin}/{ClientRoutes.Account.ResetPassword}?token={user.ResetToken}";
+    public void SendVerification(User user, string origin) {
+        var builder = new StringBuilder();
 
-                builder.AppendLine("<p>Please click the below link to reset your password.</p>");
-                builder.AppendFormat("<p><a href=\"{0}\">Reset</a></p>", resetUri).AppendLine();
-            } else {
-                builder.AppendLine("<p>Please use the following API to reset your password</p>");
-                builder.AppendFormat("<p>API Route: {0}</p>", ApiRoutes.Account.ResetPassword).AppendLine();
-                builder.AppendFormat("<p>Token: <code>{0}</code></p>", user.ResetToken).AppendLine();
-            }
+        builder.AppendLine("<h4>Thanks for registering!</h4>");
 
-            builder.AppendLine("<p>- WoW Tracker Team</p>");
+        if (!string.IsNullOrEmpty(origin)) {
+            var verifyUri = $"{origin}/{ClientRoutes.Account.Verify}?token={user.VerificationToken}";
 
-            BackgroundJob.Enqueue(() => SendAsync(user.Username, "Forgot Password", builder.ToString(), null));
+            builder.AppendLine("<p>Please click the below link to verify your email address.</p>");
+            builder.AppendFormat("<p><a href=\"{0}\">Verify</a></p>", verifyUri).AppendLine();
+        } else {
+            builder.AppendLine("<p>Please use the following API to verify your email</p>");
+            builder.AppendFormat("<p>API Route: {0}</p>", ApiRoutes.Account.VerifyEmail).AppendLine();
+            builder.AppendFormat("<p>Token: <code>{0}</code></p>", user.VerificationToken).AppendLine();
         }
 
-        public void SendVerification(User user, string origin) {
-            var builder = new StringBuilder();
+        builder.AppendLine("<p>- WoW Tracker Team</p>");
 
-            builder.AppendLine("<h4>Thanks for registering!</h4>");
-
-            if (!string.IsNullOrEmpty(origin)) {
-                var verifyUri = $"{origin}/{ClientRoutes.Account.Verify}?token={user.VerificationToken}";
-
-                builder.AppendLine("<p>Please click the below link to verify your email address.</p>");
-                builder.AppendFormat("<p><a href=\"{0}\">Verify</a></p>", verifyUri).AppendLine();
-            } else {
-                builder.AppendLine("<p>Please use the following API to verify your email</p>");
-                builder.AppendFormat("<p>API Route: {0}</p>", ApiRoutes.Account.VerifyEmail).AppendLine();
-                builder.AppendFormat("<p>Token: <code>{0}</code></p>", user.VerificationToken).AppendLine();
-            }
-
-            builder.AppendLine("<p>- WoW Tracker Team</p>");
-
-            BackgroundJob.Enqueue(() => SendAsync(user.Username, "Confirm Registration", builder.ToString(), null));
-        }
-
+        BackgroundJob.Enqueue(() => SendAsync(user.Username, "Confirm Registration", builder.ToString(), null!));
     }
 
 }

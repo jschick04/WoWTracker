@@ -1,29 +1,24 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Tracker.Api.Contracts.Identity.Requests;
+﻿using Tracker.Api.Contracts.Identity.Requests;
 using Tracker.Api.Contracts.Identity.Responses;
-using Tracker.Api.Contracts.V1.Requests;
 
-namespace Tracker.Api.Managers {
+namespace Tracker.Api.Managers;
 
-    public interface IUserManager {
+public interface IUserManager {
 
-        Task DeleteAsync(int id);
+    Task DeleteAsync(int id);
 
-        Task ForgotPasswordAsync(ForgotPasswordRequest request, string origin);
+    Task ForgotPasswordAsync(ForgotPasswordRequest request, string origin);
 
-        Task<IEnumerable<UserResponse>> GetAllAsync();
+    Task<IEnumerable<UserResponse>> GetAllAsync();
 
-        Task<UserResponse> GetByIdAsync(int id);
+    Task<UserResponse> GetByIdAsync(int id);
 
-        Task RegisterAsync(RegistrationRequest request, string origin);
+    Task RegisterAsync(RegistrationRequest request, string origin);
 
-        Task ResetPasswordAsync(ResetPasswordRequest request);
+    Task ResetPasswordAsync(ResetPasswordRequest request);
 
-        Task<UserResponse> UpdateAsync(int id, UpdateRequest request);
+    Task<UserResponse> UpdateAsync(int id, UpdateRequest request);
 
-        Task VerifyEmailAsync(string token);
-
-    }
+    Task VerifyEmailAsync(string token);
 
 }

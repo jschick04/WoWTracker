@@ -1,19 +1,15 @@
-﻿using System.Collections.Generic;
+﻿namespace Tracker.Library.Helpers;
 
-namespace Tracker.Library.Helpers {
+public interface IResult {
 
-    public interface IResult {
+    List<string>? Messages { get; set; }
 
-        List<string> Messages { get; set; }
+    bool Succeeded { get; set; }
 
-        bool Succeeded { get; set; }
+}
 
-    }
+public interface IResult<out T> : IResult {
 
-    public interface IResult<out T> : IResult {
-
-        T Data { get; }
-
-    }
+    T? Data { get; }
 
 }

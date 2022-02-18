@@ -1,15 +1,13 @@
-﻿namespace Tracker.Api.Settings {
+﻿namespace Tracker.Api.Settings;
 
-    public class JwtSettings {
+public class JwtSettings {
 
-        public string Secret { get; set; }
+    public string Secret { get; set; } = null!;
 
-        public int TokenLifetimeMinutes { get; set; }
+    public int TokenLifetimeMinutes { get; set; }
 
-        public int RefreshTokenLifetimeDays { get; set; }
+    public int RefreshTokenLifetimeDays { get; set; }
 
-        public int RefreshTokenHistoryDays { get; set; }
-
-    }
+    public int RefreshTokenHistoryDays { get; set; }
 
 }

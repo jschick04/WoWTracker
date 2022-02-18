@@ -13,86 +13,82 @@ Post-Deployment Script Template
 IF NOT EXISTS (SELECT * FROM dbo.Classes)
 BEGIN
     INSERT INTO dbo.Classes (Id, Name)
-    VALUES
-    (1, N'Warrior'),
-    (2, N'Paladin'),
-    (3, N'Hunter'),
-    (4, N'Rogue'),
-    (5, N'Priest'),
-    (6, N'Shaman'),
-    (7, N'Mage'),
-    (8, N'Warlock'),
-    (9, N'Monk'),
-    (10, N'Druid'),
-    (11, N'Demon Hunter'),
-    (12, N'Death Knight');
+    VALUES (1, N'Warrior'),
+           (2, N'Paladin'),
+           (3, N'Hunter'),
+           (4, N'Rogue'),
+           (5, N'Priest'),
+           (6, N'Shaman'),
+           (7, N'Mage'),
+           (8, N'Warlock'),
+           (9, N'Monk'),
+           (10, N'Druid'),
+           (11, N'Demon Hunter'),
+           (12, N'Death Knight');
 END;
 
 IF NOT EXISTS (SELECT * FROM dbo.Specs)
 BEGIN
     INSERT INTO dbo.Specs (Id, Name, ClassId, HasOffhand)
-    VALUES
-    (1, N'Arms', 1, 0),
-    (2, N'Fury', 1, 1),
-    (3, N'Protection', 1, 0),
-    (4, N'Holy', 2, 0),
-    (5, N'Protection', 2, 0),
-    (6, N'Retribution', 2, 0),
-    (7, N'Beast Mastery', 3, 0),
-    (8, N'Marksmanship', 3, 0),
-    (9, N'Survival', 3, 0),
-    (10, N'Assassination', 4, 1),
-    (11, N'Outlaw', 4, 1),
-    (12, N'Subtlety', 4, 1),
-    (13, N'Discipline', 5, 0),
-    (14, N'Holy', 5, 0),
-    (15, N'Shadow', 5, 0),
-    (16, N'Elemental', 6, 0),
-    (17, N'Enhancement', 6, 1),
-    (18, N'Restoration', 6, 0),
-    (19, N'Arcane', 7, 0),
-    (20, N'Fire', 7, 0),
-    (21, N'Frost', 7, 0),
-    (22, N'Affliction', 8, 0),
-    (23, N'Demonology', 8, 0),
-    (24, N'Destruction', 8, 0),
-    (25, N'Brewmaster', 9, 0),
-    (26, N'Restoration', 9, 0),
-    (27, N'Wind Walker', 9, 1),
-    (28, N'Balance', 10, 0),
-    (29, N'Feral', 10, 0),
-    (30, N'Guardian', 10, 0),
-    (31, N'Restoration', 10, 0),
-    (32, N'Havoc', 11, 1),
-    (33, N'Vengeance', 11, 1),
-    (34, N'Blood', 12, 0),
-    (35, N'Frost', 12, 1),
-    (36, N'Unholy', 12, 0);
+    VALUES (1, N'Arms', 1, 0),
+           (2, N'Fury', 1, 1),
+           (3, N'Protection', 1, 0),
+           (4, N'Holy', 2, 0),
+           (5, N'Protection', 2, 0),
+           (6, N'Retribution', 2, 0),
+           (7, N'Beast Mastery', 3, 0),
+           (8, N'Marksmanship', 3, 0),
+           (9, N'Survival', 3, 0),
+           (10, N'Assassination', 4, 1),
+           (11, N'Outlaw', 4, 1),
+           (12, N'Subtlety', 4, 1),
+           (13, N'Discipline', 5, 0),
+           (14, N'Holy', 5, 0),
+           (15, N'Shadow', 5, 0),
+           (16, N'Elemental', 6, 0),
+           (17, N'Enhancement', 6, 1),
+           (18, N'Restoration', 6, 0),
+           (19, N'Arcane', 7, 0),
+           (20, N'Fire', 7, 0),
+           (21, N'Frost', 7, 0),
+           (22, N'Affliction', 8, 0),
+           (23, N'Demonology', 8, 0),
+           (24, N'Destruction', 8, 0),
+           (25, N'Brewmaster', 9, 0),
+           (26, N'Restoration', 9, 0),
+           (27, N'Wind Walker', 9, 1),
+           (28, N'Balance', 10, 0),
+           (29, N'Feral', 10, 0),
+           (30, N'Guardian', 10, 0),
+           (31, N'Restoration', 10, 0),
+           (32, N'Havoc', 11, 1),
+           (33, N'Vengeance', 11, 1),
+           (34, N'Blood', 12, 0),
+           (35, N'Frost', 12, 1),
+           (36, N'Unholy', 12, 0);
 END;
 
 IF NOT EXISTS (SELECT * FROM dbo.Professions)
 BEGIN
     INSERT INTO dbo.Professions (Id, Name)
-    VALUES
-    (1, N'Alchemy'),
-    (2, N'Blacksmithing'),
-    (3, N'Enchanting'),
-    (4, N'Engineering'),
-    (5, N'Inscription'),
-    (6, N'Jewelcrafting'),
-    (7, N'Leatherworking'),
-    (8, N'Tailoring');
+    VALUES (1, N'Alchemy'),
+           (2, N'Blacksmithing'),
+           (3, N'Enchanting'),
+           (4, N'Engineering'),
+           (5, N'Inscription'),
+           (6, N'Jewelcrafting'),
+           (7, N'Leatherworking'),
+           (8, N'Tailoring');
 END;
 
 IF NOT EXISTS (SELECT * FROM dbo.EquipmentSlots)
 BEGIN
     INSERT INTO dbo.EquipmentSlots (Id, Name)
-    VALUES
-    (1, N'Weapon'),
-    (2, N'Gem'),
-    (3, N'Ring'),
-    (4, N'Gloves'),
-    (5, N'Misc');
+    VALUES (1, N'Weapon'),
+           (2, N'Gem'),
+           (3, N'Ring'),
+           (4, N'Gloves'),
+           (5, N'Misc');
 END;
 
 IF NOT EXISTS (SELECT * FROM dbo.Items)
@@ -144,8 +140,7 @@ END;
 IF NOT EXISTS (SELECT * FROM dbo.Characters)
 BEGIN
     INSERT INTO dbo.Characters (UserId, Name, ClassId, FirstProfessionId, SecondProfessionId, HasCooking)
-    VALUES
-    (1, N'Moutagg', 9, 3, 1, 1),
-    (1, N'Mout', 1, 6, 2, 0),
-    (2, N'Dasaji', 10, 7, NULL, 0);
+    VALUES (1, N'Moutagg', 9, 3, 1, 1),
+           (1, N'Mout', 1, 6, 2, 0),
+           (2, N'Dasaji', 10, 7, NULL, 0);
 END;

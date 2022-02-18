@@ -1,78 +1,73 @@
-﻿using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
+﻿using System.Net.Http.Json;
 using Tracker.Api.Contracts.Identity.Responses;
 using Tracker.Api.Contracts.Routes;
 using Tracker.Api.Contracts.V1.Requests;
 using Tracker.Api.Contracts.V1.Responses;
 using Tracker.Library.Helpers;
 
-namespace Tracker.Library.Managers {
+namespace Tracker.Library.Managers;
 
-    public class CharacterManager : ICharacterManager {
+public class CharacterManager : ICharacterManager {
 
-        private readonly HttpClient _httpClient;
+    private readonly HttpClient _httpClient;
 
-        public CharacterManager(HttpClient httpClient) => _httpClient = httpClient;
+    public CharacterManager(HttpClient httpClient) => _httpClient = httpClient;
 
-        public async Task<IResult> CreateAsync(CreateCharacterRequest request) {
-            var response = await _httpClient.PostAsJsonAsync(ApiRoutes.Character.Create, request);
+    public async Task<IResult> CreateAsync(CreateCharacterRequest request) {
+        var response = await _httpClient.PostAsJsonAsync(ApiRoutes.Character.Create, request);
 
-            if (response.IsSuccessStatusCode) {
-                return await Result.SuccessAsync();
-            }
-
-            var message = await response.Content.ReadFromJsonAsync<ErrorResponse>();
-            return await Result.FailAsync(message?.Error);
+        if (response.IsSuccessStatusCode) {
+            return await Result.SuccessAsync();
         }
 
-        public async Task<IResult> DeleteAsync(int id) {
-            var response = await _httpClient.DeleteAsync(ApiRoutes.Character.DeleteReplace(id));
+        var message = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+        return await Result.FailAsync(message?.Error);
+    }
 
-            if (response.IsSuccessStatusCode) {
-                return await Result.SuccessAsync();
-            }
+    public async Task<IResult> DeleteAsync(int id) {
+        var response = await _httpClient.DeleteAsync(ApiRoutes.Character.DeleteReplace(id));
 
-            var message = await response.Content.ReadFromJsonAsync<ErrorResponse>();
-            return await Result.FailAsync(message?.Error);
+        if (response.IsSuccessStatusCode) {
+            return await Result.SuccessAsync();
         }
 
-        public async Task<Result<List<CharacterResponse>>> GetAllAsync() {
-            var response = await _httpClient.GetAsync(ApiRoutes.Character.GetAll);
+        var message = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+        return await Result.FailAsync(message?.Error);
+    }
 
-            if (response.IsSuccessStatusCode) {
-                var data = await response.Content.ReadFromJsonAsync<List<CharacterResponse>>();
-                return await Result<List<CharacterResponse>>.SuccessAsync(data);
-            }
+    public async Task<Result<List<CharacterResponse>>> GetAllAsync() {
+        var response = await _httpClient.GetAsync(ApiRoutes.Character.GetAll);
 
-            var message = await response.Content.ReadFromJsonAsync<ErrorResponse>();
-            return await Result<List<CharacterResponse>>.FailAsync(message?.Error);
+        if (response.IsSuccessStatusCode) {
+            var data = await response.Content.ReadFromJsonAsync<List<CharacterResponse>>();
+            return await Result<List<CharacterResponse>>.SuccessAsync(data);
         }
 
-        public async Task<Result<CharacterResponse>> GetByIdAsync(int id) {
-            var response = await _httpClient.GetAsync(ApiRoutes.Character.GetByIdReplace(id));
+        var message = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+        return await Result<List<CharacterResponse>>.FailAsync(message?.Error);
+    }
 
-            if (response.IsSuccessStatusCode) {
-                var data = await response.Content.ReadFromJsonAsync<CharacterResponse>();
-                return await Result<CharacterResponse>.SuccessAsync(data);
-            }
+    public async Task<Result<CharacterResponse>> GetByIdAsync(int id) {
+        var response = await _httpClient.GetAsync(ApiRoutes.Character.GetByIdReplace(id));
 
-            var message = await response.Content.ReadFromJsonAsync<ErrorResponse>();
-            return await Result<CharacterResponse>.FailAsync(message?.Error);
+        if (response.IsSuccessStatusCode) {
+            var data = await response.Content.ReadFromJsonAsync<CharacterResponse>();
+            return await Result<CharacterResponse>.SuccessAsync(data);
         }
 
-        public async Task<IResult> UpdateAsync(int id, UpdateCharacterRequest request) {
-            var response = await _httpClient.PutAsJsonAsync(ApiRoutes.Character.UpdateReplace(id), request);
+        var message = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+        return await Result<CharacterResponse>.FailAsync(message?.Error);
+    }
 
-            if (response.IsSuccessStatusCode) {
-                return await Result.SuccessAsync();
-            }
+    public async Task<IResult> UpdateAsync(int id, UpdateCharacterRequest request) {
+        var response = await _httpClient.PutAsJsonAsync(ApiRoutes.Character.UpdateReplace(id), request);
 
-            var message = await response.Content.ReadFromJsonAsync<ErrorResponse>();
-            return await Result.FailAsync(message?.Error);
+        if (response.IsSuccessStatusCode) {
+            return await Result.SuccessAsync();
         }
 
+        var message = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+        return await Result.FailAsync(message?.Error);
     }
 
 }

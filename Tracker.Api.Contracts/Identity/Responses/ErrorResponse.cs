@@ -1,9 +1,7 @@
-﻿namespace Tracker.Api.Contracts.Identity.Responses {
+﻿namespace Tracker.Api.Contracts.Identity.Responses;
 
-    public class ErrorResponse {
+public class ErrorResponse {
 
-        public string Error { get; set; }
-
-    }
+    public string? Error { get; set; }
 
 }

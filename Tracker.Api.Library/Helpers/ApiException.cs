@@ -1,17 +1,14 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 
-namespace Tracker.Api.Library.Helpers {
+namespace Tracker.Api.Library.Helpers;
 
-    public class ApiException : Exception {
+public class ApiException : Exception {
 
-        public ApiException() { }
+    public ApiException() { }
 
-        public ApiException(string message) : base(message) { }
+    public ApiException(string message) : base(message) { }
 
-        public ApiException(string message, params object[] args) :
-            base(string.Format(CultureInfo.CurrentCulture, message, args)) { }
-
-    }
+    public ApiException(string message, params object[] args) :
+        base(string.Format(CultureInfo.CurrentCulture, message, args)) { }
 
 }

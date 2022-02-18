@@ -1,26 +1,23 @@
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Tracker.Client.Helpers;
 
-namespace Tracker.Client {
+namespace Tracker.Client;
 
-    public class Program {
+public class Program {
 
-        public static async Task Main(string[] args) {
-            var builder = WebAssemblyHostBuilder.CreateDefault(args);
-            builder.RootComponents.Add<App>("#app");
+    public static async Task Main(string[] args) {
+        var builder = WebAssemblyHostBuilder.CreateDefault(args);
+        builder.RootComponents.Add<App>("#app");
 
-            builder.AddHandlers();
-            builder.AddApiHttpClient();
+        builder.AddHandlers();
+        builder.AddApiHttpClient();
 
-            builder.AddServices();
-            builder.AddManagers();
+        builder.AddServices();
+        builder.AddManagers();
 
-            builder.AddBlazorComponents();
+        builder.AddBlazorComponents();
 
-            await builder.Build().RunAsync();
-        }
-
+        await builder.Build().RunAsync();
     }
 
 }

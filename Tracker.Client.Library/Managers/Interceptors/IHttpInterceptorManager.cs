@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Toolbelt.Blazor;
+﻿using Toolbelt.Blazor;
 
 namespace Tracker.Client.Library.Managers.Interceptors {
 
@@ -7,7 +6,7 @@ namespace Tracker.Client.Library.Managers.Interceptors {
 
         void DisposeEvent();
 
-        void InterceptAfterHttp(object sender, HttpClientInterceptorEventArgs e);
+        void InterceptAfterHttp(object? sender, HttpClientInterceptorEventArgs e);
 
         Task InterceptBeforeHttpAsync(object sender, HttpClientInterceptorEventArgs e);
 

@@ -1,43 +1,39 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
-using MudBlazor;
+﻿using Microsoft.AspNetCore.Components;
 
-namespace Tracker.Client.Shared.Dialogs.Characters {
+namespace Tracker.Client.Shared.Dialogs.Characters;
 
-    public partial class Delete {
+public partial class Delete {
 
-        private bool _isLoading;
+    private bool _isLoading;
 
-        [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
+    [CascadingParameter] private MudDialogInstance MudDialog { get; set; } = null!;
 
-        [Parameter] public string ContextText { get; set; }
+    [Parameter] public string ContextText { get; set; } = null!;
 
-        [Parameter] public string ButtonText { get; set; }
+    [Parameter] public string ButtonText { get; set; } = null!;
 
-        [Parameter] public Color Color { get; set; }
+    [Parameter] public Color Color { get; set; }
 
-        [Parameter] public int Id { get; set; }
+    [Parameter] public int Id { get; set; }
 
-        private void Cancel() => MudDialog.Cancel();
+    private void Cancel() => MudDialog.Cancel();
 
-        private async Task Submit() {
-            _isLoading = true;
+    private async Task Submit() {
+        _isLoading = true;
 
-            var response = await _characterManager.DeleteAsync(Id);
+        var response = await _characterManager.DeleteAsync(Id);
 
-            _isLoading = false;
+        _isLoading = false;
 
-            if (response.Succeeded) {
-                _snackbar.Add("Deletion Successful", Severity.Success);
-            } else {
-                foreach (var message in response.Messages) {
-                    _snackbar.Add(message, Severity.Error);
-                }
+        if (response.Succeeded) {
+            _snackbar.Add("Deletion Successful", Severity.Success);
+        } else {
+            foreach (var message in response.Messages) {
+                _snackbar.Add(message, Severity.Error);
             }
-
-            MudDialog.Close(DialogResult.Ok(true));
         }
 
+        MudDialog.Close(DialogResult.Ok(true));
     }
 
 }

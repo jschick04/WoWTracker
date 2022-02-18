@@ -1,13 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Tracker.Api.Contracts.Identity.Requests {
+namespace Tracker.Api.Contracts.Identity.Requests;
 
-    public class ForgotPasswordRequest {
+public class ForgotPasswordRequest {
 
-        [Required]
-        [EmailAddress]
-        public string Username { get; set; }
-
-    }
+    [Required]
+    [EmailAddress]
+    public string Username { get; set; } = null!;
 
 }

@@ -1,23 +1,19 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
 using Tracker.Api.Services.Extensions;
 
-namespace Tracker.Api {
+namespace Tracker.Api;
 
-    public class Program {
+public class Program {
 
-        public static void Main(string[] args) {
-            CreateHostBuilder(args).Build().Run();
-        }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(
-                    webBuilder => {
-                        webBuilder.UseStartup<Startup>();
-                    }
-                ).UseSerilog();
-
+    public static void Main(string[] args) {
+        CreateHostBuilder(args).Build().Run();
     }
+
+    public static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(
+                webBuilder => {
+                    webBuilder.UseStartup<Startup>();
+                }
+            ).UseSerilog();
 
 }

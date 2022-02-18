@@ -1,9 +1,7 @@
-﻿namespace Tracker.Api.Library.Models {
+﻿namespace Tracker.Api.Library.Models;
 
-    public class ProfessionModel {
+public class ProfessionModel {
 
-        public string Name { get; set; }
-
-    }
+    public string Name { get; set; } = null!;
 
 }

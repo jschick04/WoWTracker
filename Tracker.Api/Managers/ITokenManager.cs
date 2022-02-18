@@ -1,21 +1,19 @@
 ﻿using Tracker.Api.Entities;
 
-namespace Tracker.Api.Managers {
+namespace Tracker.Api.Managers;
 
-    public interface ITokenManager {
+public interface ITokenManager {
 
-        string GenerateEmailToken(string username);
+    string GenerateEmailToken(string username);
 
-        string GenerateJwtToken(User user);
+    string GenerateJwtToken(User user);
 
-        RefreshToken GenerateRefreshToken(string ipAddress);
+    RefreshToken GenerateRefreshToken(string? ipAddress);
 
-        bool GetUserId(string token, out int id);
+    bool GetUserId(string token, out int id);
 
-        bool IsAdminClaim(string token);
+    bool IsAdminClaim(string token);
 
-        void RemoveOldRefreshTokens(User user);
-
-    }
+    void RemoveOldRefreshTokens(User user);
 
 }

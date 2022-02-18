@@ -4,14 +4,13 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT
-        Id,
-        UserId,
-        Name,
-        ClassId,
-        FirstProfessionId,
-        SecondProfessionId,
-        HasCooking
+    SELECT Id,
+           UserId,
+           Name,
+           ClassId,
+           FirstProfessionId,
+           SecondProfessionId,
+           HasCooking
     FROM dbo.Characters
     WHERE UserId = @userId;
 END;

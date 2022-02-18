@@ -1,18 +1,13 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Tracker.Api.Library.DataAccess;
+﻿using Tracker.Api.Library.DataAccess;
 
-namespace Tracker.Api.Services {
+namespace Tracker.Api.Services;
 
-    public class WowService : IServiceInstaller {
+public class WowService : IServiceInstaller {
 
-        public void InstallService(IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env) {
-            services.AddTransient<ICharacterData, CharacterData>();
-            services.AddTransient<IItemData, ItemData>();
-            services.AddTransient<IProfessionData, ProfessionData>();
-        }
-
+    public void InstallService(IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env) {
+        services.AddTransient<ICharacterData, CharacterData>();
+        services.AddTransient<IItemData, ItemData>();
+        services.AddTransient<IProfessionData, ProfessionData>();
     }
 
 }

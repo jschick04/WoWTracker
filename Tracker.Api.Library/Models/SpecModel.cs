@@ -1,9 +1,7 @@
-﻿namespace Tracker.Api.Library.Models {
+﻿namespace Tracker.Api.Library.Models;
 
-    public class SpecModel {
+public class SpecModel {
 
-        public string Name { get; set; }
-
-    }
+    public string Name { get; set; } = null!;
 
 }

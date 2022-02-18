@@ -11,8 +11,7 @@ BEGIN
     SET NOCOUNT ON;
 
     UPDATE dbo.Characters
-    SET
-        Name = @name,
+    SET Name = @name,
         ClassId = @classId,
         FirstProfessionId = @firstProfessionId,
         SecondProfessionId = @secondProfessionId,

@@ -1,13 +1,7 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿namespace Tracker.Api.Services;
 
-namespace Tracker.Api.Services {
+public interface IServiceInstaller {
 
-    public interface IServiceInstaller {
-
-        void InstallService(IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env);
-
-    }
+    void InstallService(IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env);
 
 }
