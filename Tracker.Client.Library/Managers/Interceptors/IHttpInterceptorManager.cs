@@ -6,8 +6,6 @@ namespace Tracker.Client.Library.Managers.Interceptors {
 
         void DisposeEvent();
 
-        void InterceptAfterHttp(object? sender, HttpClientInterceptorEventArgs e);
-
         Task InterceptBeforeHttpAsync(object sender, HttpClientInterceptorEventArgs e);
 
         void RegisterEvent();

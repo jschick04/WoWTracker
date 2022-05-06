@@ -1,24 +1,26 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.Modal;
+using Blazored.Modal.Services;
+using Microsoft.AspNetCore.Components;
 
 namespace Tracker.Client.Shared.Dialogs;
 
 public partial class Logout {
 
-    [CascadingParameter] private MudDialogInstance MudDialog { get; set; } = null!;
+    [Parameter] public string ButtonText { get; set; } = null!;
 
     [Parameter] public string ContextText { get; set; } = null!;
 
-    [Parameter] public string ButtonText { get; set; } = null!;
+    [CascadingParameter] private BlazoredModalInstance Modal { get; set; } = null!;
 
-    [Parameter] public Color Color { get; set; }
-
-    private void Cancel() => MudDialog.Cancel();
+    private void Cancel() => Modal.CancelAsync();
 
     private async Task Submit() {
-        await _authenticationManager.Logout();
-        _navigationManager.NavigateTo("/");
+        await AuthenticationManager.Logout();
 
-        MudDialog.Close(DialogResult.Ok(true));
+        ToastService.ShowSuccess("You are now logged out");
+        NavigationManager.NavigateTo("/");
+
+        await Modal.CloseAsync(ModalResult.Ok(true));
     }
 
 }

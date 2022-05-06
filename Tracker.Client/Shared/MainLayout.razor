@@ -1,60 +1,26 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider Theme="_currentTheme" />
-<MudDialogProvider />
-<MudSnackbarProvider />
+@inject IJSRuntime Js;
 
-<AuthorizeView>
-    <NotAuthorized>
+<main class="@(_isDarkMode ? "darkmode" : "")">
+    <CascadingValue Value="_isDarkMode">
 
-        <MudLayout>
+        <HeaderMenu @bind-DrawerOpen="_drawerOpen" />
 
-            <MudAppBar Elevation="1" Dense="true" Fixed="false">
-                <MudGrid Spacing="1">
-                    <MudText Typo="Typo.h5" Class="align-self-center ml-3">WoW Tracker</MudText>
-                    <MudSpacer />
-                    <MudItem>
-                        <MudButton Link="/login" Variant="Variant.Filled" Color="Color.Primary">Log In</MudButton>
-                    </MudItem>
-                    <MudItem>
-                        <MudButton Link="/register" Variant="Variant.Filled" Color="Color.Tertiary">Sign Up</MudButton>
-                    </MudItem>
-                </MudGrid>
-            </MudAppBar>
+        <div class="wrapper">
 
-            <MudMainContent Style="height: calc(100vh - 48px);" Class="pt-0">
+            <AuthorizeView>
+                <Authorized>
+
+                    <NavMenu DrawerOpen="_drawerOpen" />
+
+                </Authorized>
+            </AuthorizeView>
+
+            <article class="content">
+                <div id="scroll-bar"></div>
                 @Body
-            </MudMainContent>
-
-        </MudLayout>
-
-    </NotAuthorized>
-    <Authorized>
-
-        <MudLayout>
-
-            <MudAppBar Elevation="1" Dense="true">
-
-                <MudGrid>
-                    <MudIconButton Icon="@Icons.Material.Filled.Menu" Edge="Edge.Start" OnClick="@DrawerToggle" />
-                    <MudText Typo="Typo.h5" Class="align-self-center ml-3">WoW Tracker</MudText>
-                    <MudSpacer />
-                    <MudItem>
-                        <MudButton OnClick="@Logout" Variant="Variant.Filled" Color="Color.Tertiary">Log Out</MudButton>
-                    </MudItem>
-                </MudGrid>
-
-            </MudAppBar>
-
-            <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
-                <NavMenu />
-            </MudDrawer>
-
-            <MudMainContent Style="height: calc(100vh - 48px);">
-                @Body
-            </MudMainContent>
-
-        </MudLayout>
-
-    </Authorized>
-</AuthorizeView>
+            </article>
+        </div>
+    </CascadingValue>
+</main>

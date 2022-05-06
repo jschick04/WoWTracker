@@ -1,34 +1,28 @@
 ﻿using Tracker.Api.Contracts.Identity.Requests;
-using Tracker.Client.Shared.Base;
+using Tracker.Client.Helpers;
 using Tracker.Library.Helpers;
 
 namespace Tracker.Client.Pages.Account;
 
-public partial class ResetPassword : PasswordForm {
+public partial class ResetPassword {
 
     private readonly ResetPasswordRequest _request = new();
 
     protected override void OnInitialized() {
-        _request.Token = _navigationManager.QueryString("token");
+        _request.Token = NavigationManager.QueryString("token") ?? string.Empty;
 
         if (!string.IsNullOrWhiteSpace(_request.Token)) { return; }
 
-        _snackbar.Add("Invalid Token", Severity.Error);
-        _navigationManager.NavigateTo("/");
+        ToastService.ShowError("Invalid Token");
+        NavigationManager.NavigateTo("/");
     }
 
     private async Task SubmitAsync() {
-        var result = await _userManager.ResetPasswordAsync(_request);
+        var result = await UserManager.ResetPasswordAsync(_request);
 
-        if (result.Succeeded) {
-            _snackbar.Add("Password request has been sent", Severity.Success);
-        } else {
-            foreach (var message in result.Messages) {
-                _snackbar.Add(message, Severity.Error);
-            }
-        }
+        result.ToastMessage(ToastService);
 
-        _navigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo("/");
     }
 
 }

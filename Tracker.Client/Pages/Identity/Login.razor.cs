@@ -1,33 +1,34 @@
 ﻿using Tracker.Api.Contracts.Identity.Requests;
-using Tracker.Client.Shared.Base;
+using Tracker.Client.Helpers;
 
 namespace Tracker.Client.Pages.Identity;
 
-public partial class Login : PasswordForm {
+public partial class Login {
 
     private readonly AuthenticationRequest _request = new();
 
-    protected override async Task OnInitializedAsync() {
-        await _stateProvider.GetAuthenticationStateAsync();
+    private bool _isLoading;
 
-        if (!_stateProvider.IsAnonymous) {
-            _navigationManager.NavigateTo("/");
+    protected override async Task OnInitializedAsync() {
+        await StateProvider.GetAuthenticationStateAsync();
+
+        if (!StateProvider.IsAnonymous) {
+            NavigationManager.NavigateTo("/");
         }
     }
 
     private async Task SubmitAsync() {
-        isLoading = true;
+        _isLoading = true;
 
-        var result = await _authenticationManager.Login(_request);
+        var result = await AuthenticationManager.Login(_request);
 
-        isLoading = false;
+        _isLoading = false;
 
         if (result.Succeeded) {
-            _navigationManager.NavigateTo("/");
+            ToastService.ShowSuccess("You are now logged in");
+            NavigationManager.NavigateTo("/");
         } else {
-            foreach (var message in result.Messages) {
-                _snackbar.Add(message, Severity.Error);
-            }
+            result.ToastError(ToastService);
         }
     }
 

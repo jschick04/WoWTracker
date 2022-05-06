@@ -1,22 +1,56 @@
-﻿<MudNavMenu Class="mud-width-full">
+﻿<nav id="sidebar" data-toggle="@DrawerOpen.ToString()">
+    <ul>
 
-    <MudNavLink Href="/" Icon="@Icons.Filled.Home">Home</MudNavLink>
+        <li>
+            <NavLink class="nav-links" href="/" Match="@NavLinkMatch.All">
+                <i class="fa-solid fa-house"></i>Home
+            </NavLink>
+        </li>
 
-    <MudDivider />
+        <li>
+            <NavLink class="nav-links" href="/verifyauth">
+                <i class="fa-solid fa-cloud-question"></i>Verify
+            </NavLink>
+        </li>
 
-    <MudNavLink Href="/verifyauth" Icon="@Icons.Filled.Dashboard">Test Page</MudNavLink>
+        <li>
+            <a class="nav-links" @onclick="ToggleDropdown">
+                <i class="fa-solid fa-users"></i>
+                Characters <span class="fa-solid fa-caret-down" data-rotate="@_dropdownActive.ToString()"></span>
+            </a>
 
-    <MudNavGroup Title="Characters" Icon="@Icons.Filled.People" Expanded="true">
-        @if (_isLoading) {
-            <MudText Align="Align.Center">Loading...</MudText>
-        } else {
-            @foreach (var character in Characters) {
-                <MudNavLink @onclick="@(() => LoadCharacter(character.Id))" Icon="@Icons.Filled.PeopleOutline">
-                    @character.Name
-                </MudNavLink>
-            }
-        }
-        <MudNavLink @onclick="@(() => CreateCharacter())" Icon="@Icons.Filled.Add" IconColor="Color.Primary">Create Character</MudNavLink>
-    </MudNavGroup>
+            <ul class="submenu" aria-expanded="@_dropdownActive.ToString()">
 
-</MudNavMenu>
+                @if (_isLoading) {
+                    <li>
+                        <NavLink class="nav-links">
+                            <i class="fa-solid fa-spinner-third fa-spin"></i>Loading...
+                        </NavLink>
+                    </li>
+                } else if (Characters.Count > 0) {
+                    @foreach (var character in Characters) {
+                        <li>
+                            <NavLink class="nav-links" @onclick="@(() => LoadCharacter(character.Id))">
+                                <i class="fa-regular fa-user"></i>@character.Name
+                            </NavLink>
+                        </li>
+                    }
+                }
+
+                <li>
+                    <NavLink class="nav-links" @onclick="CreateCharacter">
+                        <i class="fa-solid fa-plus"></i>Create Character
+                    </NavLink>
+                </li>
+            </ul>
+
+        </li>
+
+        <li>
+            <NavLink class="nav-links" href="#">
+                <i class="fa-solid fa-gear"></i>Settings
+            </NavLink>
+        </li>
+
+    </ul>
+</nav>

@@ -13,7 +13,13 @@ public class UserManager : IUserManager {
     public UserManager(HttpClient httpClient) => _httpClient = httpClient;
 
     public async Task<IResult> ForgotPasswordAsync(ForgotPasswordRequest request) {
-        var response = await _httpClient.PostAsJsonAsync(ApiRoutes.Account.ForgotPassword, request);
+        HttpResponseMessage response;
+
+        try {
+            response = await _httpClient.PostAsJsonAsync(ApiRoutes.Account.ForgotPassword, request);
+        } catch (Exception ex) {
+            return await Result.FailAsync(ex.Message);
+        }
 
         if (response.IsSuccessStatusCode) {
             return await Result.SuccessAsync(await response.Content.ReadAsStringAsync());
@@ -24,7 +30,13 @@ public class UserManager : IUserManager {
     }
 
     public async Task<Result<UserResponse>> GetAsync(int id) {
-        var response = await _httpClient.GetAsync(ApiRoutes.Account.GetByIdReplace(id));
+        HttpResponseMessage response;
+
+        try {
+            response = await _httpClient.GetAsync(ApiRoutes.Account.GetByIdReplace(id));
+        } catch (Exception ex) {
+            return await Result<UserResponse>.FailAsync(ex.Message);
+        }
 
         if (response.IsSuccessStatusCode) {
             return await Result<UserResponse>.SuccessAsync(
@@ -37,7 +49,13 @@ public class UserManager : IUserManager {
     }
 
     public async Task<IResult> RegisterAsync(RegistrationRequest request) {
-        var response = await _httpClient.PostAsJsonAsync(ApiRoutes.Identity.Register, request);
+        HttpResponseMessage response;
+
+        try {
+            response = await _httpClient.PostAsJsonAsync(ApiRoutes.Identity.Register, request);
+        } catch (Exception ex) {
+            return await Result.FailAsync(ex.Message);
+        }
 
         if (response.IsSuccessStatusCode) {
             return await Result.SuccessAsync(await response.Content.ReadAsStringAsync());
@@ -48,7 +66,13 @@ public class UserManager : IUserManager {
     }
 
     public async Task<IResult> ResetPasswordAsync(ResetPasswordRequest request) {
-        var response = await _httpClient.PostAsJsonAsync(ApiRoutes.Account.ResetPassword, request);
+        HttpResponseMessage response;
+
+        try {
+            response = await _httpClient.PostAsJsonAsync(ApiRoutes.Account.ResetPassword, request);
+        } catch (Exception ex) {
+            return await Result.FailAsync(ex.Message);
+        }
 
         if (response.IsSuccessStatusCode) {
             return await Result.SuccessAsync(await response.Content.ReadAsStringAsync());

@@ -3,7 +3,17 @@ using System.Text.Json.Serialization;
 
 namespace Tracker.Library.Helpers;
 
-internal static class ResultExtensions {
+public static class ResultExtensions {
+
+    public static bool GetDataIfSuccess<T>(this Result<T> result, ref T data) {
+        if (result.Succeeded is false) { return false; }
+
+        if (result.Data is null) { return false; }
+
+        data = result.Data;
+
+        return true;
+    }
 
     internal static async Task<IResult<T>> ToResult<T>(this HttpResponseMessage response) {
         var responseAsString = await response.Content.ReadAsStringAsync();

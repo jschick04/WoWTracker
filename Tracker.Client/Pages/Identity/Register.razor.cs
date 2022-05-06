@@ -1,29 +1,23 @@
 ﻿using Tracker.Api.Contracts.Identity.Requests;
-using Tracker.Client.Shared.Base;
+using Tracker.Client.Helpers;
 
 namespace Tracker.Client.Pages.Identity;
 
-public partial class Register : PasswordForm {
+public partial class Register {
 
     private readonly RegistrationRequest _request = new();
+    private bool _isLoading;
 
     private async Task SubmitAsync() {
-        isLoading = true;
+        _isLoading = true;
 
-        var result = await _userManager.RegisterAsync(_request);
+        var result = await UserManager.RegisterAsync(_request);
+        result.ToastMessage(ToastService);
 
-        isLoading = false;
+        _isLoading = false;
 
         if (result.Succeeded) {
-            foreach (var message in result.Messages) {
-                _snackbar.Add(message, Severity.Info);
-            }
-
-            _navigationManager.NavigateTo("/");
-        } else {
-            foreach (var message in result.Messages) {
-                _snackbar.Add(message, Severity.Error);
-            }
+            NavigationManager.NavigateTo("/");
         }
     }
 

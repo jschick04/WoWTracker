@@ -5,11 +5,11 @@ namespace Tracker.Api.Contracts.Identity.Requests;
 
 public class AuthenticationRequest {
 
-    [Required]
+    [Required(ErrorMessage = "Username is required")]
     [EmailAddress]
     public string Username { get; set; } = null!;
 
-    [Required]
+    [Required(ErrorMessage = "Password is required")]
     [Password]
     [DataType(DataType.Password)]
     public string Password { get; set; } = null!;

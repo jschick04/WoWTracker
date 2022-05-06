@@ -1,6 +1,11 @@
 ﻿@using System.Net.Http
 @using System.Net.Http.Json
 @using Blazored.LocalStorage
+@using Blazored.Modal
+@using Blazored.Modal.Services
+@using Blazored.Toast
+@using Blazored.Toast.Services
+@using Blazored.Toast.Configuration
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.Forms
@@ -11,37 +16,37 @@
 @using Microsoft.Extensions.Logging
 @using Microsoft.JSInterop
 
-@using MudBlazor
-
 @using Tracker.Client
+@using Tracker.Client.Helpers
 @using Tracker.Client.Library.Managers.Authentication
 @using Tracker.Client.Library.Managers.Interceptors
 @using Tracker.Client.Library.Managers.StateProviders
 @using Tracker.Client.Pages.Identity
 @using Tracker.Client.Shared
-@using Tracker.Client.Shared.Base
+@using Tracker.Client.Shared.Components
 @using Tracker.Library.Constants.Storage
 @using Tracker.Library.Helpers
 @using Tracker.Library.Managers
 
+@using Tracker.Api.Contracts.Identity.Requests
 @using Tracker.Api.Contracts.Identity.Responses
 @using Tracker.Api.Contracts.Routes
 @using Tracker.Api.Contracts.V1.Responses
 
 @attribute [Authorize]
 
-@inject ICharacterManager _characterManager 
+@inject ICharacterManager CharacterManager
 
-@inject ApplicationStateProvider _appStateProvider
-@inject IAuthenticationManager _authenticationManager
-@inject HttpClient _httpClient
-@inject IHttpInterceptorManager _interceptor
-@inject ILocalStorageService _localStorage
-@inject NavigationManager _navigationManager
-@inject ApiAuthenticationStateProvider _stateProvider
-@inject IUserManager _userManager
+@inject ApplicationStateProvider AppStateProvider
+@inject IAuthenticationManager AuthenticationManager
+@inject HttpClient HttpClient
+@inject IHttpInterceptorManager Interceptor
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager NavigationManager
+@inject ApiAuthenticationStateProvider StateProvider
+@inject IUserManager UserManager
 
-@inject ILoggerFactory _loggerFactory 
+@inject ILoggerFactory LoggerFactory
 
-@inject IDialogService _dialogService
-@inject ISnackbar _snackbar
+@inject IModalService DialogService
+@inject IToastService ToastService

@@ -1,8 +1,8 @@
 ﻿using Blazored.LocalStorage;
+using Blazored.Modal;
+using Blazored.Toast;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using MudBlazor;
-using MudBlazor.Services;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 using Tracker.Client.Library.Handlers;
 using Tracker.Client.Library.Managers.Authentication;
@@ -17,7 +17,7 @@ public static class WebAssemblyHostBuilderExtensions {
     public static void AddApiHttpClient(this WebAssemblyHostBuilder builder) {
         builder.Services.AddHttpClient(
             "TrackerApi",
-            client => client.BaseAddress = new Uri(builder.Configuration["Api"])
+            client => client.BaseAddress = new Uri(builder.Configuration["Api"]!)
         ).AddHttpMessageHandler<AuthenticationHeaderHandler>();
 
         builder.Services.AddScoped(
@@ -31,17 +31,19 @@ public static class WebAssemblyHostBuilderExtensions {
 
     public static void AddBlazorComponents(this WebAssemblyHostBuilder builder) {
         builder.Services.AddBlazoredLocalStorage();
+        builder.Services.AddBlazoredModal();
+        builder.Services.AddBlazoredToast();
 
-        builder.Services.AddMudServices(
-            config => {
-                config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight;
+        //builder.Services.AddMudServices(
+        //    config => {
+        //        config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight;
 
-                config.SnackbarConfiguration.ShowCloseIcon = false;
-                config.SnackbarConfiguration.HideTransitionDuration = 100;
-                config.SnackbarConfiguration.ShowTransitionDuration = 100;
-                config.SnackbarConfiguration.VisibleStateDuration = 3000;
-            }
-        );
+        //        config.SnackbarConfiguration.ShowCloseIcon = false;
+        //        config.SnackbarConfiguration.HideTransitionDuration = 100;
+        //        config.SnackbarConfiguration.ShowTransitionDuration = 100;
+        //        config.SnackbarConfiguration.VisibleStateDuration = 3000;
+        //    }
+        //);
     }
 
     public static void AddHandlers(this WebAssemblyHostBuilder builder) {

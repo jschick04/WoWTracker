@@ -1,60 +1,41 @@
 ﻿@page "/login"
 
-@inherits PasswordForm
-
 @attribute [AllowAnonymous]
 
-<MudContainer MaxWidth="MaxWidth.Small" Class="d-flex align-center" Style="height: 100%">
-    <MudPaper Elevation="10" Class="pa-8 ma-2" Style="width: 100%">
+<div class="identity-page">
+    <div class="identity-border">
 
-        <MudGrid Justify="Justify.Center"  Style="display: block">
+        <EditForm Model="_request" OnValidSubmit="@SubmitAsync">
 
-            <EditForm Model="_request" OnValidSubmit="@SubmitAsync">
+            <div class="form-section-header">Login</div>
 
-                <MudItem xs="12" Class="pa-1 d-flex justify-center">
-                    <MudText Typo="Typo.h4">Login</MudText>
-                </MudItem>
+            <DataAnnotationsValidator />
 
-                <DataAnnotationsValidator />
+            <div>Welcome Back</div>
 
-                <MudItem xs="12" Class="pa-1 d-flex justify-center">
-                    <MudText>Welcome Back</MudText>
-                </MudItem>
+            <ValidationMessage For="() => _request.Username" />
+            <FloatingInput Label="Username" @bind-Value="_request.Username" />
 
-                <MudItem xs="12" Class="pa-1">
-                    <MudTextField Label="Username" Variant="Variant.Outlined" @bind-Value="_request.Username" For="@(() => _request.Username)" />
-                </MudItem>
+            <ValidationMessage For="() => _request.Password" />
+            <FloatingPassword Label="Password" @bind-Value="_request.Password" />
 
-                <MudItem xs="12" Class="pa-1">
-                    <MudTextField Label="Password" Variant="Variant.Outlined" @bind-Value="_request.Password" For="@(() => _request.Password)"
-                        InputType="@passwordInput" Adornment="Adornment.End" AdornmentIcon="@passwordIcon"
-                        OnAdornmentClick="@TogglePasswordVisibility" />
-                </MudItem>
+            <div class="form-row-container">
+                <label for="remember"><input type="checkbox" id="remember" /> Remember Me?</label>
 
-                <MudItem xs="12" Class="pa-1 d-flex justify-space-between align-center">
-                    <MudCheckBox T="bool" Label="Remember Me?" Color="Color.Primary" />
-                    <MudLink Href="/account/forgot">Forgot password?</MudLink>
-                </MudItem>
+                <a href="/account/forgot">Forgot Password?</a>
+            </div>
 
-                <MudItem xs="12" Class="pa-1 d-flex justify-center">
-                    @if (isLoading) {
-                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Disabled="true" Size="Size.Large" Style="width: 100%">
-                            <MudProgressCircular Color="Color.Tertiary" Size="Size.Small" Indeterminate="true" />
-                        </MudButton>
-                    } else {
-                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Tertiary" Size="Size.Large" Style="width: 100%">
-                            Sign In
-                        </MudButton>
-                    }
-                </MudItem>
+            <div>
+                @if (_isLoading) {
+                    <LoadingButton IsFullWidth="true" IsDisabled="true" />
+                } else {
+                    <button class="btn form-button-full" type="submit">Sign In</button>
+                }
+            </div>
 
-                <MudItem xs="12" Class="pa-1 d-flex justify-center">
-                    <MudText>Don't have an account? <MudLink Href="/register">Register Here</MudLink></MudText>
-                </MudItem>
+            <div>Don't have an account? <a href="/register">Register Here</a></div>
 
-            </EditForm>
+        </EditForm>
 
-        </MudGrid>
-
-    </MudPaper>
-</MudContainer>
+    </div>
+</div>

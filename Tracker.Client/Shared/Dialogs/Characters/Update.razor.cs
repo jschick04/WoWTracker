@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.Modal;
+using Blazored.Modal.Services;
+using Microsoft.AspNetCore.Components;
 using Tracker.Api.Contracts.V1.Requests;
 using Tracker.Api.Contracts.V1.Responses;
+using Tracker.Client.Helpers;
 
 namespace Tracker.Client.Shared.Dialogs.Characters;
 
@@ -14,9 +17,7 @@ public partial class Update {
 
     [Parameter] public CharacterResponse Character { get; set; } = null!;
 
-    [Parameter] public Color Color { get; set; }
-
-    [CascadingParameter] private MudDialogInstance MudDialog { get; set; } = null!;
+    [CascadingParameter] private BlazoredModalInstance Modal { get; set; } = null!;
 
     protected override void OnInitialized() {
         _request.Name = Character.Name;
@@ -26,26 +27,24 @@ public partial class Update {
         _request.HasCooking = Character.HasCooking;
     }
 
-    private void Cancel() => MudDialog.Cancel();
+    private void Cancel() => Modal.CancelAsync();
 
     private async Task Submit() {
         _isLoading = true;
 
-        var response = await _characterManager.UpdateAsync(Character.Id, _request);
+        var response = await CharacterManager.UpdateAsync(Character.Id, _request);
 
         if (response.Succeeded) {
-            await _appStateProvider.UpdateCharactersAsync();
+            await AppStateProvider.UpdateCharactersAsync();
 
             _isLoading = false;
 
-            _snackbar.Add("Creation Successful", Severity.Success);
+            ToastService.ShowSuccess($"{_request.Name} has been updated");
         } else {
-            foreach (var message in response.Messages) {
-                _snackbar.Add(message, Severity.Error);
-            }
+            response.ToastError(ToastService);
         }
 
-        MudDialog.Close(DialogResult.Ok(true));
+        await Modal.CloseAsync(ModalResult.Ok(true));
     }
 
 }

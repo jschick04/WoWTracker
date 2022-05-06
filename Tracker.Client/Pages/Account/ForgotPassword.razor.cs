@@ -1,4 +1,5 @@
 ﻿using Tracker.Api.Contracts.Identity.Requests;
+using Tracker.Client.Helpers;
 
 namespace Tracker.Client.Pages.Account;
 
@@ -7,17 +8,11 @@ public partial class ForgotPassword {
     private readonly ForgotPasswordRequest _request = new();
 
     private async Task SubmitAsync() {
-        var result = await _userManager.ForgotPasswordAsync(_request);
+        var result = await UserManager.ForgotPasswordAsync(_request);
 
-        if (result.Succeeded) {
-            _snackbar.Add("Password request has been sent", Severity.Success);
-        } else {
-            foreach (var message in result.Messages) {
-                _snackbar.Add(message, Severity.Error);
-            }
-        }
+        result.ToastMessage(ToastService);
 
-        _navigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo("/");
     }
 
 }

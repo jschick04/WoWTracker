@@ -6,8 +6,8 @@
 
 @code {
 
-    private string Uri { get; set; }
+    private string Uri { get; set; } = null!;
 
-    protected override void OnInitialized() => Uri = $"{_httpClient.BaseAddress}scheduler";
+    protected override void OnInitialized() => Uri = $"{HttpClient.BaseAddress}scheduler";
 
 }

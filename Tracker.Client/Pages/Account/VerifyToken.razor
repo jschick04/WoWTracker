@@ -5,25 +5,25 @@
 @code {
 
     protected override async Task OnInitializedAsync() {
-        var token = _navigationManager.QueryString("token");
+        var token = NavigationManager.QueryString("token");
 
         if (string.IsNullOrWhiteSpace(token)) {
-            _snackbar.Add("Invalid Token", Severity.Error);
+            ToastService.ShowError("Invalid Token");
             return;
         }
 
         var api = $"{ApiRoutes.Account.VerifyEmail}?token={token}";
 
-        var result = await _httpClient.PostAsync(api, null);
+        var result = await HttpClient.PostAsync(api, null);
 
         if (result.IsSuccessStatusCode) {
-            _snackbar.Add("Account successfully verified", Severity.Success);
+            ToastService.ShowSuccess("Account successfully verified");
         } else {
             var response = await result.Content.ReadFromJsonAsync<ErrorResponse>();
-            _snackbar.Add(response?.Error, Severity.Error);
+            ToastService.ShowError(response?.Error);
         }
 
-        _navigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo("/");
     }
 
 }

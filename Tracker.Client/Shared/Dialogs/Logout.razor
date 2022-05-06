@@ -1,19 +1,8 @@
-﻿<MudDialog>
+﻿<div class="global-modal-content">
+    <div>@ContextText</div>
+</div>
 
-    <TitleContent>
-        <MudText Typo="Typo.h6">
-            <MudIcon Icon="@Icons.Material.Filled.Logout" Class="mr-3 mb-n1" />
-            Logout Confirmation
-        </MudText>
-    </TitleContent>
-
-    <DialogContent>
-        <MudText>@ContextText</MudText>
-    </DialogContent>
-
-    <DialogActions>
-        <MudButton OnClick="@Cancel">Cancel</MudButton>
-        <MudButton Color="@Color" Variant="Variant.Filled" OnClick="@Submit">@ButtonText</MudButton>
-    </DialogActions>
-
-</MudDialog>
+<div class="global-modal-buttons">
+    <button class="btn cancel-btn" @onclick="Submit">@ButtonText</button>
+    <button class="btn clear-btn" @onclick="Cancel">Cancel</button>
+</div>

@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.Modal;
+using Microsoft.AspNetCore.Components;
 using Tracker.Api.Contracts.V1.Responses;
+using Tracker.Client.Helpers;
 using Tracker.Client.Shared.Dialogs.Characters;
+using Tracker.Library.Helpers;
 
 namespace Tracker.Client.Pages.Characters;
 
@@ -11,43 +14,42 @@ public partial class Character {
 
     [Parameter] public int Id { get; set; }
 
+    [CascadingParameter] protected bool IsDarkMode { get; set; }
+
     protected override async Task OnParametersSetAsync() {
         await UpdateCharacterAsync();
     }
 
     private async Task DeleteAsync() {
-        var parameters = new DialogParameters {
-            { nameof(Delete.ContextText), $"Are you sure you want to delete {_character.Name}?" },
-            { nameof(Delete.ButtonText), "Delete" },
-            { nameof(Delete.Color), Color.Error },
-            { nameof(Delete.Id), _character.Id }
-        };
+        var parameters = new ModalParameters();
+        var options = new ModalOptions().GetClass(IsDarkMode, true);
 
-        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true };
+        parameters.Add(nameof(Delete.ContextText), $"Are you sure you want to delete {_character.Name}?");
+        parameters.Add(nameof(Delete.ButtonText), "Delete");
+        parameters.Add(nameof(Delete.Id), _character.Id);
+        parameters.Add(nameof(Delete.Name), _character.Name);
 
-        var dialog = _dialogService.Show<Delete>("Delete", parameters, options);
+        var dialog = DialogService.Show<Delete>("Delete Character Confirmation", parameters, options);
         var result = await dialog.Result;
 
         if (!result.Cancelled) {
-            await _appStateProvider.UpdateCharactersAsync();
-            _navigationManager.NavigateTo("/");
+            await AppStateProvider.UpdateCharactersAsync();
+            NavigationManager.NavigateTo("/");
         }
     }
 
     private async Task UpdateAsync() {
-        var parameters = new DialogParameters {
-            { nameof(Update.Character), _character },
-            { nameof(Update.ButtonText), "Update" },
-            { nameof(Update.Color), Color.Success }
-        };
+        var parameters = new ModalParameters();
+        var options = new ModalOptions().GetClass(IsDarkMode);
 
-        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true };
+        parameters.Add(nameof(Update.Character), _character);
+        parameters.Add(nameof(Update.ButtonText), "Update");
 
-        var dialog = _dialogService.Show<Update>("Update", parameters, options);
+        var dialog = DialogService.Show<Update>($"Edit {_character.Name}", parameters, options);
         var result = await dialog.Result;
 
         if (!result.Cancelled) {
-            await _appStateProvider.UpdateCharactersAsync();
+            await AppStateProvider.UpdateCharactersAsync();
             await UpdateCharacterAsync();
         }
     }
@@ -56,20 +58,16 @@ public partial class Character {
         _isLoading = true;
         StateHasChanged();
 
-        var result = await _characterManager.GetByIdAsync(Id);
+        var result = await CharacterManager.GetByIdAsync(Id);
 
-        if (result.Succeeded) {
-            _character = result.Data;
+        if (result.GetDataIfSuccess(ref _character)) {
+            _isLoading = false;
+            StateHasChanged();
         } else {
-            foreach (var message in result.Messages) {
-                _snackbar.Add(message, Severity.Error);
-            }
+            result.ToastError(ToastService);
 
-            _navigationManager.NavigateTo("/");
+            NavigationManager.NavigateTo("/");
         }
-
-        _isLoading = false;
-        StateHasChanged();
     }
 
 }

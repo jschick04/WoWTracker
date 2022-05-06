@@ -1,0 +1,17 @@
+﻿<div class="floating-input input-select @(ShortWidth ? "input-small" : "")">
+    <label>
+        <input value="@Value" placeholder="@Label" readonly
+            @onclick="() => _expanded = true"
+            @onfocusin="() => _expanded = true" @onfocusout="() => _expanded = false" />
+        <p>@Label</p>
+        <i class="fa-regular fa-caret-down"></i>
+    </label>
+    <div class="dropdown-list" data-toggle="@_expanded.ToString()">
+        @if (AddEmpty) {
+            <div class="dropdown-list_item" @onclick="() => SetValue(string.Empty)">None</div>
+        }
+        @foreach (var item in ItemList) {
+            <div class="dropdown-list_item" @onclick="() => SetValue(item)">@item</div>
+        }
+    </div>
+</div>

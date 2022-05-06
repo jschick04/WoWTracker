@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.Modal;
+using Blazored.Modal.Services;
+using Microsoft.AspNetCore.Components;
 using Tracker.Api.Contracts.V1.Requests;
+using Tracker.Client.Helpers;
 
 namespace Tracker.Client.Shared.Dialogs.Characters;
 
@@ -11,30 +14,26 @@ public partial class Create {
 
     [Parameter] public string ButtonText { get; set; } = null!;
 
-    [Parameter] public Color Color { get; set; }
+    [CascadingParameter] private BlazoredModalInstance Modal { get; set; } = null!;
 
-    [CascadingParameter] private MudDialogInstance MudDialog { get; set; } = null!;
-
-    private void Cancel() => MudDialog.Cancel();
+    private void Cancel() => Modal.CancelAsync();
 
     private async Task Submit() {
         _isLoading = true;
 
-        var response = await _characterManager.CreateAsync(_request);
+        var response = await CharacterManager.CreateAsync(_request);
 
         if (response.Succeeded) {
-            await _appStateProvider.UpdateCharactersAsync();
+            await AppStateProvider.UpdateCharactersAsync();
 
-            _snackbar.Add("Creation Successful", Severity.Success);
+            ToastService.ShowSuccess($"{_request.Name} has been created");
         } else {
-            foreach (var message in response.Messages) {
-                _snackbar.Add(message, Severity.Error);
-            }
+            response.ToastError(ToastService);
         }
 
         _isLoading = false;
 
-        MudDialog.Close(DialogResult.Ok(true));
+        await Modal.CloseAsync(ModalResult.Ok(true));
     }
 
 }

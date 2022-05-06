@@ -1,57 +1,35 @@
-﻿<MudDialog>
+﻿<div class="global-modal-content">
+    <EditForm id="EditCharacter" Model="_request" OnValidSubmit="Submit">
 
-    <TitleContent>
-        <MudText Typo="Typo.h6">
-            <MudIcon Icon="@Icons.Material.Filled.Create" Class="mr-3 mb-n1" />
-            Edit Character
-        </MudText>
-    </TitleContent>
+        <DataAnnotationsValidator />
 
-    <DialogContent>
-        <EditForm id="EditCharacter" Model="_request" OnValidSubmit="Submit">
+        <ValidationMessage For="() => _request.Name" />
+        <FloatingInput Label="Username" @bind-Value="_request.Name" />
 
-            <DataAnnotationsValidator />
+        <div class="form-row-container mb-0">
+            <ValidationMessage For="() => _request.Class" />
+            <FloatingSelect Label="Class" @bind-Value="@_request.Class"
+                ItemList="Converter.AvailableClasses()" ShortWidth="true" />
 
-            <MudItem xs="12" Class="pa-1">
-                <MudTextField Label="Name" Variant="Variant.Outlined" @bind-Value="_request.Name" For="@(() => _request.Name)" />
-            </MudItem>
+            <div>
+                <input type="checkbox" @bind="_request.HasCooking" /> Cooking
+            </div>
+        </div>
 
-            <MudItem xs="12" Class="pa-1 d-flex justify-center">
-                <MudSelect T="string" Label="Class" Variant="Variant.Outlined" @bind-Value="_request.Class" For="@(() => _request.Class)">
-                    @foreach (var classes in Converter.AvailableClasses()) {
-                        <MudSelectItem Value="classes" />
-                    }
-                </MudSelect>
-                <MudCheckBox Color="Color.Primary" @bind-Checked="_request.HasCooking">Cooking</MudCheckBox>
-            </MudItem>
+        <FloatingSelect Label="First Profession" @bind-Value="_request.FirstProfession"
+            ItemList="Converter.AvailableProfessions()" AddEmpty="true" />
 
-            <MudItem xs="12" Class="pa-1 d-flex justify-center">
-                <MudSelect T="string" Label="Primary Profession" Variant="Variant.Outlined" @bind-Value="_request.FirstProfession">
-                    @foreach (var profession in Converter.AvailableProfessions()) {
-                        <MudSelectItem Value="profession" />
-                    }
-                </MudSelect>
-                <MudIconButton @onclick="@(() => _request.FirstProfession = "")" Icon="@Icons.Filled.Remove" Color="Color.Error" />
-                <MudSelect T="string" Label="Secondary Profession" Variant="Variant.Outlined" @bind-Value="_request.SecondProfession">
-                    @foreach (var profession in Converter.AvailableProfessions()) {
-                        <MudSelectItem Value="profession" />
-                    }
-                </MudSelect>
-                <MudIconButton @onclick="@(() => _request.SecondProfession = "")" Icon="@Icons.Filled.Remove" Color="Color.Error" />
-            </MudItem>
+        <FloatingSelect Label="Second Profession" @bind-Value="_request.SecondProfession"
+            ItemList="Converter.AvailableProfessions()" AddEmpty="true" />
 
-        </EditForm>
-    </DialogContent>
+    </EditForm>
+</div>
 
-    <DialogActions>
-        <MudButton OnClick="@Cancel">Cancel</MudButton>
-        @if (_isLoading) {
-            <MudButton Variant="Variant.Filled" Disabled="true">
-                <MudProgressCircular Color="@Color" Size="Size.Small" Indeterminate="true" />
-            </MudButton>
-        } else {
-            <MudButton form="EditCharacter" ButtonType="ButtonType.Submit" Color="@Color" Variant="Variant.Filled">@ButtonText</MudButton>
-        }
-    </DialogActions>
-
-</MudDialog>
+<div class="global-modal-buttons">
+    @if (_isLoading) {
+        <LoadingButton Color="ButtonColor.Accent" IsDisabled="true" />
+    } else {
+        <button class="btn ok-btn" form="EditCharacter" type="submit">@ButtonText</button>
+    }
+    <button class="btn clear-btn" @onclick="Cancel">Cancel</button>
+</div>

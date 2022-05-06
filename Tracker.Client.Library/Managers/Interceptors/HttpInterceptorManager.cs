@@ -1,8 +1,5 @@
-﻿using System.Net;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Logging;
-using MudBlazor;
 using Toolbelt.Blazor;
 using Tracker.Api.Contracts.Routes;
 using Tracker.Client.Library.Managers.Authentication;
@@ -13,35 +10,19 @@ public class HttpInterceptorManager : IHttpInterceptorManager {
 
     private readonly IAuthenticationManager _authenticationManager;
     private readonly HttpClientInterceptor _interceptor;
-    private readonly ILogger<HttpInterceptorManager> _logger;
     private readonly NavigationManager _navigationManager;
-    private readonly ISnackbar _snackbar;
 
     public HttpInterceptorManager(
         IAuthenticationManager authenticationManager,
         HttpClientInterceptor interceptor,
-        ILogger<HttpInterceptorManager> logger,
-        NavigationManager navigationManager,
-        ISnackbar snackbar
+        NavigationManager navigationManager
     ) {
         _authenticationManager = authenticationManager;
         _interceptor = interceptor;
         _navigationManager = navigationManager;
-        _snackbar = snackbar;
-        _logger = logger;
     }
 
-    public void DisposeEvent() {
-        _interceptor.AfterSend -= InterceptAfterHttp;
-        _interceptor.BeforeSendAsync -= InterceptBeforeHttpAsync;
-    }
-
-    public void InterceptAfterHttp(object? sender, HttpClientInterceptorEventArgs e) {
-        if (e.Response.StatusCode != HttpStatusCode.Unauthorized) { return; }
-
-        _snackbar.Add("You do not have permissions to access this resource", Severity.Error);
-        _navigationManager.NavigateTo("/");
-    }
+    public void DisposeEvent() => _interceptor.BeforeSendAsync -= InterceptBeforeHttpAsync;
 
     public async Task InterceptBeforeHttpAsync(object sender, HttpClientInterceptorEventArgs e) {
         if (ValidatePath(e.Request.RequestUri?.AbsolutePath)) {
@@ -51,20 +32,14 @@ public class HttpInterceptorManager : IHttpInterceptorManager {
                 if (!string.IsNullOrEmpty(token)) {
                     e.Request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 }
-            } catch (Exception exception) {
-                _logger.LogError($"InterceptBeforeHttpAsync Failure: {0}", exception.Message);
-                _snackbar.Add("You are not Logged In", Severity.Error);
-
+            } catch {
                 await _authenticationManager.Logout();
                 _navigationManager.NavigateTo("/");
             }
         }
     }
 
-    public void RegisterEvent() {
-        _interceptor.AfterSend += InterceptAfterHttp;
-        _interceptor.BeforeSendAsync += InterceptBeforeHttpAsync;
-    }
+    public void RegisterEvent() => _interceptor.BeforeSendAsync += InterceptBeforeHttpAsync;
 
     private static bool ValidatePath(string? uri) {
         var ignorePaths = new[] {

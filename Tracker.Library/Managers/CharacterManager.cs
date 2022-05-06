@@ -14,7 +14,13 @@ public class CharacterManager : ICharacterManager {
     public CharacterManager(HttpClient httpClient) => _httpClient = httpClient;
 
     public async Task<IResult> CreateAsync(CreateCharacterRequest request) {
-        var response = await _httpClient.PostAsJsonAsync(ApiRoutes.Character.Create, request);
+        HttpResponseMessage response;
+
+        try {
+            response = await _httpClient.PostAsJsonAsync(ApiRoutes.Character.Create, request);
+        } catch (Exception ex) {
+            return await Result.FailAsync(ex.Message);
+        }
 
         if (response.IsSuccessStatusCode) {
             return await Result.SuccessAsync();
@@ -25,7 +31,13 @@ public class CharacterManager : ICharacterManager {
     }
 
     public async Task<IResult> DeleteAsync(int id) {
-        var response = await _httpClient.DeleteAsync(ApiRoutes.Character.DeleteReplace(id));
+        HttpResponseMessage response;
+
+        try {
+            response = await _httpClient.DeleteAsync(ApiRoutes.Character.DeleteReplace(id));
+        } catch (Exception ex) {
+            return await Result.FailAsync(ex.Message);
+        }
 
         if (response.IsSuccessStatusCode) {
             return await Result.SuccessAsync();
@@ -36,7 +48,13 @@ public class CharacterManager : ICharacterManager {
     }
 
     public async Task<Result<List<CharacterResponse>>> GetAllAsync() {
-        var response = await _httpClient.GetAsync(ApiRoutes.Character.GetAll);
+        HttpResponseMessage response;
+
+        try {
+            response = await _httpClient.GetAsync(ApiRoutes.Character.GetAll);
+        } catch (Exception ex) {
+            return await Result<List<CharacterResponse>>.FailAsync(ex.Message);
+        }
 
         if (response.IsSuccessStatusCode) {
             var data = await response.Content.ReadFromJsonAsync<List<CharacterResponse>>();
@@ -48,7 +66,13 @@ public class CharacterManager : ICharacterManager {
     }
 
     public async Task<Result<CharacterResponse>> GetByIdAsync(int id) {
-        var response = await _httpClient.GetAsync(ApiRoutes.Character.GetByIdReplace(id));
+        HttpResponseMessage response;
+
+        try {
+            response = await _httpClient.GetAsync(ApiRoutes.Character.GetByIdReplace(id));
+        } catch (Exception ex) {
+            return await Result<CharacterResponse>.FailAsync(ex.Message);
+        }
 
         if (response.IsSuccessStatusCode) {
             var data = await response.Content.ReadFromJsonAsync<CharacterResponse>();
@@ -60,7 +84,13 @@ public class CharacterManager : ICharacterManager {
     }
 
     public async Task<IResult> UpdateAsync(int id, UpdateCharacterRequest request) {
-        var response = await _httpClient.PutAsJsonAsync(ApiRoutes.Character.UpdateReplace(id), request);
+        HttpResponseMessage response;
+
+        try {
+            response = await _httpClient.PutAsJsonAsync(ApiRoutes.Character.UpdateReplace(id), request);
+        } catch (Exception ex) {
+            return await Result.FailAsync(ex.Message);
+        }
 
         if (response.IsSuccessStatusCode) {
             return await Result.SuccessAsync();

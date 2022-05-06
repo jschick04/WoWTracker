@@ -35,7 +35,13 @@ public class AuthenticationManager : IAuthenticationManager {
     }
 
     public async Task<IResult> Login(AuthenticationRequest request) {
-        var response = await _httpClient.PostAsJsonAsync(ApiRoutes.Identity.Authenticate, request);
+        HttpResponseMessage response;
+
+        try {
+            response = await _httpClient.PostAsJsonAsync(ApiRoutes.Identity.Authenticate, request);
+        } catch (Exception ex) {
+            return await Result.FailAsync(ex.Message);
+        }
 
         if (!response.IsSuccessStatusCode) {
             var failure = await response.Content.ReadFromJsonAsync<ErrorResponse>();

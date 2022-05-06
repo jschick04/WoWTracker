@@ -1,25 +1,12 @@
-﻿<MudDialog>
+﻿<div class="global-modal-content">
+    <div>@ContextText</div>
+</div>
 
-    <TitleContent>
-        <MudText Typo="Typo.h6">
-            <MudIcon Icon="@Icons.Material.Filled.Delete" Class="mr-3 mb-n1" />
-            Delete Character Confirmation
-        </MudText>
-    </TitleContent>
-
-    <DialogContent>
-        <MudText>@ContextText</MudText>
-    </DialogContent>
-
-    <DialogActions>
-        <MudButton OnClick="@Cancel">Cancel</MudButton>
-        @if (_isLoading) {
-            <MudButton Variant="Variant.Filled" Disabled="true">
-                <MudProgressCircular Color="@Color" Size="Size.Small" Indeterminate="true" />
-            </MudButton>
-        } else {
-            <MudButton Color="@Color" Variant="Variant.Filled" OnClick="@Submit">@ButtonText</MudButton>
-        }
-    </DialogActions>
-
-</MudDialog>
+<div class="global-modal-buttons">
+    @if (_isLoading) {
+        <LoadingButton Color="ButtonColor.Accent" IsDisabled="true" />
+    } else {
+        <button class="btn cancel-btn" @onclick="Submit">@ButtonText</button>
+    }
+    <button class="btn clear-btn" @onclick="Cancel">Cancel</button>
+</div>

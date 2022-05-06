@@ -10,6 +10,13 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    INSERT INTO dbo.Characters (UserId, Name, ClassId, FirstProfessionId, SecondProfessionId, HasCooking)
-    VALUES (@userId, @name, @classId, @firstProfessionId, @secondProfessionId, @hasCooking);
+    IF EXISTS (SELECT Name FROM dbo.Characters WHERE Name = @name)
+    BEGIN
+        RAISERROR ('Character already exists', 11, 1);
+    END;
+    ELSE
+    BEGIN
+        INSERT INTO dbo.Characters (UserId, Name, ClassId, FirstProfessionId, SecondProfessionId, HasCooking)
+        VALUES (@userId, @name, @classId, @firstProfessionId, @secondProfessionId, @hasCooking);
+    END;
 END;

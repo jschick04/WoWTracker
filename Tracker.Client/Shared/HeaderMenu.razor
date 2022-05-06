@@ -1,0 +1,28 @@
+﻿<AuthorizeView>
+    <NotAuthorized>
+
+        <div class="row header-container">
+            <div class="col-6 title-header">WoW Tracker</div>
+            <div class="col-6 login-buttons">
+                <a class="btn secondary-btn" href="/login">Log In</a>
+                <a class="btn accent-btn" href="/register">Sign Up</a>
+            </div>
+        </div>
+
+    </NotAuthorized>
+    <Authorized>
+
+        <div class="row header-container">
+            <div class="col-6">
+                <div class="title-header">
+                    <i class="sidebar-toggle fa-regular fa-bars" @onclick="DrawerToggle"></i>
+                    WoW Tracker
+                </div>
+            </div>
+            <div class="col-6 login-buttons">
+                <button class="btn accent-btn" @onclick="LogOut">Log Out</button>
+            </div>
+        </div>
+
+    </Authorized>
+</AuthorizeView>

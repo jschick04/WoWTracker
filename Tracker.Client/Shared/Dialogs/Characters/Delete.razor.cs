@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.Modal;
+using Blazored.Modal.Services;
+using Microsoft.AspNetCore.Components;
+using Tracker.Client.Helpers;
 
 namespace Tracker.Client.Shared.Dialogs.Characters;
 
@@ -6,34 +9,32 @@ public partial class Delete {
 
     private bool _isLoading;
 
-    [CascadingParameter] private MudDialogInstance MudDialog { get; set; } = null!;
+    [Parameter] public string ButtonText { get; set; } = null!;
 
     [Parameter] public string ContextText { get; set; } = null!;
 
-    [Parameter] public string ButtonText { get; set; } = null!;
-
-    [Parameter] public Color Color { get; set; }
-
     [Parameter] public int Id { get; set; }
 
-    private void Cancel() => MudDialog.Cancel();
+    [Parameter] public string Name { get; set; } = null!;
+
+    [CascadingParameter] private BlazoredModalInstance Modal { get; set; } = null!;
+
+    private void Cancel() => Modal.CancelAsync();
 
     private async Task Submit() {
         _isLoading = true;
 
-        var response = await _characterManager.DeleteAsync(Id);
+        var response = await CharacterManager.DeleteAsync(Id);
 
         _isLoading = false;
 
         if (response.Succeeded) {
-            _snackbar.Add("Deletion Successful", Severity.Success);
+            ToastService.ShowSuccess($"{Name} has been deleted");
         } else {
-            foreach (var message in response.Messages) {
-                _snackbar.Add(message, Severity.Error);
-            }
+            response.ToastError(ToastService);
         }
 
-        MudDialog.Close(DialogResult.Ok(true));
+        await Modal.CloseAsync(ModalResult.Ok(true));
     }
 
 }
