@@ -40,22 +40,38 @@
 
     <div>
 
-        <div>Needed Items <i class="fa-regular fa-plus"></i></div>
+        <div>Needed Items <i class="fa-regular fa-plus" @onclick="AddNeededItem"></i></div>
 
-        <div>
-            <button>Test Item</button>
-
-            <button>Test Item</button>
-
-            <button>Test Item</button>
-
-            <button>Test Item</button>
-
-            <button>Test Item</button>
-        </div>
+        @if (_neededItems.Count > 0) {
+            <div>
+                @foreach (var item in _neededItems) {
+                    // TODO: Add a X button and highlight red on mouseover to indicate Removal
+                    <div @onclick="() => RemoveNeededItem(item.Profession, item.Name)">@item.Amount - @item.Name</div>
+                }
+            </div>
+        }
 
         <hr />
 
         <div>Items to Craft</div>
+
+        @if (_itemsToCraft.Count > 0) {
+            <div>
+                @foreach (var item in _itemsToCraft) {
+                    <div>@item.Amount - @item.Name - @item.CharacterName</div>
+                }
+            </div>
+        }
+
+        <hr />
+
+        <div>Materials Required</div>
+
+        <div>
+            @*Maybe create a separate page for a shopping list that combines all characters and who needs it*@
+            <div>200 - Hide</div>
+            <div>50 - Cloth</div>
+        </div>
+
     </div>
 }

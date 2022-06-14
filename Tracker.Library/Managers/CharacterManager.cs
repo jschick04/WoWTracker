@@ -13,6 +13,23 @@ public class CharacterManager : ICharacterManager {
 
     public CharacterManager(HttpClient httpClient) => _httpClient = httpClient;
 
+    public async Task<IResult> AddNeededItemAsync(int id, NeededItemRequest request) {
+        HttpResponseMessage response;
+
+        try {
+            response = await _httpClient.PutAsJsonAsync(ApiRoutes.Character.AddNeededItemReplace(id), request);
+        } catch (Exception ex) {
+            return await Result.FailAsync(ex.Message);
+        }
+
+        if (response.IsSuccessStatusCode) {
+            return await Result.SuccessAsync();
+        }
+
+        var message = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+        return await Result.FailAsync(message?.Error);
+    }
+
     public async Task<IResult> CreateAsync(CreateCharacterRequest request) {
         HttpResponseMessage response;
 
@@ -81,6 +98,41 @@ public class CharacterManager : ICharacterManager {
 
         var message = await response.Content.ReadFromJsonAsync<ErrorResponse>();
         return await Result<CharacterResponse>.FailAsync(message?.Error);
+    }
+
+    public async Task<Result<List<NeededItemResponse>>> GetNeededItemsAsync(int id) {
+        HttpResponseMessage response;
+
+        try {
+            response = await _httpClient.GetAsync(ApiRoutes.Character.GetNeededItemsReplace(id));
+        } catch (Exception ex) {
+            return await Result<List<NeededItemResponse>>.FailAsync(ex.Message);
+        }
+
+        if (response.IsSuccessStatusCode) {
+            var data = await response.Content.ReadFromJsonAsync<List<NeededItemResponse>>();
+            return await Result<List<NeededItemResponse>>.SuccessAsync(data);
+        }
+
+        var message = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+        return await Result<List<NeededItemResponse>>.FailAsync(message?.Error);
+    }
+
+    public async Task<IResult> RemoveNeededItemAsync(int id, NeededItemRequest request) {
+        HttpResponseMessage response;
+
+        try {
+            response = await _httpClient.PutAsJsonAsync(ApiRoutes.Character.RemoveNeededItemsReplace(id), request);
+        } catch (Exception ex) {
+            return await Result.FailAsync(ex.Message);
+        }
+
+        if (response.IsSuccessStatusCode) {
+            return await Result.SuccessAsync();
+        }
+
+        var message = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+        return await Result.FailAsync(message?.Error);
     }
 
     public async Task<IResult> UpdateAsync(int id, UpdateCharacterRequest request) {

@@ -1,7 +1,4 @@
-﻿//using Tracker.Client.Library.Settings;
-//using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
-using Tracker.Library.Helpers;
+﻿using Tracker.Library.Helpers;
 
 namespace Tracker.Client.Shared;
 
@@ -15,12 +12,6 @@ public partial class MainLayout : IDisposable {
         GC.SuppressFinalize(this);
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender) {
-        if (firstRender) {
-            await Js.InvokeVoidAsync("scrollEventListener");
-        }
-    }
-
     protected override async Task OnInitializedAsync() {
         Interceptor.RegisterEvent();
 
@@ -31,6 +22,8 @@ public partial class MainLayout : IDisposable {
     }
 
     private async Task LoadDataAsync() {
+        await ItemManager.GetAllAsync();
+
         var user = await StateProvider.GetAuthenticationStateProviderUserAsync();
 
         if (user.Identity?.IsAuthenticated is not true) { return; }

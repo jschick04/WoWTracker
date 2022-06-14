@@ -56,6 +56,7 @@ public static class WebAssemblyHostBuilderExtensions {
         builder.Services.AddTransient<IUserManager, UserManager>();
 
         builder.Services.AddTransient<ICharacterManager, CharacterManager>();
+        builder.Services.AddScoped<IItemManager, ItemManager>();
     }
 
     public static void AddServices(this WebAssemblyHostBuilder builder) {

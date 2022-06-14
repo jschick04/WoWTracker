@@ -4,8 +4,10 @@ namespace Tracker.Api.Library.DataAccess;
 
 public interface IItemData {
 
-    Task<List<ItemModel>> GetItemsByProfession(string profession);
+    Task<List<ItemModel>> GetByProfession(string profession);
 
-    Task<List<ItemModel>> GetItemsBySlot(string slot);
+    Task<List<ItemModel>> GetBySlot(string slot);
+
+    Task<List<NeededItemModel>> GetCraftableByProfession(int userId, int professionId);
 
 }

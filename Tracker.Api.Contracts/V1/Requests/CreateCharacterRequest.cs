@@ -2,7 +2,7 @@
 
 namespace Tracker.Api.Contracts.V1.Requests;
 
-public class CreateCharacterRequest {
+public class CreateCharacterRequest : BaseRequest {
 
     private string? _firstProfession;
     private string? _secondProfession;
@@ -26,7 +26,5 @@ public class CreateCharacterRequest {
     }
 
     public bool HasCooking { get; set; }
-
-    private static string? ReplaceEmptyWithNull(string? value) => string.IsNullOrWhiteSpace(value) ? null : value;
 
 }

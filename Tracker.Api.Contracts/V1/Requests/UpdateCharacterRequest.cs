@@ -1,6 +1,6 @@
 ﻿namespace Tracker.Api.Contracts.V1.Requests;
 
-public class UpdateCharacterRequest {
+public class UpdateCharacterRequest : BaseRequest {
 
     private string? _name;
     private string? _class;
@@ -28,7 +28,5 @@ public class UpdateCharacterRequest {
     }
 
     public bool? HasCooking { get; set; }
-
-    private static string? ReplaceEmptyWithNull(string? value) => string.IsNullOrWhiteSpace(value) ? null : value;
 
 }

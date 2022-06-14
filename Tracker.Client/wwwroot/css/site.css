@@ -135,16 +135,19 @@ a, .btn-link {
 }
 
     .content::-webkit-scrollbar {
-        position: fixed;
+        /* position: fixed;
         top: 48px;
         right: 0;
-        width: 6px;
         height: 100%;
         background: rgba(150, 150, 150, 0.2);
-        /* background: rgba(255, 255, 255, 0.05); */
+        background: rgba(255, 255, 255, 0.05); */
+        width: 6px;
     }
 
-    .content::-webkit-scrollbar-thumb { display: none; }
+    .content::-webkit-scrollbar-thumb {
+        /* display: none;  */
+        background: var(--primary-color);
+    }
 
 /* .valid.modified:not([type=checkbox]) {
     outline: 1px solid #26b050;
@@ -472,7 +475,10 @@ input[type="checkbox"]:checked { background-color: var(--secondary-color); }
 
     .floating-input.input-select label p { transition: top 0.1s, font-size 0.1s, color 0.1s; }
 
-    .floating-input.input-select label i { right: 10px; }
+    .floating-input.input-select label i {
+        right: 10px;
+        cursor: pointer;
+    }
 
     .floating-input.input-select .dropdown-list {
         border-radius: 0.2rem;

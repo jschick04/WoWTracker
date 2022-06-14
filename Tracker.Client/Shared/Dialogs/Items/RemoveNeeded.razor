@@ -1,0 +1,12 @@
+﻿<div class="global-modal-content">
+    <div>@ContextText</div>
+</div>
+
+<div class="global-modal-buttons">
+    @if (_isLoading) {
+        <LoadingButton Color="ButtonColor.Accent" IsDisabled="true" />
+    } else {
+        <button class="btn cancel-btn" @onclick="Submit">@ButtonText</button>
+    }
+    <button class="btn clear-btn" @onclick="Cancel">Cancel</button>
+</div>

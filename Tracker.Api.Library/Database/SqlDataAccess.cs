@@ -14,7 +14,7 @@ public class SqlDataAccess : ISqlDataAccess {
     public string ConnectionStringName { get; set; } = "TrackerDb";
 
     public async Task<List<T>> LoadData<T, TU>(string storedProcedure, TU parameters) {
-        string connectionString = _configuration.GetConnectionString(ConnectionStringName);
+        string connectionString = GetConnectionString();
 
         using IDbConnection db = new SqlConnection(connectionString);
 
@@ -28,11 +28,19 @@ public class SqlDataAccess : ISqlDataAccess {
     }
 
     public async Task SaveData<T>(string storedProcedure, T parameters) {
-        string connectionString = _configuration.GetConnectionString(ConnectionStringName);
+        string connectionString = GetConnectionString();
 
         using IDbConnection db = new SqlConnection(connectionString);
 
         await db.ExecuteAsync(storedProcedure, parameters, commandType:CommandType.StoredProcedure);
+    }
+
+    private string GetConnectionString() {
+        var builder = new SqlConnectionStringBuilder(_configuration.GetConnectionString(ConnectionStringName)) {
+            ApplicationName = "WoW Tracker API Library"
+        };
+
+        return builder.ConnectionString;
     }
 
 }

@@ -29,6 +29,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Include="Shared\Dialogs\Items\AddNeeded.razor" />
       <None Include="wwwroot\global.js" />
     </ItemGroup>
 

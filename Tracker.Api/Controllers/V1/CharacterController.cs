@@ -16,6 +16,26 @@ public class CharacterController : BaseApiController {
 
     public CharacterController(ICharacterData data) => _data = data;
 
+    [HttpPut(ApiRoutes.Character.AddNeededItem)]
+    public async Task<IActionResult> AddNeededItem([FromRoute] int id, [FromBody] NeededItemRequest request) {
+        if (Account is null) { return Unauthorized(); }
+
+        if (!Converter.TryParseWithMemberName(request.Profession, out Professions professionId)) {
+            return NotFound();
+        }
+
+        var model = new NeededItemModel {
+            Id = id,
+            ProfessionId = professionId,
+            Name = request.Name,
+            Amount = request.Amount
+        };
+
+        await _data.AddNeededItem(model);
+
+        return Ok();
+    }
+
     [HttpPost(ApiRoutes.Character.Create)]
     public async Task<IActionResult> Create([FromBody] CreateCharacterRequest request) {
         if (Account is null) { return Unauthorized(); }
@@ -96,6 +116,43 @@ public class CharacterController : BaseApiController {
         };
 
         return Ok(response);
+    }
+
+    [HttpGet(ApiRoutes.Character.GetNeededItems)]
+    public async Task<ActionResult<IEnumerable<NeededItemResponse>>> GetNeededItems([FromRoute] int id) {
+        if (Account is null) { return Unauthorized(); }
+
+        var model = await _data.GetNeededItems(id);
+
+        var response = model.Select(
+            item => new NeededItemResponse {
+                Profession = item.ProfessionId.GetName(),
+                Name = item.Name,
+                Amount = item.Amount
+            }
+        );
+
+        return Ok(response);
+    }
+
+    [HttpPut(ApiRoutes.Character.RemoveNeededItem)]
+    public async Task<IActionResult> RemoveNeededItem([FromRoute] int id, [FromBody] NeededItemRequest request) {
+        if (Account is null) { return Unauthorized(); }
+
+        if (!Converter.TryParseWithMemberName(request.Profession, out Professions professionId)) {
+            return NotFound();
+        }
+
+        var model = new NeededItemModel {
+            Id = id,
+            ProfessionId = professionId,
+            Name = request.Name,
+            Amount = request.Amount
+        };
+
+        await _data.RemoveNeededItem(model);
+
+        return Ok();
     }
 
     [HttpPut(ApiRoutes.Character.Update)]

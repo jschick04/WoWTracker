@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Tracker.Api.Data;
 using Tracker.Api.Library.Database;
 
@@ -10,8 +11,12 @@ public class DbService : IServiceInstaller {
         if (env.IsDevelopment()) {
             services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase(new Guid().ToString()));
         } else {
+            var builder = new SqlConnectionStringBuilder(configuration.GetConnectionString("AuthDb")) {
+                ApplicationName = "WoW Tracker API"
+            };
+
             services.AddDbContext<DataContext>(
-                options => options.UseSqlServer(configuration.GetConnectionString("AuthDb"))
+                options => options.UseSqlServer(builder.ConnectionString)
             );
         }
 

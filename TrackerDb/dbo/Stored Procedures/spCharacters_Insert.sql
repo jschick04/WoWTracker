@@ -12,11 +12,11 @@ BEGIN
 
     IF EXISTS (SELECT Name FROM dbo.Characters WHERE Name = @name)
     BEGIN
-        RAISERROR ('Character already exists', 11, 1);
+        RAISERROR('Character already exists', 11, 1);
+
+        RETURN -6;
     END;
-    ELSE
-    BEGIN
-        INSERT INTO dbo.Characters (UserId, Name, ClassId, FirstProfessionId, SecondProfessionId, HasCooking)
-        VALUES (@userId, @name, @classId, @firstProfessionId, @secondProfessionId, @hasCooking);
-    END;
+
+    INSERT INTO dbo.Characters (UserId, Name, ClassId, FirstProfessionId, SecondProfessionId, HasCooking)
+    VALUES (@userId, @name, @classId, @firstProfessionId, @secondProfessionId, @hasCooking);
 END;
