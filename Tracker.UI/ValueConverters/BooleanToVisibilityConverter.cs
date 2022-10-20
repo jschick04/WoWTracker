@@ -2,25 +2,25 @@
 using System.Globalization;
 using System.Windows;
 
-namespace Tracker.UI.ValueConverters {
+namespace Tracker.UI.ValueConverters;
 
-    public class BooleanToVisibilityConverter : BaseValueConverter<BooleanToVisibilityConverter> {
-
-        public override object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-            if (value == null) {
-                return null;
-            }
-
-            if (parameter == null) {
-                return (bool)value ? Visibility.Hidden : Visibility.Visible;
-            }
-
-            return (bool)value ? Visibility.Visible : Visibility.Hidden;
+public class BooleanToVisibilityConverter : BaseValueConverter<BooleanToVisibilityConverter>
+{
+    public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value == null)
+        {
+            return null;
         }
 
-        public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
-            throw new NotImplementedException();
+        if (parameter == null)
+        {
+            return (bool)value ? Visibility.Hidden : Visibility.Visible;
+        }
 
+        return (bool)value ? Visibility.Visible : Visibility.Hidden;
     }
 
+    public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
+        throw new NotImplementedException();
 }

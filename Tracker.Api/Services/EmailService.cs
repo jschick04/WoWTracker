@@ -3,9 +3,10 @@ using Tracker.Api.Settings;
 
 namespace Tracker.Api.Services;
 
-public class EmailService : IServiceInstaller {
-
-    public void InstallService(IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env) {
+public class EmailService : IServiceInstaller
+{
+    public void InstallService(IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env)
+    {
         var emailSettings = new EmailSettings();
         configuration.Bind(nameof(EmailSettings), emailSettings);
 
@@ -13,5 +14,4 @@ public class EmailService : IServiceInstaller {
 
         services.AddTransient<IEmailManager, EmailManager>();
     }
-
 }

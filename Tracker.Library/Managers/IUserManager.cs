@@ -4,8 +4,8 @@ using Tracker.Library.Helpers;
 
 namespace Tracker.Library.Managers;
 
-public interface IUserManager {
-
+public interface IUserManager
+{
     Task<IResult> ForgotPasswordAsync(ForgotPasswordRequest request);
 
     Task<Result<UserResponse>> GetAsync(int id);
@@ -13,5 +13,4 @@ public interface IUserManager {
     Task<IResult> RegisterAsync(RegistrationRequest request);
 
     Task<IResult> ResetPasswordAsync(ResetPasswordRequest request);
-
 }

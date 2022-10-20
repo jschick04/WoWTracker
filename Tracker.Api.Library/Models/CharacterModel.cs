@@ -2,8 +2,8 @@
 
 namespace Tracker.Api.Library.Models;
 
-public class CharacterModel {
-
+public class CharacterModel
+{
     public int Id { get; set; }
 
     public int UserId { get; set; }
@@ -17,5 +17,4 @@ public class CharacterModel {
     public Professions? SecondProfessionId { get; set; }
 
     public bool HasCooking { get; set; }
-
 }

@@ -2,8 +2,7 @@
 
 namespace Tracker.Api.Library.DataAccess;
 
-public interface IProfessionData {
-
+public interface IProfessionData
+{
     Task<List<ProfessionModel>> GetAll();
-
 }

@@ -3,8 +3,8 @@ using Tracker.Api.Library.Models;
 
 namespace Tracker.Api.Library.DataAccess;
 
-public class ItemData : IItemData {
-
+public class ItemData : IItemData
+{
     private readonly ISqlDataAccess _db;
 
     public ItemData(ISqlDataAccess db) => _db = db;
@@ -17,5 +17,4 @@ public class ItemData : IItemData {
 
     public Task<List<NeededItemModel>> GetCraftableByProfession(int userId, int professionId) =>
         _db.LoadData<NeededItemModel, dynamic>("spNeededItems_GetCraftableByProfession", new { userId, professionId });
-
 }

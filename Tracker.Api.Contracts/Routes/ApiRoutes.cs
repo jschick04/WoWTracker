@@ -1,11 +1,11 @@
 ﻿namespace Tracker.Api.Contracts.Routes;
 
-public static class ApiRoutes {
-
+public static class ApiRoutes
+{
     private const string Version = "v1";
 
-    public static class Account {
-
+    public static class Account
+    {
         public const string Delete = Uri + "/{id}";
         public const string GetAll = Uri;
         public const string GetById = Uri + "/{id}";
@@ -21,17 +21,16 @@ public static class ApiRoutes {
 
         public static string UpdateReplace(int id) => $"{Uri}/{id}";
 
-        #region Passwords
+#region Passwords
 
         public const string ForgotPassword = Uri + "/forgot";
         public const string ResetPassword = Uri + "/reset";
 
-        #endregion
-
+#endregion
     }
 
-    public static class Character {
-
+    public static class Character
+    {
         public const string AddNeededItem = Uri + "/{id}/needed/add";
         public const string Create = Uri;
         public const string Delete = Uri + "/{id}";
@@ -55,29 +54,27 @@ public static class ApiRoutes {
         public static string RemoveNeededItemsReplace(int id) => $"{Uri}/{id}/needed/remove";
 
         public static string UpdateReplace(int id) => $"{Uri}/{id}";
-
     }
 
-    public static class Identity {
-
+    public static class Identity
+    {
         public const string Authenticate = Uri + "/authenticate";
         public const string Register = Uri + "/register";
         public const string Uri = Root;
 
         private const string Root = "identity";
 
-        #region Tokens
+#region Tokens
 
         public const string RefreshToken = Uri + "/token/refresh";
         public const string RevokeToken = Uri + "/token/revoke";
         public const string ValidateToken = Uri + "/token/validate";
 
-        #endregion
-
+#endregion
     }
 
-    public static class Item {
-
+    public static class Item
+    {
         public const string GetAll = Uri;
         public const string GetByProfession = Uri + "/profession/{name}";
         public const string GetBySlot = Uri + "/slot/{name}";
@@ -91,16 +88,13 @@ public static class ApiRoutes {
         public static string GetBySlotReplace(string name) => $"{Uri}/slot/{name}";
 
         public static string GetCraftableByProfessionReplace(string name) => $"{Uri}/craftable/{name}";
-
     }
 
-    public static class Profession {
-
+    public static class Profession
+    {
         public const string GetAll = Uri;
         public const string Uri = Version + "/" + Root;
 
         private const string Root = "profession";
-
     }
-
 }

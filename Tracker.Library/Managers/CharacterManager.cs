@@ -7,22 +7,27 @@ using Tracker.Library.Helpers;
 
 namespace Tracker.Library.Managers;
 
-public class CharacterManager : ICharacterManager {
-
+public class CharacterManager : ICharacterManager
+{
     private readonly HttpClient _httpClient;
 
     public CharacterManager(HttpClient httpClient) => _httpClient = httpClient;
 
-    public async Task<IResult> AddNeededItemAsync(int id, NeededItemRequest request) {
+    public async Task<IResult> AddNeededItemAsync(int id, NeededItemRequest request)
+    {
         HttpResponseMessage response;
 
-        try {
+        try
+        {
             response = await _httpClient.PutAsJsonAsync(ApiRoutes.Character.AddNeededItemReplace(id), request);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             return await Result.FailAsync(ex.Message);
         }
 
-        if (response.IsSuccessStatusCode) {
+        if (response.IsSuccessStatusCode)
+        {
             return await Result.SuccessAsync();
         }
 
@@ -30,16 +35,21 @@ public class CharacterManager : ICharacterManager {
         return await Result.FailAsync(message?.Error);
     }
 
-    public async Task<IResult> CreateAsync(CreateCharacterRequest request) {
+    public async Task<IResult> CreateAsync(CreateCharacterRequest request)
+    {
         HttpResponseMessage response;
 
-        try {
+        try
+        {
             response = await _httpClient.PostAsJsonAsync(ApiRoutes.Character.Create, request);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             return await Result.FailAsync(ex.Message);
         }
 
-        if (response.IsSuccessStatusCode) {
+        if (response.IsSuccessStatusCode)
+        {
             return await Result.SuccessAsync();
         }
 
@@ -47,16 +57,21 @@ public class CharacterManager : ICharacterManager {
         return await Result.FailAsync(message?.Error);
     }
 
-    public async Task<IResult> DeleteAsync(int id) {
+    public async Task<IResult> DeleteAsync(int id)
+    {
         HttpResponseMessage response;
 
-        try {
+        try
+        {
             response = await _httpClient.DeleteAsync(ApiRoutes.Character.DeleteReplace(id));
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             return await Result.FailAsync(ex.Message);
         }
 
-        if (response.IsSuccessStatusCode) {
+        if (response.IsSuccessStatusCode)
+        {
             return await Result.SuccessAsync();
         }
 
@@ -64,16 +79,21 @@ public class CharacterManager : ICharacterManager {
         return await Result.FailAsync(message?.Error);
     }
 
-    public async Task<Result<List<CharacterResponse>>> GetAllAsync() {
+    public async Task<Result<List<CharacterResponse>>> GetAllAsync()
+    {
         HttpResponseMessage response;
 
-        try {
+        try
+        {
             response = await _httpClient.GetAsync(ApiRoutes.Character.GetAll);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             return await Result<List<CharacterResponse>>.FailAsync(ex.Message);
         }
 
-        if (response.IsSuccessStatusCode) {
+        if (response.IsSuccessStatusCode)
+        {
             var data = await response.Content.ReadFromJsonAsync<List<CharacterResponse>>();
             return await Result<List<CharacterResponse>>.SuccessAsync(data);
         }
@@ -82,16 +102,21 @@ public class CharacterManager : ICharacterManager {
         return await Result<List<CharacterResponse>>.FailAsync(message?.Error);
     }
 
-    public async Task<Result<CharacterResponse>> GetByIdAsync(int id) {
+    public async Task<Result<CharacterResponse>> GetByIdAsync(int id)
+    {
         HttpResponseMessage response;
 
-        try {
+        try
+        {
             response = await _httpClient.GetAsync(ApiRoutes.Character.GetByIdReplace(id));
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             return await Result<CharacterResponse>.FailAsync(ex.Message);
         }
 
-        if (response.IsSuccessStatusCode) {
+        if (response.IsSuccessStatusCode)
+        {
             var data = await response.Content.ReadFromJsonAsync<CharacterResponse>();
             return await Result<CharacterResponse>.SuccessAsync(data);
         }
@@ -100,16 +125,21 @@ public class CharacterManager : ICharacterManager {
         return await Result<CharacterResponse>.FailAsync(message?.Error);
     }
 
-    public async Task<Result<List<NeededItemResponse>>> GetNeededItemsAsync(int id) {
+    public async Task<Result<List<NeededItemResponse>>> GetNeededItemsAsync(int id)
+    {
         HttpResponseMessage response;
 
-        try {
+        try
+        {
             response = await _httpClient.GetAsync(ApiRoutes.Character.GetNeededItemsReplace(id));
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             return await Result<List<NeededItemResponse>>.FailAsync(ex.Message);
         }
 
-        if (response.IsSuccessStatusCode) {
+        if (response.IsSuccessStatusCode)
+        {
             var data = await response.Content.ReadFromJsonAsync<List<NeededItemResponse>>();
             return await Result<List<NeededItemResponse>>.SuccessAsync(data);
         }
@@ -118,16 +148,21 @@ public class CharacterManager : ICharacterManager {
         return await Result<List<NeededItemResponse>>.FailAsync(message?.Error);
     }
 
-    public async Task<IResult> RemoveNeededItemAsync(int id, NeededItemRequest request) {
+    public async Task<IResult> RemoveNeededItemAsync(int id, NeededItemRequest request)
+    {
         HttpResponseMessage response;
 
-        try {
+        try
+        {
             response = await _httpClient.PutAsJsonAsync(ApiRoutes.Character.RemoveNeededItemsReplace(id), request);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             return await Result.FailAsync(ex.Message);
         }
 
-        if (response.IsSuccessStatusCode) {
+        if (response.IsSuccessStatusCode)
+        {
             return await Result.SuccessAsync();
         }
 
@@ -135,21 +170,25 @@ public class CharacterManager : ICharacterManager {
         return await Result.FailAsync(message?.Error);
     }
 
-    public async Task<IResult> UpdateAsync(int id, UpdateCharacterRequest request) {
+    public async Task<IResult> UpdateAsync(int id, UpdateCharacterRequest request)
+    {
         HttpResponseMessage response;
 
-        try {
+        try
+        {
             response = await _httpClient.PutAsJsonAsync(ApiRoutes.Character.UpdateReplace(id), request);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             return await Result.FailAsync(ex.Message);
         }
 
-        if (response.IsSuccessStatusCode) {
+        if (response.IsSuccessStatusCode)
+        {
             return await Result.SuccessAsync();
         }
 
         var message = await response.Content.ReadFromJsonAsync<ErrorResponse>();
         return await Result.FailAsync(message?.Error);
     }
-
 }

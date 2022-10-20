@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Components;
 
 namespace Tracker.Client.Shared.Components;
 
-public partial class FloatingPassword {
-
+public partial class FloatingPassword
+{
     private bool _isVisible;
 
     [Parameter]
@@ -15,9 +15,9 @@ public partial class FloatingPassword {
     [Parameter]
     public EventCallback<string> ValueChanged { get; set; }
 
-    private Task OnValueChanged(ChangeEventArgs e) {
+    private Task OnValueChanged(ChangeEventArgs e)
+    {
         Value = e.Value?.ToString() ?? string.Empty;
         return ValueChanged.InvokeAsync(Value);
     }
-
 }

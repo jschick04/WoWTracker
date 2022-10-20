@@ -3,8 +3,8 @@ using Tracker.Api.Contracts.Helpers;
 
 namespace Tracker.Api.Contracts.Identity.Requests;
 
-public class ResetPasswordRequest {
-
+public class ResetPasswordRequest
+{
     [Required]
     public string Token { get; set; } = null!;
 
@@ -17,5 +17,4 @@ public class ResetPasswordRequest {
     [Compare(nameof(Password), ErrorMessage = "Password confirmation does not match Password")]
     [DataType(DataType.Password)]
     public string ConfirmPassword { get; set; } = null!;
-
 }

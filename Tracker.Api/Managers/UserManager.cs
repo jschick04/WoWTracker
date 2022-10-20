@@ -9,26 +9,29 @@ using Tracker.Api.Library.Helpers;
 
 namespace Tracker.Api.Managers;
 
-public class UserManager : IUserManager {
-
+public class UserManager : IUserManager
+{
     private readonly DataContext _data;
     private readonly IEmailManager _emailManager;
     private readonly ITokenManager _tokenManager;
 
-    public UserManager(DataContext data, IEmailManager emailManager, ITokenManager tokenManager) {
+    public UserManager(DataContext data, IEmailManager emailManager, ITokenManager tokenManager)
+    {
         _data = data;
         _emailManager = emailManager;
         _tokenManager = tokenManager;
     }
 
-    public async Task DeleteAsync(int id) {
+    public async Task DeleteAsync(int id)
+    {
         var user = await GetUserAsync(id);
 
         _data.Users.Remove(user);
         await _data.SaveChangesAsync();
     }
 
-    public async Task ForgotPasswordAsync(ForgotPasswordRequest request, string origin) {
+    public async Task ForgotPasswordAsync(ForgotPasswordRequest request, string origin)
+    {
         var user = await _data.Users.SingleOrDefaultAsync(u => u.Username == request.Username);
 
         if (user is null) { throw new ApiException("An error has occurred"); }
@@ -42,9 +45,10 @@ public class UserManager : IUserManager {
         _emailManager.SendForgotPassword(user, origin);
     }
 
-    public async Task<IEnumerable<UserResponse>> GetAllAsync() {
-        return (await _data.Users.ToListAsync()).Select(
-            user => new UserResponse {
+    public async Task<IEnumerable<UserResponse>> GetAllAsync()
+    {
+        return (await _data.Users.ToListAsync()).Select(user => new UserResponse
+            {
                 Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
@@ -57,10 +61,12 @@ public class UserManager : IUserManager {
         ).ToList();
     }
 
-    public async Task<UserResponse> GetByIdAsync(int id) {
+    public async Task<UserResponse> GetByIdAsync(int id)
+    {
         var user = await GetUserAsync(id);
 
-        return new UserResponse {
+        return new UserResponse
+        {
             Id = user.Id,
             FirstName = user.FirstName,
             LastName = user.LastName,
@@ -72,8 +78,10 @@ public class UserManager : IUserManager {
         };
     }
 
-    public async Task RegisterAsync(RegistrationRequest request, string origin) {
-        if (await _data.Users.AnyAsync(u => u.Username == request.Username)) {
+    public async Task RegisterAsync(RegistrationRequest request, string origin)
+    {
+        if (await _data.Users.AnyAsync(u => u.Username == request.Username))
+        {
             throw new ApiException("Username is already registered");
         }
 
@@ -81,7 +89,8 @@ public class UserManager : IUserManager {
 
         CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
-        var user = new User {
+        var user = new User
+        {
             FirstName = request.FirstName,
             LastName = request.LastName,
             Username = request.Username,
@@ -96,12 +105,14 @@ public class UserManager : IUserManager {
         await _data.Users.AddAsync(user);
         await _data.SaveChangesAsync();
 
-        if (!isFirstAccount) {
+        if (!isFirstAccount)
+        {
             _emailManager.SendVerification(user, origin);
         }
     }
 
-    public async Task ResetPasswordAsync(ResetPasswordRequest request) {
+    public async Task ResetPasswordAsync(ResetPasswordRequest request)
+    {
         var user = await _data.Users.SingleOrDefaultAsync(
             t => t.ResetToken == request.Token && t.ResetTokenExpires > DateTime.UtcNow
         );
@@ -119,14 +130,17 @@ public class UserManager : IUserManager {
         await _data.SaveChangesAsync();
     }
 
-    public async Task<UserResponse> UpdateAsync(int id, UpdateRequest request) {
+    public async Task<UserResponse> UpdateAsync(int id, UpdateRequest request)
+    {
         var user = await GetUserAsync(id);
 
-        if (user.Username != request.Username && _data.Users.Any(u => u.Username == request.Username)) {
+        if (user.Username != request.Username && _data.Users.Any(u => u.Username == request.Username))
+        {
             throw new ApiException("Username is already registered");
         }
 
-        if (request.Password is not null) {
+        if (request.Password is not null)
+        {
             CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
             user.PasswordHash = passwordHash;
@@ -142,7 +156,8 @@ public class UserManager : IUserManager {
         _data.Users.Update(user);
         await _data.SaveChangesAsync();
 
-        return new UserResponse {
+        return new UserResponse
+        {
             Id = user.Id,
             FirstName = user.FirstName,
             LastName = user.LastName,
@@ -154,7 +169,8 @@ public class UserManager : IUserManager {
         };
     }
 
-    public async Task VerifyEmailAsync(string token) {
+    public async Task VerifyEmailAsync(string token)
+    {
         var user = await _data.Users.SingleOrDefaultAsync(u => u.VerificationToken == token);
 
         if (user is null) { throw new ApiException("Verification failed"); }
@@ -166,8 +182,10 @@ public class UserManager : IUserManager {
         await _data.SaveChangesAsync();
     }
 
-    private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt) {
-        if (string.IsNullOrWhiteSpace(password)) {
+    private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+    {
+        if (string.IsNullOrWhiteSpace(password))
+        {
             throw new ArgumentException("Value cannot be empty or contain only whitespace", nameof(password));
         }
 
@@ -177,12 +195,12 @@ public class UserManager : IUserManager {
         passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
     }
 
-    private async Task<User> GetUserAsync(int id) {
+    private async Task<User> GetUserAsync(int id)
+    {
         var user = await _data.Users.FindAsync(id);
 
         if (user is null) { throw new KeyNotFoundException("User not found"); }
 
         return user;
     }
-
 }

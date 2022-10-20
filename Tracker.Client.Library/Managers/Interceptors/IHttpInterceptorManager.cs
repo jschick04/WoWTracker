@@ -1,15 +1,12 @@
 ﻿using Toolbelt.Blazor;
 
-namespace Tracker.Client.Library.Managers.Interceptors {
+namespace Tracker.Client.Library.Managers.Interceptors;
 
-    public interface IHttpInterceptorManager {
+public interface IHttpInterceptorManager
+{
+    void DisposeEvent();
 
-        void DisposeEvent();
+    Task InterceptBeforeHttpAsync(object sender, HttpClientInterceptorEventArgs e);
 
-        Task InterceptBeforeHttpAsync(object sender, HttpClientInterceptorEventArgs e);
-
-        void RegisterEvent();
-
-    }
-
+    void RegisterEvent();
 }

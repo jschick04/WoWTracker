@@ -6,8 +6,8 @@ using Tracker.Client.Shared.Dialogs.Characters;
 
 namespace Tracker.Client.Shared;
 
-public partial class NavMenu : IDisposable {
-
+public partial class NavMenu : IDisposable
+{
     private bool _dropdownActive = true;
     private bool _isLoading = true;
 
@@ -17,18 +17,21 @@ public partial class NavMenu : IDisposable {
 
     private List<CharacterResponse> Characters { get; set; } = new();
 
-    public void Dispose() {
+    public void Dispose()
+    {
         AppStateProvider.OnChangeAsync -= UpdateCharactersAsync;
         GC.SuppressFinalize(this);
     }
 
-    protected override async Task OnInitializedAsync() {
+    protected override async Task OnInitializedAsync()
+    {
         AppStateProvider.OnChangeAsync += UpdateCharactersAsync;
 
         await AppStateProvider.UpdateCharactersAsync();
     }
 
-    private async Task CreateCharacter() {
+    private async Task CreateCharacter()
+    {
         var parameters = new ModalParameters();
         var options = new ModalOptions().GetClass(IsDarkMode);
 
@@ -38,19 +41,19 @@ public partial class NavMenu : IDisposable {
 
         var result = await dialog.Result;
 
-        if (!result.Cancelled) {
+        if (!result.Cancelled)
+        {
             await AppStateProvider.UpdateCharactersAsync();
             NavigationManager.NavigateTo("/");
         }
     }
 
-    private void LoadCharacter(int id) {
-        NavigationManager.NavigateTo($"/character/{id}");
-    }
+    private void LoadCharacter(int id) { NavigationManager.NavigateTo($"/character/{id}"); }
 
     private void ToggleDropdown() => _dropdownActive = !_dropdownActive;
 
-    private async Task UpdateCharactersAsync() {
+    private async Task UpdateCharactersAsync()
+    {
         _isLoading = true;
         StateHasChanged();
 
@@ -59,5 +62,4 @@ public partial class NavMenu : IDisposable {
         _isLoading = false;
         StateHasChanged();
     }
-
 }

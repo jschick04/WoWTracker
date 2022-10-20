@@ -2,9 +2,10 @@
 
 namespace Tracker.Api.Services.Extensions;
 
-internal static class HostBuilderExtensions {
-
-    internal static IHostBuilder UseSerilog(this IHostBuilder builder) {
+internal static class HostBuilderExtensions
+{
+    internal static IHostBuilder UseSerilog(this IHostBuilder builder)
+    {
         var configuration = new ConfigurationBuilder()
             .AddJsonFile("appsettings.Development.json")
             .AddJsonFile("appsettings.json")
@@ -16,5 +17,4 @@ internal static class HostBuilderExtensions {
 
         return builder;
     }
-
 }

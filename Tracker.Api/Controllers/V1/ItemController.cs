@@ -8,23 +8,28 @@ using Tracker.Api.Library.Models;
 
 namespace Tracker.Api.Controllers.V1;
 
-public class ItemController : BaseApiController {
-
+public class ItemController : BaseApiController
+{
     private readonly IItemData _data;
 
     public ItemController(IItemData data) => _data = data;
 
     [HttpGet(ApiRoutes.Item.GetAll)]
-    public async Task<ActionResult<Dictionary<string, List<ItemModel>>>> GetAll() {
+    public async Task<ActionResult<Dictionary<string, List<ItemModel>>>> GetAll()
+    {
         Dictionary<string, List<ItemModel>> response = new();
 
-        try {
-            foreach (var professionId in (Professions[])Enum.GetValues(typeof(Professions))) {
+        try
+        {
+            foreach (var professionId in (Professions[])Enum.GetValues(typeof(Professions)))
+            {
                 var profession = professionId.GetName();
                 var items = await _data.GetByProfession(profession);
                 response[profession] = items;
             }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             return BadRequest(ex.Message);
         }
 
@@ -40,17 +45,20 @@ public class ItemController : BaseApiController {
 
     [Authorize]
     [HttpGet(ApiRoutes.Item.GetCraftableByProfession)]
-    public async Task<ActionResult<IEnumerable<NeededItemModel>>> GetCraftableByProfession(string name) {
+    public async Task<ActionResult<IEnumerable<NeededItemModel>>> GetCraftableByProfession(string name)
+    {
         if (Account is null) { return Unauthorized(); }
 
-        if (!Converter.TryParseWithMemberName(name, out Professions professionId)) {
+        if (!Converter.TryParseWithMemberName(name, out Professions professionId))
+        {
             return NotFound();
         }
 
         var model = await _data.GetCraftableByProfession(Account.Id, (int)professionId);
 
         var response = model.Select(
-            item => new NeededItemResponse {
+            item => new NeededItemResponse
+            {
                 Id = item.Id,
                 CharacterName = item.CharacterName,
                 Profession = item.ProfessionId.GetName(),
@@ -61,5 +69,4 @@ public class ItemController : BaseApiController {
 
         return Ok(response);
     }
-
 }

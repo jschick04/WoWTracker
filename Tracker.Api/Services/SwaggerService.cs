@@ -3,11 +3,13 @@ using Microsoft.OpenApi.Models;
 
 namespace Tracker.Api.Services;
 
-public class SwaggerService : IServiceInstaller {
-
-    public void InstallService(IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env) {
+public class SwaggerService : IServiceInstaller
+{
+    public void InstallService(IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env)
+    {
         services.AddSwaggerGen(
-            config => {
+            config =>
+            {
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 
@@ -17,7 +19,8 @@ public class SwaggerService : IServiceInstaller {
 
                 config.AddSecurityDefinition(
                     "Bearer",
-                    new OpenApiSecurityScheme {
+                    new OpenApiSecurityScheme
+                    {
                         Name = "Bearer",
                         In = ParameterLocation.Header,
                         Type = SecuritySchemeType.Http,
@@ -28,10 +31,13 @@ public class SwaggerService : IServiceInstaller {
                 );
 
                 config.AddSecurityRequirement(
-                    new OpenApiSecurityRequirement {
+                    new OpenApiSecurityRequirement
+                    {
                         {
-                            new OpenApiSecurityScheme {
-                                Reference = new OpenApiReference {
+                            new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
                                     Id = "Bearer",
                                     Type = ReferenceType.SecurityScheme
                                 },
@@ -46,5 +52,4 @@ public class SwaggerService : IServiceInstaller {
             }
         );
     }
-
 }

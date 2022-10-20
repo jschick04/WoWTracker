@@ -7,13 +7,14 @@ using Tracker.Api.Settings;
 namespace Tracker.Api.Cache;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-public class CacheAttribute : Attribute, IAsyncActionFilter {
-
+public class CacheAttribute : Attribute, IAsyncActionFilter
+{
     private readonly int _timeToLiveSeconds;
 
     public CacheAttribute(int timeToLiveSeconds) => _timeToLiveSeconds = timeToLiveSeconds;
 
-    public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next) {
+    public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+    {
         var cacheSettings = context.HttpContext.RequestServices.GetRequiredService<CacheSettings>();
 
         if (!cacheSettings.Enabled) { return; }
@@ -26,8 +27,10 @@ public class CacheAttribute : Attribute, IAsyncActionFilter {
         var cacheKey = GenerateCacheKeyFromRequest(context.HttpContext.Request, user?.Username);
         var cachedResponse = await cache.GetCacheAsync(cacheKey);
 
-        if (!string.IsNullOrEmpty(cachedResponse)) {
-            var contentResult = new ContentResult {
+        if (!string.IsNullOrEmpty(cachedResponse))
+        {
+            var contentResult = new ContentResult
+            {
                 Content = cachedResponse,
                 ContentType = "application/json",
                 StatusCode = 200
@@ -40,25 +43,28 @@ public class CacheAttribute : Attribute, IAsyncActionFilter {
 
         var executedContext = await next();
 
-        if (executedContext.Result is OkObjectResult ok) {
+        if (executedContext.Result is OkObjectResult ok)
+        {
             await cache.SetCacheAsync(cacheKey, ok.Value, TimeSpan.FromSeconds(_timeToLiveSeconds));
         }
     }
 
-    private static string GenerateCacheKeyFromRequest(HttpRequest request, string? username) {
+    private static string GenerateCacheKeyFromRequest(HttpRequest request, string? username)
+    {
         var keyBuilder = new StringBuilder();
 
-        if (username is not null) {
+        if (username is not null)
+        {
             keyBuilder.Append($"{username}|");
         }
 
         keyBuilder.Append($"{request.Path}");
 
-        foreach ((string key, var value) in request.Query.OrderBy(x => x.Key)) {
+        foreach ((string key, var value) in request.Query.OrderBy(x => x.Key))
+        {
             keyBuilder.Append($"|{key}-{value}");
         }
 
         return keyBuilder.ToString();
     }
-
 }

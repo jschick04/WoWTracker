@@ -10,21 +10,24 @@ using Tracker.Api.Library.Models;
 namespace Tracker.Api.Controllers.V1;
 
 [Authorize]
-public class CharacterController : BaseApiController {
-
+public class CharacterController : BaseApiController
+{
     private readonly ICharacterData _data;
 
     public CharacterController(ICharacterData data) => _data = data;
 
     [HttpPut(ApiRoutes.Character.AddNeededItem)]
-    public async Task<IActionResult> AddNeededItem([FromRoute] int id, [FromBody] NeededItemRequest request) {
+    public async Task<IActionResult> AddNeededItem([FromRoute] int id, [FromBody] NeededItemRequest request)
+    {
         if (Account is null) { return Unauthorized(); }
 
-        if (!Converter.TryParseWithMemberName(request.Profession, out Professions professionId)) {
+        if (!Converter.TryParseWithMemberName(request.Profession, out Professions professionId))
+        {
             return NotFound();
         }
 
-        var model = new NeededItemModel {
+        var model = new NeededItemModel
+        {
             Id = id,
             ProfessionId = professionId,
             Name = request.Name,
@@ -37,24 +40,29 @@ public class CharacterController : BaseApiController {
     }
 
     [HttpPost(ApiRoutes.Character.Create)]
-    public async Task<IActionResult> Create([FromBody] CreateCharacterRequest request) {
+    public async Task<IActionResult> Create([FromBody] CreateCharacterRequest request)
+    {
         if (Account is null) { return Unauthorized(); }
 
-        var model = new CharacterModel {
+        var model = new CharacterModel
+        {
             UserId = Account.Id,
             Name = request.Name,
             HasCooking = request.HasCooking
         };
 
-        if (Converter.TryParseWithMemberName(request.Class, out Classes classId)) {
+        if (Converter.TryParseWithMemberName(request.Class, out Classes classId))
+        {
             model.ClassId = classId;
         }
 
-        if (Converter.TryParseWithMemberName(request.FirstProfession, out Professions firstProfessionId)) {
+        if (Converter.TryParseWithMemberName(request.FirstProfession, out Professions firstProfessionId))
+        {
             model.FirstProfessionId = firstProfessionId;
         }
 
-        if (Converter.TryParseWithMemberName(request.SecondProfession, out Professions secondProfessionId)) {
+        if (Converter.TryParseWithMemberName(request.SecondProfession, out Professions secondProfessionId))
+        {
             model.SecondProfessionId = secondProfessionId;
         }
 
@@ -64,7 +72,8 @@ public class CharacterController : BaseApiController {
     }
 
     [HttpDelete(ApiRoutes.Character.Delete)]
-    public async Task<IActionResult> Delete([FromRoute] int id) {
+    public async Task<IActionResult> Delete([FromRoute] int id)
+    {
         if (Account is null) { return Unauthorized(); }
 
         var model = await _data.GetById(id, Account.Id);
@@ -77,7 +86,8 @@ public class CharacterController : BaseApiController {
     }
 
     [HttpGet(ApiRoutes.Character.GetAll)]
-    public async Task<ActionResult<IEnumerable<CharacterResponse>>> GetAll() {
+    public async Task<ActionResult<IEnumerable<CharacterResponse>>> GetAll()
+    {
         if (Account is null) { return Unauthorized(); }
 
         var model = await _data.GetAll(Account.Id);
@@ -85,7 +95,8 @@ public class CharacterController : BaseApiController {
         if (model.Count == 0) { return NotFound(); }
 
         var response = model.Select(
-            character => new CharacterResponse {
+            character => new CharacterResponse
+            {
                 Id = character.Id,
                 Name = character.Name,
                 Class = character.ClassId.GetName(),
@@ -99,14 +110,16 @@ public class CharacterController : BaseApiController {
     }
 
     [HttpGet(ApiRoutes.Character.GetById)]
-    public async Task<ActionResult<CharacterResponse>> GetById([FromRoute] int id) {
+    public async Task<ActionResult<CharacterResponse>> GetById([FromRoute] int id)
+    {
         if (Account is null) { return Unauthorized(); }
 
         var model = await _data.GetById(id, Account.Id);
 
         if (model is null) { return NotFound(); }
 
-        var response = new CharacterResponse {
+        var response = new CharacterResponse
+        {
             Id = model.Id,
             Name = model.Name,
             Class = model.ClassId.ToString(),
@@ -119,13 +132,15 @@ public class CharacterController : BaseApiController {
     }
 
     [HttpGet(ApiRoutes.Character.GetNeededItems)]
-    public async Task<ActionResult<IEnumerable<NeededItemResponse>>> GetNeededItems([FromRoute] int id) {
+    public async Task<ActionResult<IEnumerable<NeededItemResponse>>> GetNeededItems([FromRoute] int id)
+    {
         if (Account is null) { return Unauthorized(); }
 
         var model = await _data.GetNeededItems(id);
 
         var response = model.Select(
-            item => new NeededItemResponse {
+            item => new NeededItemResponse
+            {
                 Profession = item.ProfessionId.GetName(),
                 Name = item.Name,
                 Amount = item.Amount
@@ -136,14 +151,17 @@ public class CharacterController : BaseApiController {
     }
 
     [HttpPut(ApiRoutes.Character.RemoveNeededItem)]
-    public async Task<IActionResult> RemoveNeededItem([FromRoute] int id, [FromBody] NeededItemRequest request) {
+    public async Task<IActionResult> RemoveNeededItem([FromRoute] int id, [FromBody] NeededItemRequest request)
+    {
         if (Account is null) { return Unauthorized(); }
 
-        if (!Converter.TryParseWithMemberName(request.Profession, out Professions professionId)) {
+        if (!Converter.TryParseWithMemberName(request.Profession, out Professions professionId))
+        {
             return NotFound();
         }
 
-        var model = new NeededItemModel {
+        var model = new NeededItemModel
+        {
             Id = id,
             ProfessionId = professionId,
             Name = request.Name,
@@ -156,7 +174,8 @@ public class CharacterController : BaseApiController {
     }
 
     [HttpPut(ApiRoutes.Character.Update)]
-    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCharacterRequest request) {
+    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCharacterRequest request)
+    {
         if (Account is null) { return Unauthorized(); }
 
         var model = await _data.GetById(id, Account.Id);
@@ -165,21 +184,28 @@ public class CharacterController : BaseApiController {
 
         model.Name = request.Name ?? model.Name;
 
-        if (Converter.TryParseWithMemberName(request.Class, out Classes classId)) {
+        if (Converter.TryParseWithMemberName(request.Class, out Classes classId))
+        {
             model.ClassId = classId;
         }
 
         // TODO: Figure out a better way to do this to allow dropping a profession without specifying all params
         // Maybe just set an Enum value of 0 = None
-        if (Converter.TryParseWithMemberName(request.FirstProfession, out Professions firstProfessionId)) {
+        if (Converter.TryParseWithMemberName(request.FirstProfession, out Professions firstProfessionId))
+        {
             model.FirstProfessionId = firstProfessionId;
-        } else {
+        }
+        else
+        {
             model.FirstProfessionId = null;
         }
 
-        if (Converter.TryParseWithMemberName(request.SecondProfession, out Professions secondProfessionId)) {
+        if (Converter.TryParseWithMemberName(request.SecondProfession, out Professions secondProfessionId))
+        {
             model.SecondProfessionId = secondProfessionId;
-        } else {
+        }
+        else
+        {
             model.SecondProfessionId = null;
         }
 
@@ -189,5 +215,4 @@ public class CharacterController : BaseApiController {
 
         return Ok();
     }
-
 }

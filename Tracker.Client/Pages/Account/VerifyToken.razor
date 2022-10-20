@@ -4,10 +4,12 @@
 
 @code {
 
-    protected override async Task OnInitializedAsync() {
+    protected override async Task OnInitializedAsync()
+    {
         var token = NavigationManager.QueryString("token");
 
-        if (string.IsNullOrWhiteSpace(token)) {
+        if (string.IsNullOrWhiteSpace(token))
+        {
             ToastService.ShowError("Invalid Token");
             return;
         }
@@ -16,9 +18,12 @@
 
         var result = await HttpClient.PostAsync(api, null);
 
-        if (result.IsSuccessStatusCode) {
+        if (result.IsSuccessStatusCode)
+        {
             ToastService.ShowSuccess("Account successfully verified");
-        } else {
+        }
+        else
+        {
             var response = await result.Content.ReadFromJsonAsync<ErrorResponse>();
             ToastService.ShowError(response?.Error);
         }

@@ -4,9 +4,10 @@ using Tracker.Api.Managers;
 
 namespace Tracker.Api.Filters;
 
-public class HangfireAuthorizationFilter : IDashboardAuthorizationFilter {
-
-    public bool Authorize([NotNull] DashboardContext context) {
+public class HangfireAuthorizationFilter : IDashboardAuthorizationFilter
+{
+    public bool Authorize([NotNull] DashboardContext context)
+    {
         // TODO: Fix so we can use JWT instead of Basic Auth
         var httpContext = context.GetHttpContext();
 
@@ -14,7 +15,8 @@ public class HangfireAuthorizationFilter : IDashboardAuthorizationFilter {
 
         string? token;
 
-        if (httpContext.Request.Query.ContainsKey("token")) {
+        if (httpContext.Request.Query.ContainsKey("token"))
+        {
             token = httpContext.Request.Query["token"];
 
             httpContext.Response.Headers.Add("Authorization", $"Bearer {token}");
@@ -24,7 +26,9 @@ public class HangfireAuthorizationFilter : IDashboardAuthorizationFilter {
                 token,
                 new CookieOptions { Expires = DateTime.Now.AddMinutes(15) }
             );
-        } else {
+        }
+        else
+        {
             token = httpContext.Request.Cookies["Jobs"];
         }
 
@@ -34,5 +38,4 @@ public class HangfireAuthorizationFilter : IDashboardAuthorizationFilter {
 
         return tokenManager?.IsAdminClaim(token) is true;
     }
-
 }

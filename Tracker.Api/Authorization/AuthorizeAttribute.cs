@@ -5,24 +5,26 @@ using Tracker.Api.Entities;
 namespace Tracker.Api.Authorization;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-public class AuthorizeAttribute : Attribute, IAuthorizationFilter {
-
+public class AuthorizeAttribute : Attribute, IAuthorizationFilter
+{
     private readonly IList<Role> _roles;
 
     public AuthorizeAttribute(params Role[] roles) => _roles = roles ?? Array.Empty<Role>();
 
-    public void OnAuthorization(AuthorizationFilterContext context) {
+    public void OnAuthorization(AuthorizationFilterContext context)
+    {
         var allowAnonymous = context.ActionDescriptor.EndpointMetadata.OfType<AnonymousAttribute>().Any();
 
         if (allowAnonymous) { return; }
 
         var user = (User?)context.HttpContext.Items["Account"];
 
-        if (user is null || _roles.Any() && !_roles.Contains(user.Role)) {
-            context.Result = new JsonResult(new { Error = "Unauthorized" }) {
+        if (user is null || (_roles.Any() && !_roles.Contains(user.Role)))
+        {
+            context.Result = new JsonResult(new { Error = "Unauthorized" })
+            {
                 StatusCode = StatusCodes.Status401Unauthorized
             };
         }
     }
-
 }

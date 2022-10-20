@@ -13,14 +13,15 @@ using Tracker.Api.Data;
 
 namespace Tracker.Api.Tests;
 
-public class Tests {
-
+public class Tests
+{
     protected const string Username = "test@apitesting.com";
     protected const string Password = "Int3grat1on!";
 
     protected readonly HttpClient testClient;
 
-    protected Tests() {
+    protected Tests()
+    {
         var options = new DbContextOptionsBuilder<DataContext>()
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
@@ -29,7 +30,8 @@ public class Tests {
 
         var appFactory = new WebApplicationFactory<Startup>()
             .WithWebHostBuilder(
-                builder => {
+                builder =>
+                {
                     builder.UseSetting("https_port", "5001");
                     builder.ConfigureServices(services => services.AddSingleton(_ => data));
                 }
@@ -38,15 +40,18 @@ public class Tests {
         testClient = appFactory.CreateClient();
     }
 
-    protected async Task AuthenticateAsync() {
+    protected async Task AuthenticateAsync()
+    {
         testClient.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue("bearer", await GetJwtAsync());
     }
 
-    protected async Task<string> GetJwtAsync() {
+    protected async Task<string> GetJwtAsync()
+    {
         var registrationResponse = await testClient.PostAsJsonAsync(
             ApiRoutes.Identity.Register,
-            new RegistrationRequest {
+            new RegistrationRequest
+            {
                 FirstName = "Api",
                 LastName = "Admin",
                 Username = Username,
@@ -56,7 +61,8 @@ public class Tests {
             }
         );
 
-        if (!registrationResponse.IsSuccessStatusCode) {
+        if (!registrationResponse.IsSuccessStatusCode)
+        {
             return null;
         }
 
@@ -69,5 +75,4 @@ public class Tests {
 
         return results?.Token;
     }
-
 }

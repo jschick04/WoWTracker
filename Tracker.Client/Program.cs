@@ -3,9 +3,10 @@ using Tracker.Client.Helpers;
 
 namespace Tracker.Client;
 
-public class Program {
-
-    public static async Task Main(string[] args) {
+public class Program
+{
+    public static async Task Main(string[] args)
+    {
         var builder = WebAssemblyHostBuilder.CreateDefault(args);
         builder.RootComponents.Add<App>("#app");
 
@@ -19,5 +20,4 @@ public class Program {
 
         await builder.Build().RunAsync();
     }
-
 }

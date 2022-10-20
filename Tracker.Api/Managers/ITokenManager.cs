@@ -2,8 +2,8 @@
 
 namespace Tracker.Api.Managers;
 
-public interface ITokenManager {
-
+public interface ITokenManager
+{
     string GenerateEmailToken(string username);
 
     string GenerateJwtToken(User user);
@@ -15,5 +15,4 @@ public interface ITokenManager {
     bool IsAdminClaim(string token);
 
     void RemoveOldRefreshTokens(User user);
-
 }

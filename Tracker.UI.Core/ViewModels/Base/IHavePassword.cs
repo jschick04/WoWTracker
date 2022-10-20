@@ -1,11 +1,8 @@
 ﻿using System.Security;
 
-namespace Tracker.UI.Core.ViewModels {
+namespace Tracker.UI.Core.ViewModels;
 
-    public interface IHavePassword {
-
-        SecureString SecurePassword { get; }
-
-    }
-
+public interface IHavePassword
+{
+    SecureString SecurePassword { get; }
 }

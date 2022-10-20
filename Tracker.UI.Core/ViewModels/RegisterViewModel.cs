@@ -1,5 +1,3 @@
-﻿namespace Tracker.UI.Core.ViewModels {
+﻿namespace Tracker.UI.Core.ViewModels;
 
-    public class RegisterViewModel : BaseViewModel { }
-
-}
+public class RegisterViewModel : BaseViewModel { }

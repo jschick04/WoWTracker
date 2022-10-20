@@ -9,24 +9,27 @@ using Tracker.Api.Library.Helpers;
 
 namespace Tracker.Api.Managers;
 
-public class IdentityManager : IIdentityManager {
-
+public class IdentityManager : IIdentityManager
+{
     private readonly DataContext _data;
     private readonly ITokenManager _tokenManager;
 
-    public IdentityManager(DataContext data, ITokenManager tokenManager) {
+    public IdentityManager(DataContext data, ITokenManager tokenManager)
+    {
         _data = data;
         _tokenManager = tokenManager;
     }
 
-    public async Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request, string? ipAddress) {
+    public async Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request, string? ipAddress)
+    {
         var user = await _data.Users.SingleOrDefaultAsync(u => u.Username == request.Username);
 
         if (user is null) { throw new KeyNotFoundException("User not found"); }
 
         if (!user.IsVerified) { throw new ApiException("Email not confirmed"); }
 
-        if (!VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt)) {
+        if (!VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
+        {
             throw new ApiException("Invalid Credentials");
         }
 
@@ -39,7 +42,8 @@ public class IdentityManager : IIdentityManager {
         _data.Update(user);
         await _data.SaveChangesAsync();
 
-        return new AuthenticationResponse {
+        return new AuthenticationResponse
+        {
             Id = user.Id,
             Username = user.Username,
             Created = user.Created,
@@ -50,7 +54,8 @@ public class IdentityManager : IIdentityManager {
         };
     }
 
-    public async Task<AuthenticationResponse> RefreshTokenAsync(string token, string ipAddress) {
+    public async Task<AuthenticationResponse> RefreshTokenAsync(string token, string ipAddress)
+    {
         (RefreshToken refreshToken, User user) = await GetRefreshTokenAsync(token);
 
         var newRefreshToken = _tokenManager.GenerateRefreshToken(ipAddress);
@@ -66,7 +71,8 @@ public class IdentityManager : IIdentityManager {
 
         var jwtToken = _tokenManager.GenerateJwtToken(user);
 
-        return new AuthenticationResponse {
+        return new AuthenticationResponse
+        {
             Id = user.Id,
             Username = user.Username,
             Created = user.Created,
@@ -77,7 +83,8 @@ public class IdentityManager : IIdentityManager {
         };
     }
 
-    public async Task RevokeTokenAsync(string token, string ipAddress) {
+    public async Task RevokeTokenAsync(string token, string ipAddress)
+    {
         (RefreshToken refreshToken, User user) = await GetRefreshTokenAsync(token);
 
         refreshToken.Revoked = DateTime.UtcNow;
@@ -87,7 +94,8 @@ public class IdentityManager : IIdentityManager {
         await _data.SaveChangesAsync();
     }
 
-    public async Task ValidateResetTokenAsync(TokenRequest request) {
+    public async Task ValidateResetTokenAsync(TokenRequest request)
+    {
         var user = await _data.Users.SingleOrDefaultAsync(
             t => t.ResetToken == request.Token && t.ResetTokenExpires > DateTime.UtcNow
         );
@@ -95,18 +103,22 @@ public class IdentityManager : IIdentityManager {
         if (user is null) { throw new KeyNotFoundException("Invalid Token"); }
     }
 
-    private static bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt) {
+    private static bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+    {
         if (password is null) { throw new ArgumentNullException(nameof(password)); }
 
-        if (string.IsNullOrWhiteSpace(password)) {
+        if (string.IsNullOrWhiteSpace(password))
+        {
             throw new ArgumentException("Value cannot be empty or contain only whitespace", nameof(password));
         }
 
-        if (passwordHash.Length != 64) {
+        if (passwordHash.Length != 64)
+        {
             throw new ArgumentException("Invalid length of password hash", nameof(passwordHash));
         }
 
-        if (passwordSalt.Length != 128) {
+        if (passwordSalt.Length != 128)
+        {
             throw new ArgumentException("Invalid length of password salt", nameof(passwordSalt));
         }
 
@@ -114,14 +126,16 @@ public class IdentityManager : IIdentityManager {
 
         var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
 
-        for (int i = 0; i < computedHash.Length; i++) {
+        for (int i = 0; i < computedHash.Length; i++)
+        {
             if (computedHash[i] != passwordHash[i]) { return false; }
         }
 
         return true;
     }
 
-    private async Task<(RefreshToken, User)> GetRefreshTokenAsync(string token) {
+    private async Task<(RefreshToken, User)> GetRefreshTokenAsync(string token)
+    {
         var user = await _data.Users.SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.Token == token));
 
         if (user is null) { throw new ApiException("Invalid Token"); }
@@ -132,5 +146,4 @@ public class IdentityManager : IIdentityManager {
 
         return (refreshToken, user);
     }
-
 }

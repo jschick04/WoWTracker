@@ -3,8 +3,8 @@ using Tracker.Api.Contracts.Identity.Responses;
 
 namespace Tracker.Api.Managers;
 
-public interface IUserManager {
-
+public interface IUserManager
+{
     Task DeleteAsync(int id);
 
     Task ForgotPasswordAsync(ForgotPasswordRequest request, string origin);
@@ -20,5 +20,4 @@ public interface IUserManager {
     Task<UserResponse> UpdateAsync(int id, UpdateRequest request);
 
     Task VerifyEmailAsync(string token);
-
 }

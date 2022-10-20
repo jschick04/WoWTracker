@@ -3,12 +3,13 @@ using Tracker.Client.Helpers;
 
 namespace Tracker.Client.Pages.Identity;
 
-public partial class Register {
-
+public partial class Register
+{
     private readonly RegistrationRequest _request = new();
     private bool _isLoading;
 
-    private async Task SubmitAsync() {
+    private async Task SubmitAsync()
+    {
         _isLoading = true;
 
         var result = await UserManager.RegisterAsync(_request);
@@ -16,9 +17,9 @@ public partial class Register {
 
         _isLoading = false;
 
-        if (result.Succeeded) {
+        if (result.Succeeded)
+        {
             NavigationManager.NavigateTo("/");
         }
     }
-
 }

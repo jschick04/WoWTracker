@@ -1,7 +1,7 @@
 ﻿namespace Tracker.Api.Contracts.Identity.Responses;
 
-public class UserResponse {
-
+public class UserResponse
+{
     public int Id { get; set; }
 
     public string? FirstName { get; set; }
@@ -17,5 +17,4 @@ public class UserResponse {
     public DateTime? Updated { get; set; }
 
     public bool IsVerified { get; set; }
-
 }

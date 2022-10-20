@@ -10,10 +10,11 @@ using Xunit;
 
 namespace Tracker.Api.Tests;
 
-public class IdentityControllerTests : Tests {
-
+public class IdentityControllerTests : Tests
+{
     [Fact]
-    public async Task GetById_ReturnsCurrentUserAsAdmin_WhenUserIsFirstAccount() {
+    public async Task GetById_ReturnsCurrentUserAsAdmin_WhenUserIsFirstAccount()
+    {
         await AuthenticateAsync();
 
         var response = await testClient.GetAsync(ApiRoutes.Account.GetByIdReplace(1));
@@ -26,10 +27,12 @@ public class IdentityControllerTests : Tests {
     }
 
     [Fact]
-    public async Task Update_ReturnsCurrentUserWithNewValues() {
+    public async Task Update_ReturnsCurrentUserWithNewValues()
+    {
         await AuthenticateAsync();
 
-        var updates = new UpdateRequest {
+        var updates = new UpdateRequest
+        {
             LastName = "User",
         };
 
@@ -42,5 +45,4 @@ public class IdentityControllerTests : Tests {
         returnedUser?.Username.Should().Be(Username);
         returnedUser?.Updated.Should().NotBeNull();
     }
-
 }

@@ -2,8 +2,8 @@
 
 namespace Tracker.Api.Contracts.V1.Requests;
 
-public class CreateCharacterRequest : BaseRequest {
-
+public class CreateCharacterRequest : BaseRequest
+{
     private string? _firstProfession;
     private string? _secondProfession;
 
@@ -15,16 +15,17 @@ public class CreateCharacterRequest : BaseRequest {
     [Required]
     public string Class { get; set; } = null!;
 
-    public string? FirstProfession {
+    public string? FirstProfession
+    {
         get => _firstProfession;
         set => _firstProfession = ReplaceEmptyWithNull(value);
     }
 
-    public string? SecondProfession {
+    public string? SecondProfession
+    {
         get => _secondProfession;
         set => _secondProfession = ReplaceEmptyWithNull(value);
     }
 
     public bool HasCooking { get; set; }
-
 }

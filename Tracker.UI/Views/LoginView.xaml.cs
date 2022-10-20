@@ -1,17 +1,12 @@
 ﻿using System.Security;
 using Tracker.UI.Core.ViewModels;
 
-namespace Tracker.UI.Views {
+namespace Tracker.UI.Views;
 
-    /// <summary>Interaction logic for LoginView.xaml</summary>
-    public partial class LoginView : BaseView<LoginViewModel>, IHavePassword {
+/// <summary>Interaction logic for LoginView.xaml</summary>
+public partial class LoginView : BaseView<LoginViewModel>, IHavePassword
+{
+    public LoginView() { InitializeComponent(); }
 
-        public LoginView() {
-            InitializeComponent();
-        }
-
-        public SecureString SecurePassword => Password.SecurePassword;
-
-    }
-
+    public SecureString SecurePassword => Password.SecurePassword;
 }

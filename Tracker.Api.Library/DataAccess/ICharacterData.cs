@@ -2,8 +2,8 @@
 
 namespace Tracker.Api.Library.DataAccess;
 
-public interface ICharacterData {
-
+public interface ICharacterData
+{
     Task Create(CharacterModel model);
 
     Task AddNeededItem(NeededItemModel model);
@@ -19,5 +19,4 @@ public interface ICharacterData {
     Task<List<NeededItemModel>> GetNeededItems(int id);
 
     Task Update(CharacterModel model);
-
 }

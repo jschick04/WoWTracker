@@ -4,8 +4,8 @@ using Tracker.Library.Helpers;
 
 namespace Tracker.Library.Managers;
 
-public interface ICharacterManager {
-
+public interface ICharacterManager
+{
     Task<IResult> AddNeededItemAsync(int id, NeededItemRequest request);
 
     Task<IResult> CreateAsync(CreateCharacterRequest request);
@@ -21,5 +21,4 @@ public interface ICharacterManager {
     Task<IResult> RemoveNeededItemAsync(int id, NeededItemRequest request);
 
     Task<IResult> UpdateAsync(int id, UpdateCharacterRequest request);
-
 }
