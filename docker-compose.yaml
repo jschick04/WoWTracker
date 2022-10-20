@@ -12,3 +12,7 @@ services:
       - ${DATAPATH:?err}\SQL_Data:/var/opt/mssql/data
       - ${DATAPATH:?err}\SQL_Log:/var/opt/mssql/log
       - ${DATAPATH:?err}\SQL_Secrets:/var/opt/mssql/secrets
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
