@@ -1,5 +1,7 @@
 ﻿@page "/verifyauth"
 
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
 <div class="mb-3" style="font-size: 1.4rem">VerifyAuth</div>
 
 <div class="mb-3" style="font-size: 1.2rem">Username: @CurrentUsername</div>
@@ -8,16 +10,21 @@
 <div class="my-2" style="font-size: 1.1rem">Group 1</div>
 <hr style="width: 25%; text-align: left" />
 
-@if (_isLoading) {
+@if (Characters1.Value.IsLoading)
+{
     <LoadingText />
-} else {
-    @foreach (var character in Characters1) {
+}
+else
+{
+    @foreach (var character in Characters1.Value.Characters)
+    {
         <div class="mb-2">
             <div>Name: @character.Name</div>
             <div>Class: @character.Class</div>
             <div>Primary Profession: @(GetProfession(character.FirstProfession))</div>
             <div>Secondary Profession: @(GetProfession(character.SecondProfession))</div>
-            @if (character.HasCooking) {
+            @if (character.HasCooking)
+            {
                 <div>Can Cook</div>
             }
         </div>
@@ -28,16 +35,21 @@
 <div class="my-2" style="font-size: 1.1rem">Group 2</div>
 <hr style="width: 25%; text-align: left" />
 
-@if (_isLoading) {
+@if (Characters2.Value.IsLoading)
+{
     <LoadingText />
-} else {
-    @foreach (var character in Characters2) {
+}
+else
+{
+    @foreach (var character in Characters2.Value.Characters)
+    {
         <div class="mb-2">
             <div>Name: @character.Name</div>
             <div>Class: @character.Class</div>
             <div>Primary Profession: @(GetProfession(character.FirstProfession))</div>
             <div>Secondary Profession: @(GetProfession(character.SecondProfession))</div>
-            @if (character.HasCooking) {
+            @if (character.HasCooking)
+            {
                 <div>Can Cook</div>
             }
         </div>

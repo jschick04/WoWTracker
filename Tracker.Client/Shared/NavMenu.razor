@@ -20,10 +20,9 @@
                 <i class="fa-solid fa-users"></i>
                 Characters <span class="fa-solid fa-caret-down" data-rotate="@_dropdownActive.ToString()"></span>
             </a>
-
             <ul class="submenu" aria-expanded="@_dropdownActive.ToString()">
 
-                @if (_isLoading)
+                @if (CharacterState.Value.IsLoading)
                 {
                     <li>
                         <NavLink class="nav-links">
@@ -31,9 +30,9 @@
                         </NavLink>
                     </li>
                 }
-                else if (Characters.Count > 0)
+                else if (CharacterState.Value.Characters.Any())
                 {
-                    @foreach (var character in Characters)
+                    @foreach (var character in CharacterState.Value.Characters)
                     {
                         <li>
                             <NavLink class="nav-links" @onclick="@(() => LoadCharacter(character.Id))">
