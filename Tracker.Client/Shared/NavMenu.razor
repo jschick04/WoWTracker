@@ -1,4 +1,6 @@
-﻿<nav id="sidebar" data-toggle="@DrawerOpen.ToString()">
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+<nav id="sidebar" data-toggle="@NavMenuState.Value.DrawerOpen.ToString()">
     <ul>
 
         <li>
@@ -21,14 +23,18 @@
 
             <ul class="submenu" aria-expanded="@_dropdownActive.ToString()">
 
-                @if (_isLoading) {
+                @if (_isLoading)
+                {
                     <li>
                         <NavLink class="nav-links">
                             <i class="fa-solid fa-spinner-third fa-spin"></i>Loading...
                         </NavLink>
                     </li>
-                } else if (Characters.Count > 0) {
-                    @foreach (var character in Characters) {
+                }
+                else if (Characters.Count > 0)
+                {
+                    @foreach (var character in Characters)
+                    {
                         <li>
                             <NavLink class="nav-links" @onclick="@(() => LoadCharacter(character.Id))">
                                 <i class="fa-regular fa-user"></i>@character.Name

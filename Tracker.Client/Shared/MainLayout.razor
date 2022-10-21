@@ -1,18 +1,16 @@
 ﻿@inherits LayoutComponentBase
 
-@inject IJSRuntime Js;
-
 <main class="@(_isDarkMode ? "darkmode" : "")">
     <CascadingValue Value="_isDarkMode">
 
-        <HeaderMenu @bind-DrawerOpen="_drawerOpen" />
+        <HeaderMenu />
 
         <div class="wrapper">
 
             <AuthorizeView>
                 <Authorized>
 
-                    <NavMenu DrawerOpen="_drawerOpen" />
+                    <NavMenu />
 
                 </Authorized>
             </AuthorizeView>

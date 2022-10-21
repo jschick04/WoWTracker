@@ -1,23 +1,16 @@
 ﻿using Blazored.Modal;
 using Microsoft.AspNetCore.Components;
 using Tracker.Client.Helpers;
+using Tracker.Client.Library.Store.NavMenu;
 using Tracker.Client.Shared.Dialogs;
 
 namespace Tracker.Client.Shared;
 
 public partial class HeaderMenu
 {
-    [Parameter] public bool DrawerOpen { get; set; }
-
-    [Parameter] public EventCallback<bool> DrawerOpenChanged { get; set; }
-
     [CascadingParameter] protected bool IsDarkMode { get; set; }
 
-    private async Task DrawerToggle()
-    {
-        DrawerOpen = !DrawerOpen;
-        await DrawerOpenChanged.InvokeAsync(DrawerOpen);
-    }
+    private void DrawerToggle() => Dispatcher.Dispatch(new ToggleDrawerOpenAction());
 
     private void LogOut()
     {
