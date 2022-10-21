@@ -6,6 +6,7 @@
 @using Blazored.Toast
 @using Blazored.Toast.Services
 @using Blazored.Toast.Configuration
+@using Fluxor
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.Forms
@@ -48,6 +49,8 @@
 @inject IUserManager UserManager
 
 @inject ILoggerFactory LoggerFactory
+
+@inject IDispatcher Dispatcher
 
 @inject IModalService DialogService
 @inject IToastService ToastService

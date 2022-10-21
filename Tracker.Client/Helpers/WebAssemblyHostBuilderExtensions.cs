@@ -1,6 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using Blazored.Modal;
 using Blazored.Toast;
+using Fluxor;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
@@ -35,6 +36,7 @@ public static class WebAssemblyHostBuilderExtensions
         builder.Services.AddBlazoredLocalStorage();
         builder.Services.AddBlazoredModal();
         builder.Services.AddBlazoredToast();
+        builder.Services.AddFluxor(options => options.ScanAssemblies(typeof(ApplicationStateProvider).Assembly));
     }
 
     public static void AddHandlers(this WebAssemblyHostBuilder builder)
