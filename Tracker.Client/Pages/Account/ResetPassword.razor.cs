@@ -4,11 +4,12 @@ using Tracker.Library.Helpers;
 
 namespace Tracker.Client.Pages.Account;
 
-public partial class ResetPassword {
-
+public partial class ResetPassword
+{
     private readonly ResetPasswordRequest _request = new();
 
-    protected override void OnInitialized() {
+    protected override void OnInitialized()
+    {
         _request.Token = NavigationManager.QueryString("token") ?? string.Empty;
 
         if (!string.IsNullOrWhiteSpace(_request.Token)) { return; }
@@ -17,12 +18,12 @@ public partial class ResetPassword {
         NavigationManager.NavigateTo("/");
     }
 
-    private async Task SubmitAsync() {
+    private async Task SubmitAsync()
+    {
         var result = await UserManager.ResetPasswordAsync(_request);
 
         result.ToastMessage(ToastService);
 
         NavigationManager.NavigateTo("/");
     }
-
 }

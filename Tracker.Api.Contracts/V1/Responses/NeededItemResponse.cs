@@ -1,7 +1,7 @@
 ﻿namespace Tracker.Api.Contracts.V1.Responses;
 
-public class NeededItemResponse {
-
+public class NeededItemResponse
+{
     public int Id { get; set; }
 
     public string CharacterName { get; set; } = null!;
@@ -11,5 +11,4 @@ public class NeededItemResponse {
     public string Name { get; set; } = null!;
 
     public int Amount { get; set; }
-
 }

@@ -2,9 +2,10 @@
 
 namespace Tracker.Client.Helpers;
 
-public static class ModalExtensions {
-
-    public static ModalOptions? GetClass(this ModalOptions? options, bool isDarkMode, bool isMinWidth = false) {
+public static class ModalExtensions
+{
+    public static ModalOptions? GetClass(this ModalOptions? options, bool isDarkMode, bool isMinWidth = false)
+    {
         if (options == null) { return null; }
 
         string css = "global-modal-template";
@@ -17,5 +18,4 @@ public static class ModalExtensions {
 
         return options;
     }
-
 }

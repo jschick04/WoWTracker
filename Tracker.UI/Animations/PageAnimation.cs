@@ -1,13 +1,10 @@
-﻿namespace Tracker.UI.Animations {
+﻿namespace Tracker.UI.Animations;
 
-    public enum PageAnimation {
-
-        None = 0,
-        SlideAndFadeInFromRight = 1,
-        SlideAndFadeOutToLeft = 2,
-        SlideAndFadeInFromLeft = 3,
-        SlideAndFadeOutToRight = 4
-
-    }
-
+public enum PageAnimation
+{
+    None = 0,
+    SlideAndFadeInFromRight = 1,
+    SlideAndFadeOutToLeft = 2,
+    SlideAndFadeInFromLeft = 3,
+    SlideAndFadeOutToRight = 4
 }

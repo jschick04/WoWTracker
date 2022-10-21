@@ -3,8 +3,8 @@ using Tracker.Library.Helpers;
 
 namespace Tracker.Client.Pages;
 
-public partial class VerifyAuth : IDisposable {
-
+public partial class VerifyAuth : IDisposable
+{
     private bool _isLoading;
 
     private List<CharacterResponse> Characters1 { get; set; } = new();
@@ -13,17 +13,20 @@ public partial class VerifyAuth : IDisposable {
 
     private string CurrentUsername { get; set; } = "";
 
-    public void Dispose() {
+    public void Dispose()
+    {
         AppStateProvider.OnChangeAsync -= UpdateCharactersAsync;
         GC.SuppressFinalize(this);
     }
 
-    protected override async Task OnInitializedAsync() {
+    protected override async Task OnInitializedAsync()
+    {
         var user = await StateProvider.GetAuthenticationStateProviderUserAsync();
 
         AppStateProvider.OnChangeAsync += UpdateCharactersAsync;
 
-        if (user.Identity?.IsAuthenticated is true) {
+        if (user.Identity?.IsAuthenticated is true)
+        {
             CurrentUsername = user.GetUsername();
 
             await UpdateCharactersAsync();
@@ -33,7 +36,8 @@ public partial class VerifyAuth : IDisposable {
     private static string GetProfession(string? profession) =>
         string.IsNullOrWhiteSpace(profession) ? "None" : profession;
 
-    private async Task UpdateCharactersAsync() {
+    private async Task UpdateCharactersAsync()
+    {
         _isLoading = true;
         StateHasChanged();
 
@@ -43,5 +47,4 @@ public partial class VerifyAuth : IDisposable {
         _isLoading = false;
         StateHasChanged();
     }
-
 }

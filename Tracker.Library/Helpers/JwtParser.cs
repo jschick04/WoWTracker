@@ -3,9 +3,10 @@ using System.Text.Json;
 
 namespace Tracker.Library.Helpers;
 
-public static class JwtParser {
-
-    public static IEnumerable<Claim> ParseClaimsFromJwt(string jwt) {
+public static class JwtParser
+{
+    public static IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
+    {
         var claims = new List<Claim>();
         var payload = jwt.Split('.')[1];
 
@@ -22,22 +23,28 @@ public static class JwtParser {
         return claims;
     }
 
-    private static void ExtractRolesFromJwt(List<Claim> claims, IDictionary<string, object> keyValuePairs) {
+    private static void ExtractRolesFromJwt(List<Claim> claims, IDictionary<string, object> keyValuePairs)
+    {
         if (!keyValuePairs.TryGetValue(ClaimTypes.Role, out var roles)) { return; }
 
-        if (roles.ToString()!.Trim().StartsWith("[")) {
+        if (roles.ToString()!.Trim().StartsWith("["))
+        {
             var parsedRoles = JsonSerializer.Deserialize<string[]>(roles.ToString()!);
 
             claims.AddRange(parsedRoles!.Select(role => new Claim(ClaimTypes.Role, role)));
-        } else {
+        }
+        else
+        {
             claims.Add(new Claim(ClaimTypes.Role, roles.ToString()!));
         }
 
         keyValuePairs.Remove(ClaimTypes.Role);
     }
 
-    private static byte[] ParseBase64WithoutPadding(string base64) {
-        switch (base64.Length % 4) {
+    private static byte[] ParseBase64WithoutPadding(string base64)
+    {
+        switch (base64.Length % 4)
+        {
             case 2 :
                 base64 += "==";
                 break;
@@ -48,5 +55,4 @@ public static class JwtParser {
 
         return Convert.FromBase64String(base64);
     }
-
 }

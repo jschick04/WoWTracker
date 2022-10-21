@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Components;
 
 namespace Tracker.Client.Shared.Components;
 
-public partial class FloatingSelect {
-
+public partial class FloatingSelect
+{
     private bool _expanded;
 
     [Parameter]
@@ -29,7 +29,8 @@ public partial class FloatingSelect {
 
     private void SetDropdownVisibility(bool visible) => _expanded = visible;
 
-    private async void SetValue(string value) {
+    private async void SetValue(string value)
+    {
         Value = value;
         SetDropdownVisibility(false);
 
@@ -37,5 +38,4 @@ public partial class FloatingSelect {
 
         await ValueChanged.InvokeAsync(Value);
     }
-
 }

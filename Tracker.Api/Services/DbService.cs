@@ -5,13 +5,18 @@ using Tracker.Api.Library.Database;
 
 namespace Tracker.Api.Services;
 
-public class DbService : IServiceInstaller {
-
-    public void InstallService(IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env) {
-        if (env.IsDevelopment()) {
+public class DbService : IServiceInstaller
+{
+    public void InstallService(IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env)
+    {
+        if (env.IsDevelopment())
+        {
             services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase(new Guid().ToString()));
-        } else {
-            var builder = new SqlConnectionStringBuilder(configuration.GetConnectionString("AuthDb")) {
+        }
+        else
+        {
+            var builder = new SqlConnectionStringBuilder(configuration.GetConnectionString("AuthDb"))
+            {
                 ApplicationName = "WoW Tracker API"
             };
 
@@ -26,5 +31,4 @@ public class DbService : IServiceInstaller {
 
         services.AddTransient<ISqlDataAccess, SqlDataAccess>();
     }
-
 }

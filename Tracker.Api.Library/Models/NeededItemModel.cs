@@ -2,8 +2,8 @@
 
 namespace Tracker.Api.Library.Models;
 
-public class NeededItemModel {
-
+public class NeededItemModel
+{
     public int Id { get; set; }
 
     public string CharacterName { get; set; } = null!;
@@ -13,5 +13,4 @@ public class NeededItemModel {
     public string Name { get; set; } = null!;
 
     public int Amount { get; set; }
-
 }

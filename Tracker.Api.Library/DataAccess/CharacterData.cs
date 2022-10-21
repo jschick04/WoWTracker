@@ -3,8 +3,8 @@ using Tracker.Api.Library.Models;
 
 namespace Tracker.Api.Library.DataAccess;
 
-public class CharacterData : ICharacterData {
-
+public class CharacterData : ICharacterData
+{
     private readonly ISqlDataAccess _db;
 
     public CharacterData(ISqlDataAccess db) => _db = db;
@@ -27,5 +27,4 @@ public class CharacterData : ICharacterData {
         await _db.LoadData<NeededItemModel, dynamic>("spNeededItems_GetByCharacterId", new { id });
 
     public async Task Update(CharacterModel model) => await _db.SaveData("spCharacters_Update", model);
-
 }

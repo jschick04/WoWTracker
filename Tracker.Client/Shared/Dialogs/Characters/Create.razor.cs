@@ -6,8 +6,8 @@ using Tracker.Client.Helpers;
 
 namespace Tracker.Client.Shared.Dialogs.Characters;
 
-public partial class Create {
-
+public partial class Create
+{
     private readonly CreateCharacterRequest _request = new();
 
     private bool _isLoading;
@@ -18,16 +18,20 @@ public partial class Create {
 
     private void Cancel() => Modal.CancelAsync();
 
-    private async Task Submit() {
+    private async Task Submit()
+    {
         _isLoading = true;
 
         var response = await CharacterManager.CreateAsync(_request);
 
-        if (response.Succeeded) {
+        if (response.Succeeded)
+        {
             await AppStateProvider.UpdateCharactersAsync();
 
             ToastService.ShowSuccess($"{_request.Name} has been created");
-        } else {
+        }
+        else
+        {
             response.ToastError(ToastService);
         }
 
@@ -35,5 +39,4 @@ public partial class Create {
 
         await Modal.CloseAsync(ModalResult.Ok(true));
     }
-
 }

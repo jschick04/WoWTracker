@@ -1,7 +1,7 @@
 ﻿namespace Tracker.Library.Helpers;
 
-public class Result : IResult {
-
+public class Result : IResult
+{
     public List<string>? Messages { get; set; }
 
     public bool Succeeded { get; set; }
@@ -27,11 +27,10 @@ public class Result : IResult {
     public static Task<IResult> SuccessAsync() => Task.FromResult(Success());
 
     public static Task<IResult> SuccessAsync(string? message) => Task.FromResult(Success(message));
-
 }
 
-public class Result<T> : Result, IResult<T> {
-
+public class Result<T> : Result, IResult<T>
+{
     public T? Data { get; set; }
 
     public new static Result<T> Fail() => new() { Succeeded = false };
@@ -68,5 +67,4 @@ public class Result<T> : Result, IResult<T> {
     public static Task<Result<T>> SuccessAsync(T? data) => Task.FromResult(Success(data));
 
     public static Task<Result<T>> SuccessAsync(T? data, string? message) => Task.FromResult(Success(data, message));
-
 }

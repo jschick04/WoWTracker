@@ -3,8 +3,8 @@ using Tracker.Api.Contracts.Helpers;
 
 namespace Tracker.Api.Contracts.Identity.Requests;
 
-public class RegistrationRequest {
-
+public class RegistrationRequest
+{
     [Required(ErrorMessage = "First Name is required")]
     public string FirstName { get; set; } = null!;
 
@@ -27,5 +27,4 @@ public class RegistrationRequest {
 
     [Range(typeof(bool), "true", "true", ErrorMessage = "Terms of Use must be accepted")]
     public bool AcceptTerms { get; set; }
-
 }

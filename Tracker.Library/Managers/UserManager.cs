@@ -6,22 +6,27 @@ using Tracker.Library.Helpers;
 
 namespace Tracker.Library.Managers;
 
-public class UserManager : IUserManager {
-
+public class UserManager : IUserManager
+{
     private readonly HttpClient _httpClient;
 
     public UserManager(HttpClient httpClient) => _httpClient = httpClient;
 
-    public async Task<IResult> ForgotPasswordAsync(ForgotPasswordRequest request) {
+    public async Task<IResult> ForgotPasswordAsync(ForgotPasswordRequest request)
+    {
         HttpResponseMessage response;
 
-        try {
+        try
+        {
             response = await _httpClient.PostAsJsonAsync(ApiRoutes.Account.ForgotPassword, request);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             return await Result.FailAsync(ex.Message);
         }
 
-        if (response.IsSuccessStatusCode) {
+        if (response.IsSuccessStatusCode)
+        {
             return await Result.SuccessAsync(await response.Content.ReadAsStringAsync());
         }
 
@@ -29,16 +34,21 @@ public class UserManager : IUserManager {
         return await Result.FailAsync(message?.Error);
     }
 
-    public async Task<Result<UserResponse>> GetAsync(int id) {
+    public async Task<Result<UserResponse>> GetAsync(int id)
+    {
         HttpResponseMessage response;
 
-        try {
+        try
+        {
             response = await _httpClient.GetAsync(ApiRoutes.Account.GetByIdReplace(id));
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             return await Result<UserResponse>.FailAsync(ex.Message);
         }
 
-        if (response.IsSuccessStatusCode) {
+        if (response.IsSuccessStatusCode)
+        {
             return await Result<UserResponse>.SuccessAsync(
                 await response.Content.ReadFromJsonAsync<UserResponse>()
             );
@@ -48,16 +58,21 @@ public class UserManager : IUserManager {
         return await Result<UserResponse>.FailAsync(message?.Error);
     }
 
-    public async Task<IResult> RegisterAsync(RegistrationRequest request) {
+    public async Task<IResult> RegisterAsync(RegistrationRequest request)
+    {
         HttpResponseMessage response;
 
-        try {
+        try
+        {
             response = await _httpClient.PostAsJsonAsync(ApiRoutes.Identity.Register, request);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             return await Result.FailAsync(ex.Message);
         }
 
-        if (response.IsSuccessStatusCode) {
+        if (response.IsSuccessStatusCode)
+        {
             return await Result.SuccessAsync(await response.Content.ReadAsStringAsync());
         }
 
@@ -65,21 +80,25 @@ public class UserManager : IUserManager {
         return await Result.FailAsync(message?.Error);
     }
 
-    public async Task<IResult> ResetPasswordAsync(ResetPasswordRequest request) {
+    public async Task<IResult> ResetPasswordAsync(ResetPasswordRequest request)
+    {
         HttpResponseMessage response;
 
-        try {
+        try
+        {
             response = await _httpClient.PostAsJsonAsync(ApiRoutes.Account.ResetPassword, request);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             return await Result.FailAsync(ex.Message);
         }
 
-        if (response.IsSuccessStatusCode) {
+        if (response.IsSuccessStatusCode)
+        {
             return await Result.SuccessAsync(await response.Content.ReadAsStringAsync());
         }
 
         var message = await response.Content.ReadFromJsonAsync<ErrorResponse>();
         return await Result.FailAsync(message?.Error);
     }
-
 }

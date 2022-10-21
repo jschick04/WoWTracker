@@ -6,8 +6,8 @@ using Tracker.Client.Helpers;
 
 namespace Tracker.Client.Shared.Dialogs.Items;
 
-public partial class AddNeeded {
-
+public partial class AddNeeded
+{
     private readonly NeededItemRequest _request = new();
 
     private ElementReference _cancelButton;
@@ -19,20 +19,24 @@ public partial class AddNeeded {
 
     [CascadingParameter] private BlazoredModalInstance Modal { get; set; } = null!;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender) {
-        if (firstRender) {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
             await _cancelButton.FocusAsync();
         }
     }
 
     private void Cancel() => Modal.CancelAsync();
 
-    private List<string>? GetAvailableItems() {
+    private List<string>? GetAvailableItems()
+    {
         if (string.IsNullOrWhiteSpace(_request.Profession)) { return null; }
 
         var items = ItemManager.Items?[_request.Profession];
 
-        if (items?.Count > 0) {
+        if (items?.Count > 0)
+        {
             return items.Select(item => item.Name).ToList();
         }
 
@@ -40,14 +44,18 @@ public partial class AddNeeded {
         return null;
     }
 
-    private async Task Submit() {
+    private async Task Submit()
+    {
         _isLoading = true;
 
         var response = await CharacterManager.AddNeededItemAsync(Id, _request);
 
-        if (response.Succeeded) {
+        if (response.Succeeded)
+        {
             ToastService.ShowSuccess($"{_request.Name} has been added");
-        } else {
+        }
+        else
+        {
             response.ToastError(ToastService);
         }
 
@@ -55,5 +63,4 @@ public partial class AddNeeded {
 
         await Modal.CloseAsync(ModalResult.Ok(true));
     }
-
 }

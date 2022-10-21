@@ -2,8 +2,8 @@
 
 namespace Tracker.Api.Contracts.V1.Requests;
 
-public class NeededItemRequest {
-
+public class NeededItemRequest
+{
     [Required]
     public string Profession { get; set; } = null!;
 
@@ -11,5 +11,4 @@ public class NeededItemRequest {
     public string Name { get; set; } = null!;
 
     public int Amount { get; set; } = 1;
-
 }

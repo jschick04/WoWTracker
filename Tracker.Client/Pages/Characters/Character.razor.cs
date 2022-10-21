@@ -9,8 +9,8 @@ using Tracker.Library.Helpers;
 
 namespace Tracker.Client.Pages.Characters;
 
-public partial class Character {
-
+public partial class Character
+{
     private CharacterResponse _character = null!;
     private bool _isLoading;
     private List<NeededItemResponse> _itemsToCraft = new();
@@ -20,11 +20,10 @@ public partial class Character {
 
     [CascadingParameter] protected bool IsDarkMode { get; set; }
 
-    protected override async Task OnParametersSetAsync() {
-        await UpdateCharacterAsync();
-    }
+    protected override async Task OnParametersSetAsync() { await UpdateCharacterAsync(); }
 
-    private async Task AddNeededItem() {
+    private async Task AddNeededItem()
+    {
         var parameters = new ModalParameters();
         var options = new ModalOptions().GetClass(IsDarkMode);
 
@@ -34,14 +33,16 @@ public partial class Character {
         var dialog = DialogService.Show<AddNeeded>("Add Needed Item", parameters, options);
         var result = await dialog.Result;
 
-        if (!result.Cancelled) {
+        if (!result.Cancelled)
+        {
             await UpdateNeededItemsAsync();
             await UpdateItemsToCraftAsync();
             StateHasChanged();
         }
     }
 
-    private async Task DeleteAsync() {
+    private async Task DeleteAsync()
+    {
         var parameters = new ModalParameters();
         var options = new ModalOptions().GetClass(IsDarkMode, true);
 
@@ -53,13 +54,15 @@ public partial class Character {
         var dialog = DialogService.Show<Delete>("Delete Character Confirmation", parameters, options);
         var result = await dialog.Result;
 
-        if (!result.Cancelled) {
+        if (!result.Cancelled)
+        {
             await AppStateProvider.UpdateCharactersAsync();
             NavigationManager.NavigateTo("/");
         }
     }
 
-    private async Task RemoveNeededItem(string profession, string name) {
+    private async Task RemoveNeededItem(string profession, string name)
+    {
         var parameters = new ModalParameters();
         var options = new ModalOptions().GetClass(IsDarkMode, true);
 
@@ -71,14 +74,16 @@ public partial class Character {
         var dialog = DialogService.Show<RemoveNeeded>("Remove Needed Item Confirmation", parameters, options);
         var result = await dialog.Result;
 
-        if (!result.Cancelled) {
+        if (!result.Cancelled)
+        {
             await UpdateNeededItemsAsync();
             await UpdateItemsToCraftAsync();
             StateHasChanged();
         }
     }
 
-    private async Task UpdateAsync() {
+    private async Task UpdateAsync()
+    {
         var parameters = new ModalParameters();
         var options = new ModalOptions().GetClass(IsDarkMode);
 
@@ -88,41 +93,49 @@ public partial class Character {
         var dialog = DialogService.Show<Update>($"Edit {_character.Name}", parameters, options);
         var result = await dialog.Result;
 
-        if (!result.Cancelled) {
+        if (!result.Cancelled)
+        {
             await AppStateProvider.UpdateCharactersAsync();
             await UpdateCharacterAsync();
         }
     }
 
-    private async Task UpdateCharacterAsync() {
+    private async Task UpdateCharacterAsync()
+    {
         _isLoading = true;
         StateHasChanged();
 
         var result = await CharacterManager.GetByIdAsync(Id);
 
-        if (result.GetDataIfSuccess(ref _character)) {
+        if (result.GetDataIfSuccess(ref _character))
+        {
             await UpdateNeededItemsAsync();
             await UpdateItemsToCraftAsync();
 
             _isLoading = false;
             StateHasChanged();
-        } else {
+        }
+        else
+        {
             result.ToastError(ToastService);
 
             NavigationManager.NavigateTo("/");
         }
     }
 
-    private async Task UpdateItemsToCraftAsync() {
+    private async Task UpdateItemsToCraftAsync()
+    {
         List<NeededItemResponse> firstList = new();
         List<NeededItemResponse> secondList = new();
 
-        if (!string.IsNullOrWhiteSpace(_character.FirstProfession)) {
+        if (!string.IsNullOrWhiteSpace(_character.FirstProfession))
+        {
             var first = await ItemManager.GetCraftableByProfession(_character.FirstProfession);
             first.GetDataIfSuccess(ref firstList);
         }
 
-        if (!string.IsNullOrWhiteSpace(_character.SecondProfession)) {
+        if (!string.IsNullOrWhiteSpace(_character.SecondProfession))
+        {
             var second = await ItemManager.GetCraftableByProfession(_character.SecondProfession);
             second.GetDataIfSuccess(ref secondList);
         }
@@ -133,5 +146,4 @@ public partial class Character {
 
     private async Task UpdateNeededItemsAsync() =>
         (await CharacterManager.GetNeededItemsAsync(Id)).GetDataIfSuccess(ref _neededItems);
-
 }

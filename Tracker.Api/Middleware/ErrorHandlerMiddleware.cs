@@ -4,20 +4,25 @@ using Tracker.Api.Library.Helpers;
 
 namespace Tracker.Api.Middleware;
 
-public class ErrorHandlerMiddleware {
-
+public class ErrorHandlerMiddleware
+{
     private readonly RequestDelegate _next;
 
     public ErrorHandlerMiddleware(RequestDelegate next) => _next = next;
 
-    public async Task Invoke(HttpContext context) {
-        try {
+    public async Task Invoke(HttpContext context)
+    {
+        try
+        {
             await _next(context);
-        } catch (Exception exception) {
+        }
+        catch (Exception exception)
+        {
             var response = context.Response;
             response.ContentType = "application/json";
 
-            response.StatusCode = exception switch {
+            response.StatusCode = exception switch
+            {
                 ApiException => (int)HttpStatusCode.BadRequest,
                 KeyNotFoundException => (int)HttpStatusCode.NotFound,
                 _ => (int)HttpStatusCode.InternalServerError,
@@ -27,5 +32,4 @@ public class ErrorHandlerMiddleware {
             await response.WriteAsync(result);
         }
     }
-
 }

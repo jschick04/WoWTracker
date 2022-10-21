@@ -3,8 +3,8 @@ using Tracker.Api.Contracts.Helpers;
 
 namespace Tracker.Api.Contracts.Identity.Requests;
 
-public class AuthenticationRequest {
-
+public class AuthenticationRequest
+{
     [Required(ErrorMessage = "Username is required")]
     [EmailAddress]
     public string Username { get; set; } = null!;
@@ -13,5 +13,4 @@ public class AuthenticationRequest {
     [Password]
     [DataType(DataType.Password)]
     public string Password { get; set; } = null!;
-
 }

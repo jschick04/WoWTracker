@@ -4,8 +4,8 @@ using Tracker.Library.Helpers;
 
 namespace Tracker.Client.Library.Managers.Authentication;
 
-public interface IAuthenticationManager {
-
+public interface IAuthenticationManager
+{
     Task<ClaimsPrincipal> GetCurrentUserClaims();
 
     Task<IResult> Login(AuthenticationRequest request);
@@ -13,5 +13,4 @@ public interface IAuthenticationManager {
     Task<IResult> Logout();
 
     Task<string?> TryRefreshToken();
-
 }

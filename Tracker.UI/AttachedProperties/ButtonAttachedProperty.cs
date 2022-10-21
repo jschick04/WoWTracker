@@ -1,5 +1,3 @@
-﻿namespace Tracker.UI.AttachedProperties {
+﻿namespace Tracker.UI.AttachedProperties;
 
-    public class IsBusyProperty : BaseAttachedProperty<IsBusyProperty, bool> { }
-
-}
+public class IsBusyProperty : BaseAttachedProperty<IsBusyProperty, bool> { }

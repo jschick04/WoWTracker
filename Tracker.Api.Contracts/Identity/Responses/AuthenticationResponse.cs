@@ -2,8 +2,8 @@
 
 namespace Tracker.Api.Contracts.Identity.Responses;
 
-public class AuthenticationResponse {
-
+public class AuthenticationResponse
+{
     public int Id { get; set; }
 
     public string? Username { get; set; }
@@ -18,5 +18,4 @@ public class AuthenticationResponse {
 
     [JsonIgnore]
     public string? RefreshToken { get; set; }
-
 }

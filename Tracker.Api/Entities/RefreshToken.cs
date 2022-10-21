@@ -5,8 +5,8 @@ using Microsoft.EntityFrameworkCore;
 namespace Tracker.Api.Entities;
 
 [Owned]
-public class RefreshToken {
-
+public class RefreshToken
+{
     [Key]
     [JsonIgnore]
     public int Id { get; set; }
@@ -30,5 +30,4 @@ public class RefreshToken {
     public string? ReplacedByToken { get; set; }
 
     public bool IsActive => Revoked == null && !IsExpired;
-
 }
