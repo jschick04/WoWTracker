@@ -1,8 +1,8 @@
 ﻿using Blazored.Modal;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
-using Tracker.Api.Contracts.V1.Responses;
 using Tracker.Client.Helpers;
+using Tracker.Client.Library.Store.Character;
 using Tracker.Client.Library.Store.NavMenu;
 using Tracker.Client.Shared.Dialogs.Characters;
 
@@ -11,26 +11,12 @@ namespace Tracker.Client.Shared;
 public partial class NavMenu : IDisposable
 {
     private bool _dropdownActive = true;
-    private bool _isLoading = true;
 
     [CascadingParameter] protected bool IsDarkMode { get; set; }
 
-    private List<CharacterResponse> Characters { get; set; } = new();
+    [Inject] private IState<CharacterState> CharacterState { get; set; } = null!;
 
     [Inject] private IState<NavMenuState> NavMenuState { get; set; } = null!;
-
-    public void Dispose()
-    {
-        AppStateProvider.OnChangeAsync -= UpdateCharactersAsync;
-        GC.SuppressFinalize(this);
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        AppStateProvider.OnChangeAsync += UpdateCharactersAsync;
-
-        await AppStateProvider.UpdateCharactersAsync();
-    }
 
     private async Task CreateCharacter()
     {
@@ -53,15 +39,4 @@ public partial class NavMenu : IDisposable
     private void LoadCharacter(int id) { NavigationManager.NavigateTo($"/character/{id}"); }
 
     private void ToggleDropdown() => _dropdownActive = !_dropdownActive;
-
-    private async Task UpdateCharactersAsync()
-    {
-        _isLoading = true;
-        StateHasChanged();
-
-        Characters = await AppStateProvider.GetCharactersAsync();
-
-        _isLoading = false;
-        StateHasChanged();
-    }
 }

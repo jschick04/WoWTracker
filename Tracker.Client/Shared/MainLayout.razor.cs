@@ -1,10 +1,9 @@
-﻿using Tracker.Library.Helpers;
+﻿using Tracker.Client.Library.Store.Character;
 
 namespace Tracker.Client.Shared;
 
 public partial class MainLayout : IDisposable
 {
-    private bool _drawerOpen = true;
     private bool _isDarkMode;
 
     public void Dispose()
@@ -20,6 +19,7 @@ public partial class MainLayout : IDisposable
         // TODO: Default to false, check user settings in LoadData
         _isDarkMode = false;
 
+        await base.OnInitializedAsync();
         await LoadDataAsync();
     }
 
@@ -31,12 +31,6 @@ public partial class MainLayout : IDisposable
 
         if (user.Identity?.IsAuthenticated is not true) { return; }
 
-        var result = await UserManager.GetAsync(user.GetId());
-
-        if (!result.Succeeded || result.Data is null)
-        {
-            ToastService.ShowError("You are not logged in");
-            await AuthenticationManager.Logout();
-        }
+        Dispatcher.Dispatch(new FetchDataAction());
     }
 }
