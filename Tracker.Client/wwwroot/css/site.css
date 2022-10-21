@@ -511,9 +511,12 @@ input[type="checkbox"]:checked { background-color: var(--secondary-color); }
             color: var(--primary-color);
         }
 
-.global-modal-template {
+.blazored-modal-focus-trap {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
+}
+
+.global-modal-template {
     z-index: 102;
     background-color: var(--background);
     color: var(--foreground);
