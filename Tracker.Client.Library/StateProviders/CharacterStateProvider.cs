@@ -1,6 +1,6 @@
 ﻿using Fluxor;
 using Tracker.Client.Library.Store.Character.GetAll;
-using Tracker.Client.Library.Store.Character.SetCurrentSelected;
+using Tracker.Client.Library.Store.Character.SetSelected;
 
 namespace Tracker.Client.Library.StateProviders;
 
@@ -12,5 +12,5 @@ public class CharacterStateProvider : ICharacterStateProvider
 
     public void GetAllCharacters() => _dispatcher.Dispatch(new GetAllAction());
 
-    public void SetCurrentSelectedCharacter(int id) => _dispatcher.Dispatch(new SetCurrentSelectedAction(id));
+    public void SetSelectedCharacter(int id) => _dispatcher.Dispatch(new SetSelectedAction(id));
 }

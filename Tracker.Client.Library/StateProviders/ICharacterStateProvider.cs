@@ -4,5 +4,5 @@ public interface ICharacterStateProvider
 {
     void GetAllCharacters();
 
-    void SetCurrentSelectedCharacter(int id);
+    void SetSelectedCharacter(int id);
 }

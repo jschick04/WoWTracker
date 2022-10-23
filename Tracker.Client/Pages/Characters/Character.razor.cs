@@ -18,7 +18,7 @@ public partial class Character
 
     [CascadingParameter] protected bool IsDarkMode { get; set; }
 
-    protected override void OnParametersSet() => CharacterStateProvider.SetCurrentSelectedCharacter(Id);
+    protected override void OnParametersSet() => CharacterStateProvider.SetSelectedCharacter(Id);
 
     private async Task AddNeededItem()
     {

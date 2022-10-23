@@ -23,6 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Store\Character\UpdateSelected\" />
       <Folder Include="Store\NeededItem\" />
     </ItemGroup>
 
