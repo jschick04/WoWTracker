@@ -2,7 +2,7 @@
 
 public interface IResult
 {
-    List<string>? Messages { get; set; }
+    string Message { get; set; }
 
     bool Succeeded { get; set; }
 }

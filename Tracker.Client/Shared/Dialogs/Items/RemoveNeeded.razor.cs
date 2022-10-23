@@ -25,16 +25,16 @@ public partial class RemoveNeeded
     private async Task Submit()
     {
         _isLoading = true;
-        var response = await CharacterManager.RemoveNeededItemAsync(Id, Item);
+        //var response = await CharacterManager.RemoveNeededItemAsync(Id, Item);
 
-        if (response.Succeeded)
-        {
-            ToastService.ShowSuccess($"{Item.Name} has been removed");
-        }
-        else
-        {
-            response.ToastError(ToastService);
-        }
+        //if (response.Succeeded)
+        //{
+        //    ToastService.ShowSuccess($"{Item.Name} has been removed");
+        //}
+        //else
+        //{
+        //    response.ToastError(ToastService);
+        //}
 
         _isLoading = false;
         await Modal.CloseAsync(ModalResult.Ok(true));

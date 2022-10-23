@@ -7,13 +7,13 @@ using Tracker.Library.Helpers;
 
 namespace Tracker.Client.Library.Managers.Authentication;
 
-public class ApiAuthenticationStateProvider : AuthenticationStateProvider
+public class ClientAuthenticationStateProvider : AuthenticationStateProvider
 {
     private readonly AuthenticationState _anonymous;
     private readonly HttpClient _httpClient;
     private readonly ILocalStorageService _localStorage;
 
-    public ApiAuthenticationStateProvider(HttpClient httpClient, ILocalStorageService localStorage)
+    public ClientAuthenticationStateProvider(HttpClient httpClient, ILocalStorageService localStorage)
     {
         _httpClient = httpClient;
         _localStorage = localStorage;

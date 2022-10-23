@@ -22,18 +22,18 @@ public partial class Create
     {
         _isLoading = true;
 
-        var response = await CharacterManager.CreateAsync(_request);
+        //var response = await CharacterManager.CreateAsync(_request);
 
-        if (response.Succeeded)
-        {
-            await AppStateProvider.UpdateCharactersAsync();
+        //if (response.Succeeded)
+        //{
+        //    await AppStateProvider.UpdateCharactersAsync();
 
-            ToastService.ShowSuccess($"{_request.Name} has been created");
-        }
-        else
-        {
-            response.ToastError(ToastService);
-        }
+        //    ToastService.ShowSuccess($"{_request.Name} has been created");
+        //}
+        //else
+        //{
+        //    response.ToastError(ToastService);
+        //}
 
         _isLoading = false;
 

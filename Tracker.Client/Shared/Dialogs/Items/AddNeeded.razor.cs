@@ -48,16 +48,16 @@ public partial class AddNeeded
     {
         _isLoading = true;
 
-        var response = await CharacterManager.AddNeededItemAsync(Id, _request);
+        //var response = await CharacterManager.AddNeededItemAsync(Id, _request);
 
-        if (response.Succeeded)
-        {
-            ToastService.ShowSuccess($"{_request.Name} has been added");
-        }
-        else
-        {
-            response.ToastError(ToastService);
-        }
+        //if (response.Succeeded)
+        //{
+        //    ToastService.ShowSuccess($"{_request.Name} has been added");
+        //}
+        //else
+        //{
+        //    response.ToastError(ToastService);
+        //}
 
         _isLoading = false;
 

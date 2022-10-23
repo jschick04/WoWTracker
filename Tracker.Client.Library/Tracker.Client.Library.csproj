@@ -22,4 +22,8 @@
         <ProjectReference Include="..\Tracker.Library\Tracker.Library.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Store\NeededItem\" />
+    </ItemGroup>
+
 </Project>

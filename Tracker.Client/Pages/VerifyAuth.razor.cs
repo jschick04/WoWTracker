@@ -1,6 +1,6 @@
 ﻿using Fluxor;
 using Microsoft.AspNetCore.Components;
-using Tracker.Client.Library.Store.Character;
+using Tracker.Client.Library.Store.State;
 using Tracker.Library.Helpers;
 
 namespace Tracker.Client.Pages;
@@ -15,7 +15,7 @@ public partial class VerifyAuth
 
     protected override async Task OnInitializedAsync()
     {
-        var user = await StateProvider.GetAuthenticationStateProviderUserAsync();
+        var user = await ClientAuthStateProvider.GetAuthenticationStateProviderUserAsync();
 
         if (user.Identity?.IsAuthenticated is true)
         {

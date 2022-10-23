@@ -34,20 +34,20 @@ public partial class Update
     {
         _isLoading = true;
 
-        var response = await CharacterManager.UpdateAsync(Character.Id, _request);
+        //var response = await CharacterManager.UpdateAsync(Character.Id, _request);
 
-        if (response.Succeeded)
-        {
-            await AppStateProvider.UpdateCharactersAsync();
+        //if (response.Succeeded)
+        //{
+        //    await AppStateProvider.UpdateCharactersAsync();
 
-            _isLoading = false;
+        //    _isLoading = false;
 
-            ToastService.ShowSuccess($"{_request.Name} has been updated");
-        }
-        else
-        {
-            response.ToastError(ToastService);
-        }
+        //    ToastService.ShowSuccess($"{_request.Name} has been updated");
+        //}
+        //else
+        //{
+        //    response.ToastError(ToastService);
+        //}
 
         await Modal.CloseAsync(ModalResult.Ok(true));
     }

@@ -25,18 +25,18 @@ public partial class Delete
     {
         _isLoading = true;
 
-        var response = await CharacterManager.DeleteAsync(Id);
+        //var response = await CharacterManager.DeleteAsync(Id);
 
-        _isLoading = false;
+        //_isLoading = false;
 
-        if (response.Succeeded)
-        {
-            ToastService.ShowSuccess($"{Name} has been deleted");
-        }
-        else
-        {
-            response.ToastError(ToastService);
-        }
+        //if (response.Succeeded)
+        //{
+        //    ToastService.ShowSuccess($"{Name} has been deleted");
+        //}
+        //else
+        //{
+        //    response.ToastError(ToastService);
+        //}
 
         await Modal.CloseAsync(ModalResult.Ok(true));
     }

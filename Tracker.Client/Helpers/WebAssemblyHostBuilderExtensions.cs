@@ -8,7 +8,8 @@ using Toolbelt.Blazor.Extensions.DependencyInjection;
 using Tracker.Client.Library.Handlers;
 using Tracker.Client.Library.Managers.Authentication;
 using Tracker.Client.Library.Managers.Interceptors;
-using Tracker.Client.Library.Managers.StateProviders;
+using Tracker.Client.Library.StateProviders;
+using Tracker.Client.Library.Store;
 using Tracker.Library.Managers;
 
 namespace Tracker.Client.Helpers;
@@ -36,7 +37,7 @@ public static class WebAssemblyHostBuilderExtensions
         builder.Services.AddBlazoredLocalStorage();
         builder.Services.AddBlazoredModal();
         builder.Services.AddBlazoredToast();
-        builder.Services.AddFluxor(options => options.ScanAssemblies(typeof(ApplicationStateProvider).Assembly));
+        builder.Services.AddFluxor(options => options.ScanAssemblies(typeof(RootState).Assembly));
     }
 
     public static void AddHandlers(this WebAssemblyHostBuilder builder)
@@ -50,16 +51,16 @@ public static class WebAssemblyHostBuilderExtensions
         builder.Services.AddTransient<IHttpInterceptorManager, HttpInterceptorManager>();
         builder.Services.AddTransient<IUserManager, UserManager>();
 
-        builder.Services.AddTransient<ICharacterManager, CharacterManager>();
+        builder.Services.AddScoped<ICharacterManager, CharacterManager>();
         builder.Services.AddScoped<IItemManager, ItemManager>();
     }
 
-    public static void AddServices(this WebAssemblyHostBuilder builder)
+    public static void AddStateProviders(this WebAssemblyHostBuilder builder)
     {
-        builder.Services.AddScoped<ApiAuthenticationStateProvider>();
-        builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
+        builder.Services.AddScoped<ClientAuthenticationStateProvider>();
+        builder.Services.AddScoped<AuthenticationStateProvider, ClientAuthenticationStateProvider>();
 
-        builder.Services.AddScoped<ApplicationStateProvider>();
+        builder.Services.AddTransient<ICharacterStateProvider, CharacterStateProvider>();
 
         builder.Services.AddAuthorizationCore();
     }

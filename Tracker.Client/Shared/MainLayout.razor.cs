@@ -1,4 +1,4 @@
-﻿using Tracker.Client.Library.Store.Character;
+﻿using Tracker.Library.Helpers;
 
 namespace Tracker.Client.Shared;
 
@@ -27,10 +27,16 @@ public partial class MainLayout : IDisposable
     {
         await ItemManager.GetAllAsync();
 
-        var user = await StateProvider.GetAuthenticationStateProviderUserAsync();
+        var user = await ClientAuthStateProvider.GetAuthenticationStateProviderUserAsync();
 
         if (user.Identity?.IsAuthenticated is not true) { return; }
 
-        Dispatcher.Dispatch(new FetchDataAction());
+        var result = await UserManager.GetAsync(user.GetId());
+
+        if (!result.Succeeded || result.Data is null)
+        {
+            ToastService.ShowError("You are not logged in");
+            await AuthenticationManager.Logout();
+        }
     }
 }

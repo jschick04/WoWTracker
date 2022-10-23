@@ -2,8 +2,7 @@
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 using Tracker.Client.Helpers;
-using Tracker.Client.Library.Store.Character;
-using Tracker.Client.Library.Store.NavMenu;
+using Tracker.Client.Library.Store.State;
 using Tracker.Client.Shared.Dialogs.Characters;
 
 namespace Tracker.Client.Shared;
@@ -14,9 +13,22 @@ public partial class NavMenu : IDisposable
 
     [CascadingParameter] protected bool IsDarkMode { get; set; }
 
-    [Inject] private IState<CharacterState> CharacterState { get; set; } = null!;
-
     [Inject] private IState<NavMenuState> NavMenuState { get; set; } = null!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        if (CharacterState.Value.Characters is null)
+        {
+            CharacterStateProvider.GetAllCharacters();
+        }
+
+        if (CharacterState.Value.HasCurrentErrors)
+        {
+            ToastService.ShowError(CharacterState.Value.CurrentErrorMessage);
+        }
+    }
 
     private async Task CreateCharacter()
     {
@@ -31,8 +43,8 @@ public partial class NavMenu : IDisposable
 
         if (!result.Cancelled)
         {
-            await AppStateProvider.UpdateCharactersAsync();
-            NavigationManager.NavigateTo("/");
+            //await AppStateProvider.UpdateCharactersAsync();
+            //NavigationManager.NavigateTo("/");
         }
     }
 

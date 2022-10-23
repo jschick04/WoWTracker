@@ -1,12 +1,21 @@
 ﻿@page "/character/{id:int}"
 
-@if (_isLoading) {
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+@if (CharacterState.Value.Selected is null)
+{
     <LoadingText />
-} else {
+}
+else if (CharacterState.Value.HasCurrentErrors)
+{
+    <div>@CharacterState.Value.CurrentErrorMessage</div>
+}
+else
+{
     <div class="page-header">
         <div class="character-info">
-            <div class="character-name">@_character.Name</div>
-            <div class="character-class">@_character.Class</div>
+            <div class="character-name">@CharacterState.Value.Selected.Name</div>
+            <div class="character-class">@CharacterState.Value.Selected.Class</div>
         </div>
         <div class="character-buttons">
             <button class="btn accent-btn" @onclick="UpdateAsync">Edit</button>
@@ -17,22 +26,31 @@
     <hr />
 
     <div class="profession-header">
-        @if (string.IsNullOrWhiteSpace(_character.FirstProfession)) {
+        @if (string.IsNullOrWhiteSpace(CharacterState.Value.Selected.FirstProfession))
+        {
             <div class="profession-slot-1">No Primary Profession</div>
-        } else {
-            <div class="profession-slot-1">@_character.FirstProfession</div>
+        }
+        else
+        {
+            <div class="profession-slot-1">@CharacterState.Value.Selected.FirstProfession</div>
         }
 
-        @if (_character.HasCooking) {
+        @if (CharacterState.Value.Selected.HasCooking)
+        {
             <div class="profession-slot-2">Cooking</div>
-        } else {
+        }
+        else
+        {
             <div></div>
         }
 
-        @if (string.IsNullOrWhiteSpace(_character.SecondProfession)) {
+        @if (string.IsNullOrWhiteSpace(CharacterState.Value.Selected.SecondProfession))
+        {
             <div class="profession-slot-3">No Secondary Profession</div>
-        } else {
-            <div class="profession-slot-3">@_character.SecondProfession</div>
+        }
+        else
+        {
+            <div class="profession-slot-3">@CharacterState.Value.Selected.SecondProfession</div>
         }
     </div>
 
@@ -42,9 +60,11 @@
 
         <div>Needed Items <i class="fa-regular fa-plus" @onclick="AddNeededItem"></i></div>
 
-        @if (_neededItems.Count > 0) {
+        @if (_neededItems.Count > 0)
+        {
             <div>
-                @foreach (var item in _neededItems) {
+                @foreach (var item in _neededItems)
+                {
                     // TODO: Add a X button and highlight red on mouseover to indicate Removal
                     <div @onclick="() => RemoveNeededItem(item.Profession, item.Name)">@item.Amount - @item.Name</div>
                 }
@@ -55,9 +75,11 @@
 
         <div>Items to Craft</div>
 
-        @if (_itemsToCraft.Count > 0) {
+        @if (_itemsToCraft.Count > 0)
+        {
             <div>
-                @foreach (var item in _itemsToCraft) {
+                @foreach (var item in _itemsToCraft)
+                {
                     <div>@item.Amount - @item.Name - @item.CharacterName</div>
                 }
             </div>

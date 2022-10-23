@@ -30,7 +30,7 @@
                         </NavLink>
                     </li>
                 }
-                else if (CharacterState.Value.Characters.Any())
+                else if (CharacterState.Value.Characters?.Any() is true)
                 {
                     @foreach (var character in CharacterState.Value.Characters)
                     {
