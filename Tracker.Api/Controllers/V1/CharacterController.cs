@@ -40,7 +40,7 @@ public class CharacterController : BaseApiController
     }
 
     [HttpPost(ApiRoutes.Character.Create)]
-    public async Task<IActionResult> Create([FromBody] CreateCharacterRequest request)
+    public async Task<ActionResult<CharacterResponse>> Create([FromBody] CreateCharacterRequest request)
     {
         if (Account is null) { return Unauthorized(); }
 
@@ -66,9 +66,19 @@ public class CharacterController : BaseApiController
             model.SecondProfessionId = secondProfessionId;
         }
 
-        await _data.Create(model);
+        var newId = await _data.Create(model);
 
-        return Ok();
+        var response = new CharacterResponse
+        {
+            Id = newId,
+            Name = model.Name,
+            Class = request.Class,
+            FirstProfession = request.FirstProfession,
+            SecondProfession = request.SecondProfession,
+            HasCooking = request.HasCooking
+        };
+
+        return Ok(response);
     }
 
     [HttpDelete(ApiRoutes.Character.Delete)]

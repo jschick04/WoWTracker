@@ -14,6 +14,10 @@
 {
     <LoadingText />
 }
+else if (Characters1.Value.Characters?.Any() is not true)
+{
+    <div>Currently No Characters Available</div>
+}
 else
 {
     @foreach (var character in Characters1.Value.Characters)
@@ -38,6 +42,10 @@ else
 @if (Characters2.Value.IsLoading)
 {
     <LoadingText />
+}
+else if (Characters2.Value.Characters?.Any() is not true)
+{
+    <div>Currently No Characters Available</div>
 }
 else
 {

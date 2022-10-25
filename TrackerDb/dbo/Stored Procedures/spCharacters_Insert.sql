@@ -19,4 +19,6 @@ BEGIN
 
     INSERT INTO dbo.Characters (UserId, Name, ClassId, FirstProfessionId, SecondProfessionId, HasCooking)
     VALUES (@userId, @name, @classId, @firstProfessionId, @secondProfessionId, @hasCooking);
+
+    SELECT SCOPE_IDENTITY();
 END;

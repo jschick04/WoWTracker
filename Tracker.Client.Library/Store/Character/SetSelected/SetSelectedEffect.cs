@@ -1,5 +1,4 @@
 ﻿using Fluxor;
-using Tracker.Client.Library.Store.Character.SetCurrentSelected;
 using Tracker.Library.Managers;
 
 namespace Tracker.Client.Library.Store.Character.SetSelected;

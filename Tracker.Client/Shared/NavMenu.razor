@@ -41,6 +41,15 @@
                         </li>
                     }
                 }
+                
+                @if (CharacterState.Value.IsRefreshing)
+                {
+                    <li>
+                        <NavLink class="nav-links">
+                            <i class="fa-solid fa-spinner-third fa-spin"></i>Updating...
+                        </NavLink>
+                    </li>
+                }
 
                 <li>
                     <NavLink class="nav-links" @onclick="CreateCharacter">

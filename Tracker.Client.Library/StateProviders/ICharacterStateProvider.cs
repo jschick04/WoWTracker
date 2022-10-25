@@ -1,8 +1,14 @@
-﻿namespace Tracker.Client.Library.StateProviders;
+﻿using Tracker.Api.Contracts.V1.Requests;
+
+namespace Tracker.Client.Library.StateProviders;
 
 public interface ICharacterStateProvider
 {
+    void CreateCharacter(CreateCharacterRequest request);
+
     void GetAllCharacters();
 
     void SetSelectedCharacter(int id);
+
+    void UpdateSelectedCharacter(int id, UpdateCharacterRequest request);
 }

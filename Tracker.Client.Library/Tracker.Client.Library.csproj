@@ -13,6 +13,7 @@
 
     <ItemGroup>
         <PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
+        <PackageReference Include="Blazored.Toast" Version="3.2.2" />
         <PackageReference Include="Fluxor.Blazor.Web" Version="5.5.0" />
         <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
         <PackageReference Include="Toolbelt.Blazor.HttpClientInterceptor" Version="10.2.0" />
@@ -23,7 +24,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Store\Character\UpdateSelected\" />
       <Folder Include="Store\NeededItem\" />
     </ItemGroup>
 

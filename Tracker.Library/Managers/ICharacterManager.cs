@@ -8,7 +8,7 @@ public interface ICharacterManager
 {
     Task<IResult> AddNeededItemAsync(int id, NeededItemRequest request);
 
-    Task<IResult> CreateAsync(CreateCharacterRequest request);
+    Task<Result<CharacterResponse>> CreateAsync(CreateCharacterRequest request);
 
     Task<IResult> DeleteAsync(int id);
 

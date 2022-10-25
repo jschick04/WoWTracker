@@ -10,7 +10,7 @@ public class GetAllReducer
 
     [ReducerMethod]
     public static CharacterState ReducerGetAllFailureAction(CharacterState state, GetAllFailureAction action) =>
-        new(false, action.ErrorMessage, null, null);
+        new(false, action.ErrorMessage, state.Characters, null);
 
     [ReducerMethod]
     public static CharacterState ReducerGetAllSuccessAction(CharacterState state, GetAllSuccessAction action) =>

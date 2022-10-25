@@ -7,7 +7,7 @@ public class SetSelectedReducer
 {
     [ReducerMethod(typeof(SetSelectedAction))]
     public static CharacterState ReducerSetSelectedAction(CharacterState state) =>
-        new(false, null, state.Characters, null);
+        new(false, null, state.Characters, state.Selected);
 
     [ReducerMethod]
     public static CharacterState ReducerSetSelectedFailureAction(CharacterState state,

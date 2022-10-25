@@ -20,7 +20,7 @@ public partial class Character
 
     protected override void OnParametersSet() => CharacterStateProvider.SetSelectedCharacter(Id);
 
-    private async Task AddNeededItem()
+    private async Task AddNeededItemDialogAsync()
     {
         if (CharacterState.Value.Selected is null) { return; }
 
@@ -41,7 +41,7 @@ public partial class Character
         }
     }
 
-    private async Task DeleteAsync()
+    private async Task DeleteDialogAsync()
     {
         if (CharacterState.Value.Selected is null) { return; }
 
@@ -65,7 +65,7 @@ public partial class Character
         }
     }
 
-    private async Task RemoveNeededItem(string profession, string name)
+    private async Task RemoveNeededItemDialogAsync(string profession, string name)
     {
         if (CharacterState.Value.Selected is null) { return; }
 
@@ -88,7 +88,7 @@ public partial class Character
         }
     }
 
-    private async Task UpdateAsync()
+    private void UpdateDialog()
     {
         if (CharacterState.Value.Selected is null) { return; }
 
@@ -98,13 +98,7 @@ public partial class Character
         parameters.Add(nameof(Update.Character), CharacterState.Value.Selected);
         parameters.Add(nameof(Update.ButtonText), "Update");
 
-        var dialog = DialogService.Show<Update>($"Edit {CharacterState.Value.Selected.Name}", parameters, options);
-        var result = await dialog.Result;
-
-        if (!result.Cancelled)
-        {
-            //await AppStateProvider.UpdateCharactersAsync();
-        }
+        DialogService.Show<Update>($"Edit {CharacterState.Value.Selected.Name}", parameters, options);
     }
 
     private async Task UpdateItemsToCraftAsync()
