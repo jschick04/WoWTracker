@@ -20,6 +20,16 @@ public partial class Character
 
     protected override void OnParametersSet() => CharacterStateProvider.SetSelectedCharacter(Id);
 
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        if (Id != 0)
+        {
+            CharacterStateProvider.SetSelectedCharacter(Id);
+        }
+    }
+
     private async Task AddNeededItemDialogAsync()
     {
         if (CharacterState.Value.Selected is null) { return; }
@@ -41,7 +51,7 @@ public partial class Character
         }
     }
 
-    private async Task DeleteDialogAsync()
+    private async void DeleteDialogAsync()
     {
         if (CharacterState.Value.Selected is null) { return; }
 
@@ -53,15 +63,13 @@ public partial class Character
 
         parameters.Add(nameof(Delete.ButtonText), "Delete");
         parameters.Add(nameof(Delete.Id), CharacterState.Value.Selected.Id);
-        parameters.Add(nameof(Delete.Name), CharacterState.Value.Selected.Name!);
 
         var dialog = DialogService.Show<Delete>("Delete Character Confirmation", parameters, options);
         var result = await dialog.Result;
 
         if (!result.Cancelled)
         {
-            //await AppStateProvider.UpdateCharactersAsync();
-            //NavigationManager.NavigateTo("/");
+            NavigationManager.NavigateTo("/");
         }
     }
 

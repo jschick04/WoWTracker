@@ -1,6 +1,7 @@
 ﻿using Fluxor;
 using Tracker.Api.Contracts.V1.Requests;
 using Tracker.Client.Library.Store.Character.Create;
+using Tracker.Client.Library.Store.Character.DeleteSelected;
 using Tracker.Client.Library.Store.Character.GetAll;
 using Tracker.Client.Library.Store.Character.SetSelected;
 using Tracker.Client.Library.Store.Character.UpdateSelected;
@@ -14,6 +15,8 @@ public class CharacterStateProvider : ICharacterStateProvider
     public CharacterStateProvider(IDispatcher dispatcher) => _dispatcher = dispatcher;
 
     public void CreateCharacter(CreateCharacterRequest request) => _dispatcher.Dispatch(new CreateAction(request));
+
+    public void DeleteSelectedCharacter(int id) => _dispatcher.Dispatch(new DeleteSelectedAction(id));
 
     public void GetAllCharacters() => _dispatcher.Dispatch(new GetAllAction());
 

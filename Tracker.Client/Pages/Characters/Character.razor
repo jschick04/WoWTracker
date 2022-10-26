@@ -6,7 +6,7 @@
 {
     <LoadingText />
 }
-else if (CharacterState.Value.HasCurrentErrors)
+else if (CharacterState.Value.HasCurrentErrors && CharacterState.Value.Selected.Id != Id)
 {
     <div>@CharacterState.Value.CurrentErrorMessage</div>
 }

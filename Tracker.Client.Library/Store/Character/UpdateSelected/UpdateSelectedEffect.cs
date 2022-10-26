@@ -19,11 +19,11 @@ public class UpdateSelectedEffect : Effect<UpdateSelectedAction>
     {
         try
         {
-            var character = await _characterManager.UpdateAsync(action.Id, action.Request);
+            var result = await _characterManager.UpdateAsync(action.Id, action.Request);
 
-            if (character.Succeeded is not true)
+            if (result.Succeeded is not true)
             {
-                throw new Exception(character.Message);
+                throw new Exception(result.Message);
             }
 
             _toastService.ShowSuccess($"{action.Request.Name} has been updated");
