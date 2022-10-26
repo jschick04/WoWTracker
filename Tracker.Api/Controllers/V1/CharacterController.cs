@@ -219,7 +219,7 @@ public class CharacterController : BaseApiController
             model.SecondProfessionId = null;
         }
 
-        model.HasCooking = request.HasCooking ?? model.HasCooking;
+        model.HasCooking = request.HasCooking; // ?? model.HasCooking;
 
         await _data.Update(model);
 

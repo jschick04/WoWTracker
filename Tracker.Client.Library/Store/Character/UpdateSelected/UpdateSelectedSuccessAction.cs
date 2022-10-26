@@ -1,3 +1,16 @@
-﻿namespace Tracker.Client.Library.Store.Character.UpdateSelected;
+﻿using Tracker.Api.Contracts.V1.Requests;
 
-public class UpdateSelectedSuccessAction { }
+namespace Tracker.Client.Library.Store.Character.UpdateSelected;
+
+public class UpdateSelectedSuccessAction
+{
+    public UpdateSelectedSuccessAction(int id, UpdateCharacterRequest request)
+    {
+        Id = id;
+        Request = request;
+    }
+
+    public int Id { get; }
+
+    public UpdateCharacterRequest Request { get; }
+}

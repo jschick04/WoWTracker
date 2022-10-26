@@ -31,5 +31,5 @@ public class UpdateCharacterRequest : BaseRequest
         set => _secondProfession = ReplaceEmptyWithNull(value);
     }
 
-    public bool? HasCooking { get; set; }
+    public bool HasCooking { get; set; }
 }
