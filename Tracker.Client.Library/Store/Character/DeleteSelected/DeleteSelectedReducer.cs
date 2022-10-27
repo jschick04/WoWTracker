@@ -19,6 +19,6 @@ public class DeleteSelectedReducer
     {
         var updatedList = state.Characters?.Where(c => c.Id != action.Id).ToList();
 
-        return new CharacterState(false, null, updatedList, null);
+        return new CharacterState(false, null, updatedList, state.Selected);
     }
 }

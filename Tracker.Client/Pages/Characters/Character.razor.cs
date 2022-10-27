@@ -12,43 +12,25 @@ namespace Tracker.Client.Pages.Characters;
 public partial class Character
 {
     private List<NeededItemResponse> _itemsToCraft = new();
-    private List<NeededItemResponse> _neededItems = new();
 
     [Parameter] public int Id { get; set; }
 
     [CascadingParameter] protected bool IsDarkMode { get; set; }
 
-    protected override void OnParametersSet() => CharacterStateProvider.SetSelectedCharacter(Id);
+    protected override void OnParametersSet() => InitializeState();
 
-    protected override void OnInitialized()
+    private void AddNeededItemDialog()
     {
-        base.OnInitialized();
-
-        if (Id != 0)
-        {
-            CharacterStateProvider.SetSelectedCharacter(Id);
-        }
-    }
-
-    private async Task AddNeededItemDialogAsync()
-    {
-        if (CharacterState.Value.Selected is null) { return; }
+        if (CharacterState.Value.Selected?.Name is null) { return; }
 
         var parameters = new ModalParameters();
         var options = new ModalOptions().GetClass(IsDarkMode);
 
         parameters.Add(nameof(AddNeeded.ButtonText), "Add");
         parameters.Add(nameof(AddNeeded.Id), CharacterState.Value.Selected.Id);
+        parameters.Add(nameof(AddNeeded.CharacterName), CharacterState.Value.Selected.Name);
 
-        var dialog = DialogService.Show<AddNeeded>("Add Needed Item", parameters, options);
-        var result = await dialog.Result;
-
-        if (!result.Cancelled)
-        {
-            //await UpdateNeededItemsAsync();
-            await UpdateItemsToCraftAsync();
-            StateHasChanged();
-        }
+        DialogService.Show<AddNeeded>("Add Needed Item", parameters, options);
     }
 
     private async void DeleteDialogAsync()
@@ -73,6 +55,12 @@ public partial class Character
         }
     }
 
+    private void InitializeState()
+    {
+        CharacterStateProvider.SetSelectedCharacter(Id);
+        NeededItemStateProvider.GetAllNeededItems(Id);
+    }
+
     private async Task RemoveNeededItemDialogAsync(string profession, string name)
     {
         if (CharacterState.Value.Selected is null) { return; }
@@ -90,7 +78,6 @@ public partial class Character
 
         if (!result.Cancelled)
         {
-            //await UpdateNeededItemsAsync();
             await UpdateItemsToCraftAsync();
             StateHasChanged();
         }
@@ -129,7 +116,4 @@ public partial class Character
         _itemsToCraft = firstList;
         _itemsToCraft.AddRange(secondList);
     }
-
-    //private async Task UpdateNeededItemsAsync() =>
-    //    (await CharacterManager.GetNeededItemsAsync(Id)).GetDataIfSuccess(ref _neededItems);
 }

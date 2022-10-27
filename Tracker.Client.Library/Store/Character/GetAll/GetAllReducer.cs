@@ -6,13 +6,13 @@ namespace Tracker.Client.Library.Store.Character.GetAll;
 public class GetAllReducer
 {
     [ReducerMethod(typeof(GetAllAction))]
-    public static CharacterState ReducerGetAllAction(CharacterState state) => new(true, null, null, null);
+    public static CharacterState ReducerGetAllAction(CharacterState state) => new(true, null, state.Characters, state.Selected);
 
     [ReducerMethod]
     public static CharacterState ReducerGetAllFailureAction(CharacterState state, GetAllFailureAction action) =>
-        new(false, action.ErrorMessage, state.Characters, null);
+        new(false, action.ErrorMessage, state.Characters, state.Selected);
 
     [ReducerMethod]
     public static CharacterState ReducerGetAllSuccessAction(CharacterState state, GetAllSuccessAction action) =>
-        new(false, null, action.Characters, null);
+        new(false, null, action.Characters, state.Selected);
 }

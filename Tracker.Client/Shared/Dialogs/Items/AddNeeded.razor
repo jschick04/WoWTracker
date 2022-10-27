@@ -14,7 +14,7 @@
 </div>
 
 <div class="global-modal-buttons">
-    @if (_isLoading) {
+    @if (NeededItemState.Value.IsLoading) {
         <LoadingButton Color="ButtonColor.Accent" IsDisabled="true" />
     } else {
         <button class="btn accent-btn" form="AddNeededItem" type="submit">@ButtonText</button>

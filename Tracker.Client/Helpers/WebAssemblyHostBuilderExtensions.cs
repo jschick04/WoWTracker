@@ -47,9 +47,9 @@ public static class WebAssemblyHostBuilderExtensions
 
     public static void AddManagers(this WebAssemblyHostBuilder builder)
     {
-        builder.Services.AddTransient<IAuthenticationManager, AuthenticationManager>();
         builder.Services.AddTransient<IHttpInterceptorManager, HttpInterceptorManager>();
-        builder.Services.AddTransient<IUserManager, UserManager>();
+        builder.Services.AddScoped<IAuthenticationManager, AuthenticationManager>();
+        builder.Services.AddScoped<IUserManager, UserManager>();
 
         builder.Services.AddScoped<ICharacterManager, CharacterManager>();
         builder.Services.AddScoped<IItemManager, ItemManager>();
@@ -60,7 +60,8 @@ public static class WebAssemblyHostBuilderExtensions
         builder.Services.AddScoped<ClientAuthenticationStateProvider>();
         builder.Services.AddScoped<AuthenticationStateProvider, ClientAuthenticationStateProvider>();
 
-        builder.Services.AddTransient<ICharacterStateProvider, CharacterStateProvider>();
+        builder.Services.AddScoped<ICharacterStateProvider, CharacterStateProvider>();
+        builder.Services.AddScoped<INeededItemStateProvider, NeededItemStateProvider>();
 
         builder.Services.AddAuthorizationCore();
     }
