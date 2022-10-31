@@ -72,7 +72,7 @@ public class CharacterController : BaseApiController
         {
             Id = newId,
             Name = model.Name,
-            Class = request.Class,
+            Class = classId.GetName(),
             FirstProfession = request.FirstProfession,
             SecondProfession = request.SecondProfession,
             HasCooking = request.HasCooking
@@ -132,7 +132,7 @@ public class CharacterController : BaseApiController
         {
             Id = model.Id,
             Name = model.Name,
-            Class = model.ClassId.ToString(),
+            Class = model.ClassId.GetName(),
             FirstProfession = model.FirstProfessionId.ToString(),
             SecondProfession = model.SecondProfessionId.ToString(),
             HasCooking = model.HasCooking
