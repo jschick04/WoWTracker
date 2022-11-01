@@ -17,7 +17,7 @@ public class CreateReducer
     [ReducerMethod]
     public static CharacterState ReducerCreateSuccessAction(CharacterState state, CreateSuccessAction action)
     {
-        if (state.Characters is null)
+        if (state.Characters.Any() is false)
         {
             return new CharacterState(false,
                 null,
@@ -25,8 +25,9 @@ public class CreateReducer
                 null);
         }
 
-        state.Characters.Add(action.Character);
+        var updatedList = state.Characters.ToList();
+        updatedList.Add(action.Character);
 
-        return new CharacterState(false, null, state.Characters, state.Selected);
+        return new CharacterState(false, null, updatedList, state.Selected);
     }
 }

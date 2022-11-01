@@ -17,7 +17,7 @@ public class DeleteSelectedReducer
     public static CharacterState ReducerDeleteSelectedSuccessAction(CharacterState state,
         DeleteSelectedSuccessAction action)
     {
-        var updatedList = state.Characters?.Where(c => c.Id != action.Id).ToList();
+        var updatedList = state.Characters.Where(c => c.Id != action.Id).ToList();
 
         return new CharacterState(false, null, updatedList, state.Selected);
     }

@@ -17,7 +17,12 @@ public class UpdateSelectedReducer
     public static CharacterState ReducerUpdateSelectedSuccessAction(CharacterState state,
         UpdateSelectedSuccessAction action)
     {
-        var updatedCharacter = state.Characters!.First(c => c.Id == action.Id);
+        var updatedCharacter = state.Characters.FirstOrDefault(c => c.Id == action.Id);
+
+        if (updatedCharacter is null)
+        {
+            return new CharacterState(false, null, state.Characters, null);
+        }
 
         updatedCharacter.Name = action.Request.Name;
         updatedCharacter.Class = action.Request.Class;

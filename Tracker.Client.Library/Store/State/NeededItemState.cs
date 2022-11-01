@@ -4,11 +4,8 @@ namespace Tracker.Client.Library.Store.State;
 
 public class NeededItemState : RootState
 {
-    public NeededItemState(bool isLoading, string? currentErrorMessage, IList<NeededItemResponse>? items) : base(
-        isLoading,
-        currentErrorMessage) => Items = items;
+    public NeededItemState(bool isLoading, string? currentErrorMessage, IEnumerable<NeededItemResponse>? items)
+        : base(isLoading, currentErrorMessage) => Items = items ?? Enumerable.Empty<NeededItemResponse>();
 
-    public IList<NeededItemResponse>? Items { get; }
-
-    // TODO: Add ItemsToCraft and CanCraft bool if ItemsToCraft.Any
+    public IEnumerable<NeededItemResponse> Items { get; }
 }

@@ -6,16 +6,17 @@ public class CharacterState : RootState
 {
     public CharacterState(bool isLoading,
         string? currentErrorMessage,
-        IList<CharacterResponse>? characters,
+        IEnumerable<CharacterResponse>? characters,
         CharacterResponse? selected,
-        bool isRefreshing = false) : base(isLoading, currentErrorMessage)
+        bool isRefreshing = false)
+        : base(isLoading, currentErrorMessage)
     {
-        Characters = characters;
+        Characters = characters ?? Enumerable.Empty<CharacterResponse>();
         Selected = selected;
         IsRefreshing = isRefreshing;
     }
 
-    public IList<CharacterResponse>? Characters { get; }
+    public IEnumerable<CharacterResponse> Characters { get; }
 
     public bool IsRefreshing { get; }
 

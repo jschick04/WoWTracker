@@ -4,7 +4,7 @@ namespace Tracker.Client.Library.Store.NeededItem.GetAll;
 
 public class GetAllSuccessAction
 {
-    public GetAllSuccessAction(IList<NeededItemResponse> items) => Items = items;
+    public GetAllSuccessAction(IEnumerable<NeededItemResponse> items) => Items = items;
 
-    public IList<NeededItemResponse> Items { get; }
+    public IEnumerable<NeededItemResponse> Items { get; }
 }

@@ -16,7 +16,8 @@ public class RemoveItemReducer
     [ReducerMethod]
     public static NeededItemState ReducerRemoveItemSuccessAction(NeededItemState state, RemoveItemSuccessAction action)
     {
-        var item = state.Items?.FirstOrDefault(item => Equals(item.Name, action.Name));
+        var updatedList = state.Items.ToList();
+        var item = updatedList.FirstOrDefault(item => Equals(item.Name, action.Name));
 
         if (item is null)
         {
@@ -31,9 +32,9 @@ public class RemoveItemReducer
         }
         else
         {
-            state.Items?.Remove(item);
+            updatedList.Remove(item);
         }
 
-        return new NeededItemState(false, null, state.Items);
+        return new NeededItemState(false, null, updatedList);
     }
 }

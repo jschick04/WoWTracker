@@ -19,7 +19,7 @@ public partial class NavMenu : IDisposable
     {
         await base.OnInitializedAsync();
 
-        if (CharacterState.Value.Characters is null)
+        if (CharacterState.Value.Characters.Any() is not true)
         {
             CharacterStateProvider.GetAllCharacters();
         }
@@ -30,22 +30,14 @@ public partial class NavMenu : IDisposable
         }
     }
 
-    private async Task CreateCharacter()
+    private void CreateCharacter()
     {
         var parameters = new ModalParameters();
         var options = new ModalOptions().GetClass(IsDarkMode);
 
         parameters.Add(nameof(Create.ButtonText), "Create");
 
-        var dialog = DialogService.Show<Create>("Create Character", parameters, options);
-
-        var result = await dialog.Result;
-
-        if (!result.Cancelled)
-        {
-            //await AppStateProvider.UpdateCharactersAsync();
-            //NavigationManager.NavigateTo("/");
-        }
+        DialogService.Show<Create>("Create Character", parameters, options);
     }
 
     private void LoadCharacter(int id) { NavigationManager.NavigateTo($"/character/{id}"); }

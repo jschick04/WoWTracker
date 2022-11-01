@@ -16,22 +16,23 @@ public class AddItemReducer
     [ReducerMethod]
     public static NeededItemState ReducerAddItemSuccessAction(NeededItemState state, AddItemSuccessAction action)
     {
-        if (state.Items is null)
+        if (state.Items.Any() is false)
         {
             return new NeededItemState(false, null, new List<NeededItemResponse> { action.Item });
         }
 
-        var item = state.Items.FirstOrDefault(item => Equals(item.Name, action.Item.Name));
+        var updatedList = state.Items.ToList();
+        var item = updatedList.FirstOrDefault(item => Equals(item.Name, action.Item.Name));
 
         if (item is null)
         {
-            state.Items.Add(action.Item);
+            updatedList.Add(action.Item);
         }
         else
         {
             item.Amount += action.Item.Amount;
         }
 
-        return new NeededItemState(false, null, state.Items);
+        return new NeededItemState(false, null, updatedList);
     }
 }
