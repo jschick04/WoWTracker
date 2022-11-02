@@ -1,4 +1,5 @@
 ﻿using Fluxor;
+using Tracker.Client.Library.Store.CraftedItem.GetAll;
 using Tracker.Library.Managers;
 
 namespace Tracker.Client.Library.Store.Character.SetSelected;
@@ -21,6 +22,9 @@ public class SetSelectedEffect : Effect<SetSelectedAction>
             }
 
             dispatcher.Dispatch(new SetSelectedSuccessAction(character.Data));
+
+            dispatcher.Dispatch(new GetAllAction(character.Data.FirstProfession,
+                character.Data.SecondProfession));
         }
         catch (Exception ex)
         {

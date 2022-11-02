@@ -23,11 +23,9 @@ public static class WebAssemblyHostBuilderExtensions
             client => client.BaseAddress = new Uri(builder.Configuration["Api"]!)
         ).AddHttpMessageHandler<AuthenticationHeaderHandler>();
 
-        builder.Services.AddScoped(
-            sp => sp.GetRequiredService<IHttpClientFactory>()
-                .CreateClient("TrackerApi")
-                .EnableIntercept(sp)
-        );
+        builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
+            .CreateClient("TrackerApi")
+            .EnableIntercept(sp));
 
         builder.Services.AddHttpClientInterceptor();
     }
