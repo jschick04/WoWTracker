@@ -6,9 +6,11 @@ Eventually will add a feature to track how many materials are needed to craft al
 This information will sync with a character marked as a bank alt who will see the entire required items list.
 
 # Getting Started
-1. Docker SQL Deployment
+Docker SQL Deployment
+
 Create an .env file containing the following information
-SA=Password
+
+> SA=Password<br/>
 DATAPATH=Path_To_Volume
 
 Once this is set run "docker-compose up -d" from root directory

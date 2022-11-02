@@ -21,7 +21,8 @@
 @using Tracker.Client.Helpers
 @using Tracker.Client.Library.Managers.Authentication
 @using Tracker.Client.Library.Managers.Interceptors
-@using Tracker.Client.Library.Managers.StateProviders
+@using Tracker.Client.Library.StateProviders
+@using Tracker.Client.Library.Store.State
 @using Tracker.Client.Pages.Identity
 @using Tracker.Client.Shared
 @using Tracker.Client.Shared.Components
@@ -36,17 +37,22 @@
 
 @attribute [Authorize]
 
-@inject ICharacterManager CharacterManager
 @inject IItemManager ItemManager
 
-@inject ApplicationStateProvider AppStateProvider
+@inject ClientAuthenticationStateProvider ClientAuthStateProvider
 @inject IAuthenticationManager AuthenticationManager
 @inject HttpClient HttpClient
 @inject IHttpInterceptorManager Interceptor
 @inject ILocalStorageService LocalStorage
 @inject NavigationManager NavigationManager
-@inject ApiAuthenticationStateProvider StateProvider
 @inject IUserManager UserManager
+
+@inject ICharacterStateProvider CharacterStateProvider
+@inject INeededItemStateProvider NeededItemStateProvider
+
+@inject IState<CharacterState> CharacterState
+@inject IState<CraftedItemState> CraftedItemState
+@inject IState<NeededItemState> NeededItemState
 
 @inject ILoggerFactory LoggerFactory
 

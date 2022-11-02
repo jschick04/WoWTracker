@@ -1,9 +1,11 @@
-﻿<div class="global-modal-content">
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+<div class="global-modal-content">
     <div>@ContextText</div>
 </div>
 
 <div class="global-modal-buttons">
-    @if (_isLoading) {
+    @if (CharacterState.Value.IsRefreshing) {
         <LoadingButton Color="ButtonColor.Accent" IsDisabled="true" />
     } else {
         <button class="btn cancel-btn" @onclick="Submit">@ButtonText</button>

@@ -11,9 +11,9 @@ public partial class Login
 
     protected override async Task OnInitializedAsync()
     {
-        await StateProvider.GetAuthenticationStateAsync();
+        await ClientAuthStateProvider.GetAuthenticationStateAsync();
 
-        if (!StateProvider.IsAnonymous)
+        if (!ClientAuthStateProvider.IsAnonymous)
         {
             NavigationManager.NavigateTo("/");
         }

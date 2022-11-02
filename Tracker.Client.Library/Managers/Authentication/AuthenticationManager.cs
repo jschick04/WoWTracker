@@ -66,7 +66,7 @@ public class AuthenticationManager : IAuthenticationManager
             await _localStorage.SetItemAsync(StorageConstants.RefreshToken, refresh.FirstOrDefault());
         }
 
-        ((ApiAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsAuthenticated(result.Id);
+        ((ClientAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsAuthenticated(result.Id);
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", result.Token);
 
         return await Result.SuccessAsync();
@@ -78,7 +78,7 @@ public class AuthenticationManager : IAuthenticationManager
         await _localStorage.RemoveItemAsync(StorageConstants.AuthToken);
         await _localStorage.RemoveItemAsync(StorageConstants.RefreshToken);
 
-        ((ApiAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsLoggedOut();
+        ((ClientAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsLoggedOut();
 
         _httpClient.DefaultRequestHeaders.Authorization = null;
 

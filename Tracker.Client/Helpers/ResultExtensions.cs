@@ -7,31 +7,22 @@ public static class ResultExtensions
 {
     public static void ToastError(this IResult result, IToastService toastService)
     {
-        if (result.Messages is null) { return; }
+        if (string.IsNullOrWhiteSpace(result.Message)) { return; }
 
-        foreach (var message in result.Messages)
-        {
-            toastService.ShowError(message);
-        }
+        toastService.ShowError(result.Message);
     }
 
     public static void ToastMessage(this IResult result, IToastService toastService)
     {
-        if (result.Messages is null) { return; }
+        if (string.IsNullOrWhiteSpace(result.Message)) { return; }
 
         if (result.Succeeded)
         {
-            foreach (var message in result.Messages)
-            {
-                toastService.ShowSuccess(message);
-            }
+            toastService.ShowSuccess(result.Message);
         }
         else
         {
-            foreach (var message in result.Messages)
-            {
-                toastService.ShowError(message);
-            }
+            toastService.ShowError(result.Message);
         }
     }
 }

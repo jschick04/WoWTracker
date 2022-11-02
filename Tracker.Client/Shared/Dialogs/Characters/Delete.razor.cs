@@ -7,15 +7,11 @@ namespace Tracker.Client.Shared.Dialogs.Characters;
 
 public partial class Delete
 {
-    private bool _isLoading;
-
     [Parameter] public string ButtonText { get; set; } = null!;
 
     [Parameter] public string ContextText { get; set; } = null!;
 
     [Parameter] public int Id { get; set; }
-
-    [Parameter] public string Name { get; set; } = null!;
 
     [CascadingParameter] private BlazoredModalInstance Modal { get; set; } = null!;
 
@@ -23,20 +19,7 @@ public partial class Delete
 
     private async Task Submit()
     {
-        _isLoading = true;
-
-        var response = await CharacterManager.DeleteAsync(Id);
-
-        _isLoading = false;
-
-        if (response.Succeeded)
-        {
-            ToastService.ShowSuccess($"{Name} has been deleted");
-        }
-        else
-        {
-            response.ToastError(ToastService);
-        }
+        CharacterStateProvider.DeleteSelectedCharacter(Id);
 
         await Modal.CloseAsync(ModalResult.Ok(true));
     }

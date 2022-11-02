@@ -1,5 +1,7 @@
-﻿<div class="global-modal-content">
-    <EditForm class="form-column" id="CharacterCreation" Model="_request" OnValidSubmit="Submit">
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+<div class="global-modal-content">
+    <EditForm id="CharacterCreation" Model="_request" OnValidSubmit="Submit">
 
         <DataAnnotationsValidator />
         <ValidationSummary />
@@ -25,9 +27,12 @@
 </div>
 
 <div class="global-modal-buttons">
-    @if (_isLoading) {
+    @if (CharacterState.Value.IsRefreshing)
+    {
         <LoadingButton Color="ButtonColor.Accent" IsDisabled="true" />
-    } else {
+    }
+    else
+    {
         <button class="btn accent-btn" form="CharacterCreation" type="submit">@ButtonText</button>
     }
     <button class="btn clear-btn" @onclick="Cancel">Cancel</button>

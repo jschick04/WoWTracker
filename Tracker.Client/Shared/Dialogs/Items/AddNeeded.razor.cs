@@ -2,7 +2,6 @@
 using Blazored.Modal.Services;
 using Microsoft.AspNetCore.Components;
 using Tracker.Api.Contracts.V1.Requests;
-using Tracker.Client.Helpers;
 
 namespace Tracker.Client.Shared.Dialogs.Items;
 
@@ -11,9 +10,10 @@ public partial class AddNeeded
     private readonly NeededItemRequest _request = new();
 
     private ElementReference _cancelButton;
-    private bool _isLoading;
 
     [Parameter] public string ButtonText { get; set; } = null!;
+
+    [Parameter] public string CharacterName { get; set; } = null!;
 
     [Parameter] public int Id { get; set; }
 
@@ -41,25 +41,13 @@ public partial class AddNeeded
         }
 
         _request.Name = string.Empty;
+
         return null;
     }
 
     private async Task Submit()
     {
-        _isLoading = true;
-
-        var response = await CharacterManager.AddNeededItemAsync(Id, _request);
-
-        if (response.Succeeded)
-        {
-            ToastService.ShowSuccess($"{_request.Name} has been added");
-        }
-        else
-        {
-            response.ToastError(ToastService);
-        }
-
-        _isLoading = false;
+        NeededItemStateProvider.AddNeededItem(Id, CharacterName, _request);
 
         await Modal.CloseAsync(ModalResult.Ok(true));
     }

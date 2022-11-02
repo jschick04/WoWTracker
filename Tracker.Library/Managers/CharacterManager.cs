@@ -35,7 +35,7 @@ public class CharacterManager : ICharacterManager
         return await Result.FailAsync(message?.Error);
     }
 
-    public async Task<IResult> CreateAsync(CreateCharacterRequest request)
+    public async Task<Result<CharacterResponse>> CreateAsync(CreateCharacterRequest request)
     {
         HttpResponseMessage response;
 
@@ -45,16 +45,17 @@ public class CharacterManager : ICharacterManager
         }
         catch (Exception ex)
         {
-            return await Result.FailAsync(ex.Message);
+            return await Result<CharacterResponse>.FailAsync(ex.Message);
         }
 
         if (response.IsSuccessStatusCode)
         {
-            return await Result.SuccessAsync();
+            var data = await response.Content.ReadFromJsonAsync<CharacterResponse>();
+            return await Result<CharacterResponse>.SuccessAsync(data);
         }
 
         var message = await response.Content.ReadFromJsonAsync<ErrorResponse>();
-        return await Result.FailAsync(message?.Error);
+        return await Result<CharacterResponse>.FailAsync(message?.Error);
     }
 
     public async Task<IResult> DeleteAsync(int id)

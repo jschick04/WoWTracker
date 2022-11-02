@@ -12,7 +12,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.AddHandlers();
 builder.AddApiHttpClient();
 
-builder.AddServices();
+builder.AddStateProviders();
 builder.AddManagers();
 
 builder.AddBlazorComponents();

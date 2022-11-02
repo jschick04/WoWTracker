@@ -3,15 +3,12 @@ using Blazored.Modal.Services;
 using Microsoft.AspNetCore.Components;
 using Tracker.Api.Contracts.V1.Requests;
 using Tracker.Api.Contracts.V1.Responses;
-using Tracker.Client.Helpers;
 
 namespace Tracker.Client.Shared.Dialogs.Characters;
 
 public partial class Update
 {
     private readonly UpdateCharacterRequest _request = new();
-
-    private bool _isLoading;
 
     [Parameter] public string ButtonText { get; set; } = null!;
 
@@ -21,6 +18,8 @@ public partial class Update
 
     protected override void OnInitialized()
     {
+        base.OnInitialized();
+
         _request.Name = Character.Name;
         _request.Class = Character.Class;
         _request.FirstProfession = Character.FirstProfession;
@@ -32,22 +31,7 @@ public partial class Update
 
     private async Task Submit()
     {
-        _isLoading = true;
-
-        var response = await CharacterManager.UpdateAsync(Character.Id, _request);
-
-        if (response.Succeeded)
-        {
-            await AppStateProvider.UpdateCharactersAsync();
-
-            _isLoading = false;
-
-            ToastService.ShowSuccess($"{_request.Name} has been updated");
-        }
-        else
-        {
-            response.ToastError(ToastService);
-        }
+        CharacterStateProvider.UpdateSelectedCharacter(Character.Id, _request);
 
         await Modal.CloseAsync(ModalResult.Ok(true));
     }

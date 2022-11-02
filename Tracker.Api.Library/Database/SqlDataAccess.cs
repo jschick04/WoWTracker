@@ -37,6 +37,15 @@ public class SqlDataAccess : ISqlDataAccess
         await db.ExecuteAsync(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
     }
 
+    public async Task<T> SaveData<T, TU>(string storedProcedure, TU parameters)
+    {
+        string connectionString = GetConnectionString();
+
+        using IDbConnection db = new SqlConnection(connectionString);
+
+        return await db.ExecuteScalarAsync<T>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
+    }
+
     private string GetConnectionString()
     {
         var builder = new SqlConnectionStringBuilder(_configuration.GetConnectionString(ConnectionStringName))

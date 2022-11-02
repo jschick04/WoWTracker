@@ -40,7 +40,7 @@ public class CharacterController : BaseApiController
     }
 
     [HttpPost(ApiRoutes.Character.Create)]
-    public async Task<IActionResult> Create([FromBody] CreateCharacterRequest request)
+    public async Task<ActionResult<CharacterResponse>> Create([FromBody] CreateCharacterRequest request)
     {
         if (Account is null) { return Unauthorized(); }
 
@@ -66,9 +66,19 @@ public class CharacterController : BaseApiController
             model.SecondProfessionId = secondProfessionId;
         }
 
-        await _data.Create(model);
+        var newId = await _data.Create(model);
 
-        return Ok();
+        var response = new CharacterResponse
+        {
+            Id = newId,
+            Name = model.Name,
+            Class = classId.GetName(),
+            FirstProfession = request.FirstProfession,
+            SecondProfession = request.SecondProfession,
+            HasCooking = request.HasCooking
+        };
+
+        return Ok(response);
     }
 
     [HttpDelete(ApiRoutes.Character.Delete)]
@@ -122,7 +132,7 @@ public class CharacterController : BaseApiController
         {
             Id = model.Id,
             Name = model.Name,
-            Class = model.ClassId.ToString(),
+            Class = model.ClassId.GetName(),
             FirstProfession = model.FirstProfessionId.ToString(),
             SecondProfession = model.SecondProfessionId.ToString(),
             HasCooking = model.HasCooking
@@ -209,7 +219,7 @@ public class CharacterController : BaseApiController
             model.SecondProfessionId = null;
         }
 
-        model.HasCooking = request.HasCooking ?? model.HasCooking;
+        model.HasCooking = request.HasCooking; // ?? model.HasCooking;
 
         await _data.Update(model);
 
