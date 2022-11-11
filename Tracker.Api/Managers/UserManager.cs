@@ -30,7 +30,7 @@ public class UserManager : IUserManager
         await _data.SaveChangesAsync();
     }
 
-    public async Task ForgotPasswordAsync(ForgotPasswordRequest request, string origin)
+    public async Task ForgotPasswordAsync(ForgotPasswordRequest request, string? origin)
     {
         var user = await _data.Users.SingleOrDefaultAsync(u => u.Username == request.Username);
 
@@ -78,7 +78,7 @@ public class UserManager : IUserManager
         };
     }
 
-    public async Task RegisterAsync(RegistrationRequest request, string origin)
+    public async Task RegisterAsync(RegistrationRequest request, string? origin)
     {
         if (await _data.Users.AnyAsync(u => u.Username == request.Username))
         {

@@ -8,7 +8,7 @@ public interface IEmailManager
 
     Task SendAsync(string to, string subject, string html, string from = null!);
 
-    void SendForgotPassword(User user, string origin);
+    void SendForgotPassword(User user, string? origin);
 
-    void SendVerification(User user, string origin);
+    void SendVerification(User user, string? origin);
 }

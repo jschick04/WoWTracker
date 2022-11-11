@@ -19,6 +19,8 @@ public class HangfireAuthorizationFilter : IDashboardAuthorizationFilter
         {
             token = httpContext.Request.Query["token"];
 
+            if (string.IsNullOrEmpty(token)) { return false; }
+
             httpContext.Response.Headers.Add("Authorization", $"Bearer {token}");
 
             httpContext.Response.Cookies.Append(

@@ -52,14 +52,13 @@ public class TokenManager : ITokenManager
         return token;
     }
 
-    public RefreshToken GenerateRefreshToken(string? ipAddress) =>
-        new()
-        {
-            Token = GenerateRandomTokenString(),
-            Expires = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenLifetimeDays),
-            Created = DateTime.UtcNow,
-            CreatedByIp = ipAddress ?? "Invalid IP Address"
-        };
+    public RefreshToken GenerateRefreshToken(string? ipAddress) => new()
+    {
+        Token = GenerateRandomTokenString(),
+        Expires = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenLifetimeDays),
+        Created = DateTime.UtcNow,
+        CreatedByIp = ipAddress ?? "Invalid IP Address"
+    };
 
     public bool GetUserId(string token, out int id)
     {
@@ -67,9 +66,7 @@ public class TokenManager : ITokenManager
         {
             var principal = GetPrincipal(token);
 
-            id = int.Parse(principal.FindFirstValue(ClaimTypes.NameIdentifier));
-
-            return true;
+            return int.TryParse(principal.FindFirstValue(ClaimTypes.NameIdentifier), out id);
         }
         catch
         {
