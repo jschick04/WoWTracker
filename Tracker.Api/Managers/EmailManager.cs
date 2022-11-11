@@ -42,7 +42,7 @@ public class EmailManager : IEmailManager
         await _sender.To(to).Subject(subject).Body(html, true).SendAsync();
     }
 
-    public void SendForgotPassword(User user, string origin)
+    public void SendForgotPassword(User user, string? origin)
     {
         var builder = new StringBuilder();
 
@@ -67,7 +67,7 @@ public class EmailManager : IEmailManager
         BackgroundJob.Enqueue(() => SendAsync(user.Username, "Forgot Password", builder.ToString(), null!));
     }
 
-    public void SendVerification(User user, string origin)
+    public void SendVerification(User user, string? origin)
     {
         var builder = new StringBuilder();
 

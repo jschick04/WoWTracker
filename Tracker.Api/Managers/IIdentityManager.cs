@@ -7,7 +7,7 @@ public interface IIdentityManager
 {
     Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request, string? ipAddress);
 
-    Task<AuthenticationResponse> RefreshTokenAsync(string token, string ipAddress);
+    Task<AuthenticationResponse> RefreshTokenAsync(string? token, string ipAddress);
 
     Task RevokeTokenAsync(string token, string ipAddress);
 

@@ -54,7 +54,7 @@ public class IdentityManager : IIdentityManager
         };
     }
 
-    public async Task<AuthenticationResponse> RefreshTokenAsync(string token, string ipAddress)
+    public async Task<AuthenticationResponse> RefreshTokenAsync(string? token, string ipAddress)
     {
         (RefreshToken refreshToken, User user) = await GetRefreshTokenAsync(token);
 
@@ -134,7 +134,7 @@ public class IdentityManager : IIdentityManager
         return true;
     }
 
-    private async Task<(RefreshToken, User)> GetRefreshTokenAsync(string token)
+    private async Task<(RefreshToken, User)> GetRefreshTokenAsync(string? token)
     {
         var user = await _data.Users.SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.Token == token));
 

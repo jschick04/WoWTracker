@@ -13,7 +13,7 @@ public class BaseApiController : ControllerBase
     {
         if (Request.Headers.ContainsKey("X-Forwarded-For"))
         {
-            return Request.Headers["X-Forwarded-For"];
+            return Request.Headers["X-Forwarded-For"]!;
         }
 
         // TODO: Add check for IPv6
