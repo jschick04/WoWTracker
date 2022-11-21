@@ -2,7 +2,7 @@
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 using Tracker.Client.Helpers;
-using Tracker.Client.Library.Store.State;
+using Tracker.Client.Library.Features.State;
 using Tracker.Client.Shared.Dialogs.Characters;
 
 namespace Tracker.Client.Shared;

@@ -1,7 +1,7 @@
 ﻿using Blazored.Modal;
 using Microsoft.AspNetCore.Components;
 using Tracker.Client.Helpers;
-using Tracker.Client.Library.Store.NavMenu;
+using Tracker.Client.Library.Features.NavMenu;
 using Tracker.Client.Shared.Dialogs;
 
 namespace Tracker.Client.Shared;
@@ -10,7 +10,7 @@ public partial class HeaderMenu
 {
     [CascadingParameter] protected bool IsDarkMode { get; set; }
 
-    private void DrawerToggle() => Dispatcher.Dispatch(new ToggleDrawerOpenAction());
+    private void DrawerToggle() => Dispatcher.Dispatch(new NavMenuToggleDrawerAction());
 
     private void LogOut()
     {

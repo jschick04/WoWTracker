@@ -1,6 +1,7 @@
 ﻿using Blazored.Modal;
 using Microsoft.AspNetCore.Components;
 using Tracker.Api.Contracts.V1.Requests;
+using Tracker.Api.Contracts.V1.Responses;
 using Tracker.Client.Helpers;
 using Tracker.Client.Shared.Dialogs.Characters;
 using Tracker.Client.Shared.Dialogs.Items;
