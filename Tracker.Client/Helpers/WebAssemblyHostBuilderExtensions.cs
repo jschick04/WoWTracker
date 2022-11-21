@@ -5,11 +5,11 @@ using Fluxor;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
+using Tracker.Client.Library.Features;
 using Tracker.Client.Library.Handlers;
 using Tracker.Client.Library.Managers.Authentication;
 using Tracker.Client.Library.Managers.Interceptors;
 using Tracker.Client.Library.StateProviders;
-using Tracker.Client.Library.Store;
 using Tracker.Library.Managers;
 
 namespace Tracker.Client.Helpers;

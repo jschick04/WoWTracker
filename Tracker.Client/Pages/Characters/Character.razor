@@ -2,7 +2,7 @@
 
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
-@if (CharacterState.Value.Selected is null)
+@if (CharacterState.Value.Selected is null || CharacterState.Value.IsRefreshing)
 {
     <LoadingText />
 }

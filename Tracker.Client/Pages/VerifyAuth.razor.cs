@@ -1,6 +1,6 @@
 ﻿using Fluxor;
 using Microsoft.AspNetCore.Components;
-using Tracker.Client.Library.Store.State;
+using Tracker.Client.Library.Features.State;
 using Tracker.Library.Helpers;
 
 namespace Tracker.Client.Pages;
