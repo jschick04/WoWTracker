@@ -1,0 +1,61 @@
+﻿@using System.Net.Http
+@using System.Net.Http.Json
+@using Blazored.LocalStorage
+@using Blazored.Modal
+@using Blazored.Modal.Services
+@using Blazored.Toast
+@using Blazored.Toast.Services
+@using Blazored.Toast.Configuration
+@using Fluxor
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.Extensions.Logging
+@using Microsoft.JSInterop
+
+@using Tracker.Client.Library.Managers.Authentication
+@using Tracker.Client.Library.Managers.Interceptors
+@using Tracker.Client.Library.StateProviders
+@using Tracker.Client.Library.Features.State
+@using Tracker.UI
+@using Tracker.UI.Helpers
+@using Tracker.UI.Pages.Identity
+@using Tracker.UI.Shared
+@using Tracker.UI.Shared.Components
+@using Tracker.Library.Constants.Storage
+@using Tracker.Library.Helpers
+@using Tracker.Library.Managers
+
+@using Tracker.Api.Contracts.Identity.Requests
+@using Tracker.Api.Contracts.Identity.Responses
+@using Tracker.Api.Contracts.Routes
+@using Tracker.Api.Contracts.V1.Responses
+
+@attribute [Authorize]
+
+@inject IItemManager ItemManager
+
+@inject ClientAuthenticationStateProvider ClientAuthStateProvider
+@inject IAuthenticationManager AuthenticationManager
+@inject HttpClient HttpClient
+@inject IHttpInterceptorManager Interceptor
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager NavigationManager
+@inject IUserManager UserManager
+
+@inject ICharacterStateProvider CharacterStateProvider
+@inject INeededItemStateProvider NeededItemStateProvider
+
+@inject IState<CharacterState> CharacterState
+@inject IState<CraftedItemState> CraftedItemState
+@inject IState<NeededItemState> NeededItemState
+
+@inject ILoggerFactory LoggerFactory
+
+@inject IDispatcher Dispatcher
+
+@inject IModalService DialogService
+@inject IToastService ToastService

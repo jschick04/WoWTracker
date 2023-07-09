@@ -1,0 +1,33 @@
+﻿@using Blazored.Modal
+@using Blazored.Toast
+@using Blazored.Toast.Configuration
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Routing
+@using Tracker.UI.Shared
+
+<CascadingBlazoredModal Position="ModalPosition.Middle" Size="ModalSize.Automatic" HideCloseButton="true">
+    <BlazoredToasts Position="ToastPosition.BottomRight" ShowCloseButton="false" />
+    <Fluxor.Blazor.Web.StoreInitializer />
+
+    <Router AppAssembly="@typeof(MauiProgram).Assembly"
+        AdditionalAssemblies="new[] { typeof(MainLayout).Assembly }" PreferExactMatches="@true">
+
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                <Authorizing>
+                    <p>Please wait...We are authorizing you...</p>
+                </Authorizing>
+            </AuthorizeRouteView>
+        </Found>
+
+        <NotFound>
+            <CascadingAuthenticationState>
+                <LayoutView Layout="@typeof(MainLayout)">
+                    <p>Sorry, there's nothing at this address.</p>
+                </LayoutView>
+            </CascadingAuthenticationState>
+        </NotFound>
+
+    </Router>
+
+</CascadingBlazoredModal>

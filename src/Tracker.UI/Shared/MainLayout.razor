@@ -1,0 +1,24 @@
+﻿@inherits LayoutComponentBase
+
+<main class="@(_isDarkMode ? "darkmode" : "")">
+    <CascadingValue Value="_isDarkMode">
+
+        <HeaderMenu />
+
+        <div class="wrapper">
+
+            <AuthorizeView>
+                <Authorized>
+
+                    <NavMenu />
+
+                </Authorized>
+            </AuthorizeView>
+
+            <article class="content">
+                <div id="scroll-bar"></div>
+                @Body
+            </article>
+        </div>
+    </CascadingValue>
+</main>
