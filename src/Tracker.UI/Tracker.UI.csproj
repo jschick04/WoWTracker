@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Tracker.Client.Library\Tracker.Client.Library.csproj" />
+        <ProjectReference Include="..\Tracker.UI.Library\Tracker.UI.Library.csproj" />
     </ItemGroup>
 
 </Project>
