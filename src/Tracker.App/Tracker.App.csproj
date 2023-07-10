@@ -32,12 +32,22 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Content Remove="wwwroot\appsettings.Development.json" />
+      <Content Remove="wwwroot\appsettings.json" />
+    </ItemGroup>
+
+    <ItemGroup>
       <None Remove="Platforms\Android\Resources\values\colors.xml" />
       <None Remove="Resources\AppIcon\appicon.svg" />
       <None Remove="Resources\Fonts\OpenSans-Regular.ttf" />
       <None Remove="Resources\Images\dotnet_bot.svg" />
       <None Remove="Resources\Raw\AboutAssets.txt" />
       <None Remove="Resources\Splash\splash.svg" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="appsettings.Development.json" />
+      <EmbeddedResource Include="appsettings.json" />
     </ItemGroup>
 
     <ItemGroup>

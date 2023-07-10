@@ -30,7 +30,7 @@ public class LocalStorageService : ILocalStorageService
         throw new NotImplementedException();
 
     public ValueTask RemoveItemAsync(string key, CancellationToken cancellationToken = default) =>
-        throw new NotImplementedException();
+        new(Task.Run(() => Preferences.Default.Remove(key), cancellationToken));
 
     public ValueTask RemoveItemsAsync(IEnumerable<string> keys, CancellationToken cancellationToken = default) =>
         throw new NotImplementedException();
