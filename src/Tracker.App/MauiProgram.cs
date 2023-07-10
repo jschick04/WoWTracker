@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Blazored.LocalStorage;
+using Microsoft.Extensions.Logging;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
+using Tracker.App.Services;
 using Tracker.Client.Library.Handlers;
 using Tracker.UI.Helpers;
 
@@ -42,6 +44,7 @@ public static class MauiProgram
         builder.Services.AddStateProviders();
         builder.Services.AddManagers();
 
+        builder.Services.AddScoped<ILocalStorageService, LocalStorageService>();
         builder.Services.AddBlazorComponents();
 
         return builder.Build();

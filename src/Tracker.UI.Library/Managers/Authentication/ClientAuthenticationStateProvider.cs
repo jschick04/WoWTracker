@@ -32,7 +32,7 @@ public class ClientAuthenticationStateProvider : AuthenticationStateProvider
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-        var savedToken = await _localStorage.GetItemAsync<string>(StorageConstants.AuthToken);
+        var savedToken = await _localStorage.GetItemAsStringAsync(StorageConstants.AuthToken);
 
         if (string.IsNullOrWhiteSpace(savedToken))
         {

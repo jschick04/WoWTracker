@@ -1,5 +1,4 @@
-﻿using Blazored.LocalStorage;
-using Blazored.Modal;
+﻿using Blazored.Modal;
 using Blazored.Toast;
 using Fluxor;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -17,7 +16,6 @@ public static class ServiceBuilderExtensions
 {
     public static void AddBlazorComponents(this IServiceCollection services)
     {
-        services.AddBlazoredLocalStorage();
         services.AddBlazoredModal();
         services.AddBlazoredToast();
         services.AddFluxor(options => options.ScanAssemblies(typeof(RootState).Assembly));
