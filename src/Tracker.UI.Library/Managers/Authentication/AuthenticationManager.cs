@@ -59,11 +59,11 @@ public class AuthenticationManager : IAuthenticationManager
 
         if (result is null) { return await Result.FailAsync("Failed to get Authentication Response"); }
 
-        await _localStorage.SetItemAsync(StorageConstants.AuthToken, result.Token);
+        await _localStorage.SetItemAsStringAsync(StorageConstants.AuthToken, result.Token);
 
         if (response.Headers.TryGetValues("RefreshToken", out var refresh))
         {
-            await _localStorage.SetItemAsync(StorageConstants.RefreshToken, refresh.FirstOrDefault());
+            await _localStorage.SetItemAsStringAsync(StorageConstants.RefreshToken, refresh.FirstOrDefault());
         }
 
         ((ClientAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsAuthenticated(result.Id);
@@ -91,7 +91,7 @@ public class AuthenticationManager : IAuthenticationManager
 
         if (remainingMinutes > 2 || (_isRefreshing && remainingMinutes > 0))
         {
-            return await _localStorage.GetItemAsync<string>(StorageConstants.AuthToken);
+            return await _localStorage.GetItemAsStringAsync(StorageConstants.AuthToken);
         }
 
         return await ForceRefreshToken();
@@ -103,7 +103,7 @@ public class AuthenticationManager : IAuthenticationManager
 
         var remainingMinutes = await GetTokenExpirationTime();
 
-        if (remainingMinutes > 2) { return await _localStorage.GetItemAsync<string>(StorageConstants.AuthToken); }
+        if (remainingMinutes > 2) { return await _localStorage.GetItemAsStringAsync(StorageConstants.AuthToken); }
 
         try
         {
@@ -139,11 +139,11 @@ public class AuthenticationManager : IAuthenticationManager
 
         if (result is null) { return null; }
 
-        await _localStorage.SetItemAsync(StorageConstants.AuthToken, result.Token);
+        await _localStorage.SetItemAsStringAsync(StorageConstants.AuthToken, result.Token);
 
         if (response.Headers.TryGetValues("RefreshToken", out var refresh))
         {
-            await _localStorage.SetItemAsync(StorageConstants.RefreshToken, refresh.FirstOrDefault());
+            await _localStorage.SetItemAsStringAsync(StorageConstants.RefreshToken, refresh.FirstOrDefault());
         }
 
         //_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", result.Token);

@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
@@ -26,6 +27,8 @@ builder.Services.AddHandlers();
 
 builder.Services.AddStateProviders();
 builder.Services.AddManagers();
+
+builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddBlazorComponents();
 

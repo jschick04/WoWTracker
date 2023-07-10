@@ -28,7 +28,7 @@ public class AuthenticationHeaderHandler : DelegatingHandler
             return await base.SendAsync(request, cancellationToken);
         }
 
-        var token = await _localStorage.GetItemAsync<string>(StorageConstants.AuthToken);
+        var token = await _localStorage.GetItemAsStringAsync(StorageConstants.AuthToken, cancellationToken);
 
         if (string.IsNullOrWhiteSpace(token))
         {
@@ -42,7 +42,7 @@ public class AuthenticationHeaderHandler : DelegatingHandler
 
     private async Task AddRefreshTokenHeader(HttpRequestMessage request)
     {
-        var refresh = await _localStorage.GetItemAsync<string>(StorageConstants.RefreshToken);
+        var refresh = await _localStorage.GetItemAsStringAsync(StorageConstants.RefreshToken);
 
         if (string.IsNullOrWhiteSpace(refresh)) { return; }
 
