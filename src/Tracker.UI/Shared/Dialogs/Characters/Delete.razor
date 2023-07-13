@@ -1,13 +1,18 @@
-﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+﻿@using Fluxor.Blazor.Web.Components
+@using Tracker.UI.Helpers
+@inherits FluxorComponent
 
 <div class="global-modal-content">
     <div>@ContextText</div>
 </div>
 
 <div class="global-modal-buttons">
-    @if (CharacterState.Value.IsRefreshing) {
+    @if (CharacterState.Value.IsRefreshing)
+    {
         <LoadingButton Color="ButtonColor.Accent" IsDisabled="true" />
-    } else {
+    }
+    else
+    {
         <button class="btn cancel-btn" @onclick="Submit">@ButtonText</button>
     }
     <button class="btn clear-btn" @onclick="Cancel">Cancel</button>

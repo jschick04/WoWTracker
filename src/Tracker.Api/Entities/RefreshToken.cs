@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Tracker.Api.Entities;
 
 [Owned]
-public class RefreshToken
+public record RefreshToken
 {
     [Key]
     [JsonIgnore]

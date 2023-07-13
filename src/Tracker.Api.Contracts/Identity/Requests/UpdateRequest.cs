@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Tracker.Api.Contracts.Helpers;
+using Tracker.Api.Contracts.Attributes;
 
 namespace Tracker.Api.Contracts.Identity.Requests;
 
-public class UpdateRequest
+public record UpdateRequest
 {
     private string? _firstName;
     private string? _lastName;

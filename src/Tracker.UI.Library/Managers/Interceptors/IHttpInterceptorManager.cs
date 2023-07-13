@@ -1,6 +1,6 @@
 ﻿using Toolbelt.Blazor;
 
-namespace Tracker.Client.Library.Managers.Interceptors;
+namespace Tracker.UI.Library.Managers.Interceptors;
 
 public interface IHttpInterceptorManager
 {

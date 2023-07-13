@@ -14,10 +14,10 @@ public class ItemController : BaseApiController
 
     public ItemController(IItemData data) => _data = data;
 
-    [HttpGet(ApiRoutes.Item.GetAll)]
-    public async Task<ActionResult<Dictionary<string, List<ItemModel>>>> GetAll()
+    [HttpGet(ApiRoutes.Item.GetAllUri)]
+    public async Task<ActionResult<Dictionary<string, List<ItemResponse>>>> GetAll()
     {
-        Dictionary<string, List<ItemModel>> response = new();
+        Dictionary<string, List<ItemResponse>> response = new();
 
         try
         {
@@ -25,7 +25,7 @@ public class ItemController : BaseApiController
             {
                 var profession = professionId.GetName();
                 var items = await _data.GetByProfession(profession);
-                response[profession] = items;
+                response[profession] = items.Select(x => new ItemResponse {Name = x.Name}).ToList();
             }
         }
         catch (Exception ex)
@@ -36,15 +36,15 @@ public class ItemController : BaseApiController
         return Ok(response);
     }
 
-    [HttpGet(ApiRoutes.Item.GetByProfession)]
+    [HttpGet(ApiRoutes.Item.GetByProfessionUri)]
     public async Task<ActionResult<IEnumerable<ItemModel>>> GetByProfession(string name) =>
         await _data.GetByProfession(name);
 
-    [HttpGet(ApiRoutes.Item.GetBySlot)]
+    [HttpGet(ApiRoutes.Item.GetBySlotUri)]
     public async Task<ActionResult<IEnumerable<ItemModel>>> GetBySlot(string name) => await _data.GetBySlot(name);
 
     [Authorize]
-    [HttpGet(ApiRoutes.Item.GetCraftableByProfession)]
+    [HttpGet(ApiRoutes.Item.GetCraftableByProfessionUri)]
     public async Task<ActionResult<IEnumerable<NeededItemModel>>> GetCraftableByProfession(string name)
     {
         if (Account is null) { return Unauthorized(); }

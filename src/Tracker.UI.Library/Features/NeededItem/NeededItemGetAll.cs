@@ -1,29 +1,30 @@
-﻿using Fluxor;
+﻿using System.Net.Http.Json;
+using Fluxor;
+using Tracker.Api.Contracts.Routes;
 using Tracker.Api.Contracts.V1.Responses;
-using Tracker.Client.Library.Features.State;
-using Tracker.Library.Managers;
+using Tracker.UI.Library.Features.State;
 
-namespace Tracker.Client.Library.Features.NeededItem;
+namespace Tracker.UI.Library.Features.NeededItem;
 
 public class NeededItemGetAllEffects
 {
-    private readonly ICharacterManager _characterManager;
+    private readonly HttpClient _httpClient;
 
-    public NeededItemGetAllEffects(ICharacterManager characterManager) => _characterManager = characterManager;
+    public NeededItemGetAllEffects(HttpClient httpClient) => _httpClient = httpClient;
 
     [EffectMethod]
     public async Task GetAllAsync(NeededItemGetAllAction action, IDispatcher dispatcher)
     {
         try
         {
-            var items = await _characterManager.GetNeededItemsAsync(action.Id);
+            var response = await _httpClient.GetAsync(ApiRoutes.Character.GetNeededItems(action.Id));
 
-            if (items.Succeeded is not true || items.Data is null)
-            {
-                throw new Exception(items.Message);
-            }
+            response.EnsureSuccessStatusCode();
 
-            dispatcher.Dispatch(new NeededItemGetAllSuccessAction(items.Data));
+            var items = await response.Content.ReadFromJsonAsync<List<NeededItemResponse>>() ??
+                throw new Exception($"Error retrieving data from {ApiRoutes.Character.GetNeededItems(action.Id)}");
+
+            dispatcher.Dispatch(new NeededItemGetAllSuccessAction(items));
         }
         catch (Exception ex)
         {
@@ -38,7 +39,7 @@ public class NeededItemGetAllReducers
 {
     [ReducerMethod(typeof(NeededItemGetAllAction))]
     public static NeededItemState OnGetAll(NeededItemState state) =>
-        state with { CurrentErrorMessage = null, IsLoading = true };
+        state with { CurrentErrorMessage = string.Empty, IsLoading = true };
 
     [ReducerMethod]
     public static NeededItemState OnGetAllFailure(NeededItemState state, NeededItemGetAllFailureAction action) =>

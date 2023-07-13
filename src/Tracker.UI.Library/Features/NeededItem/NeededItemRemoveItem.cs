@@ -1,19 +1,20 @@
-﻿using Blazored.Toast.Services;
+﻿using System.Net.Http.Json;
+using Blazored.Toast.Services;
 using Fluxor;
+using Tracker.Api.Contracts.Routes;
 using Tracker.Api.Contracts.V1.Requests;
-using Tracker.Client.Library.Features.State;
-using Tracker.Library.Managers;
+using Tracker.UI.Library.Features.State;
 
-namespace Tracker.Client.Library.Features.NeededItem;
+namespace Tracker.UI.Library.Features.NeededItem;
 
 public class NeededItemRemoveItemEffects
 {
-    private readonly ICharacterManager _characterManager;
+    private readonly HttpClient _httpClient;
     private readonly IToastService _toastService;
 
-    public NeededItemRemoveItemEffects(ICharacterManager characterManager, IToastService toastService)
+    public NeededItemRemoveItemEffects(HttpClient httpClient, IToastService toastService)
     {
-        _characterManager = characterManager;
+        _httpClient = httpClient;
         _toastService = toastService;
     }
 
@@ -22,12 +23,11 @@ public class NeededItemRemoveItemEffects
     {
         try
         {
-            var result = await _characterManager.RemoveNeededItemAsync(action.Id, action.Request);
+            var response = await _httpClient.PutAsJsonAsync(
+                ApiRoutes.Character.RemoveNeededItem(action.Id),
+                action.Request);
 
-            if (result.Succeeded is not true)
-            {
-                throw new Exception(result.Message);
-            }
+            response.EnsureSuccessStatusCode();
 
             _toastService.ShowSuccess($"{action.Request.Name} has been removed");
             dispatcher.Dispatch(new NeededItemRemoveItemSuccessAction(action.Request.Name, action.Request.Amount));
@@ -46,7 +46,7 @@ public class NeededItemRemoveItemReducers
 {
     [ReducerMethod(typeof(NeededItemRemoveItemAction))]
     public static NeededItemState OnRemoveItem(NeededItemState state) =>
-        state with { CurrentErrorMessage = null, IsLoading = true };
+        state with { CurrentErrorMessage = string.Empty, IsLoading = true };
 
     [ReducerMethod]
     public static NeededItemState

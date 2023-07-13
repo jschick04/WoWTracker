@@ -2,14 +2,14 @@
 using System.Net.Http.Json;
 using System.Security.Claims;
 using Blazored.LocalStorage;
+using FluentResults;
 using Microsoft.AspNetCore.Components.Authorization;
 using Tracker.Api.Contracts.Identity.Requests;
 using Tracker.Api.Contracts.Identity.Responses;
 using Tracker.Api.Contracts.Routes;
-using Tracker.Library.Constants.Storage;
-using Tracker.Library.Helpers;
+using Tracker.Shared.Constants.Storage;
 
-namespace Tracker.Client.Library.Managers.Authentication;
+namespace Tracker.UI.Library.Managers.Authentication;
 
 public class AuthenticationManager : IAuthenticationManager
 {
@@ -36,28 +36,27 @@ public class AuthenticationManager : IAuthenticationManager
         return state.User;
     }
 
-    public async Task<IResult> Login(AuthenticationRequest request)
+    public async Task<Result> Login(AuthenticationRequest request)
     {
         HttpResponseMessage response;
 
         try
         {
-            response = await _httpClient.PostAsJsonAsync(ApiRoutes.Identity.Authenticate, request);
+            response = await _httpClient.PostAsJsonAsync(ApiRoutes.Identity.AuthenticateUri, request);
+
+            response.EnsureSuccessStatusCode();
         }
         catch (Exception ex)
         {
-            return await Result.FailAsync(ex.Message);
-        }
-
-        if (!response.IsSuccessStatusCode)
-        {
-            var failure = await response.Content.ReadFromJsonAsync<ErrorResponse>();
-            return await Result.FailAsync(failure?.Error);
+            return Result.Fail(ex.Message);
         }
 
         var result = await response.Content.ReadFromJsonAsync<AuthenticationResponse>();
 
-        if (result is null) { return await Result.FailAsync("Failed to get Authentication Response"); }
+        if (result is null)
+        {
+            return Result.Fail("Failed to get Authentication Response");
+        }
 
         await _localStorage.SetItemAsStringAsync(StorageConstants.AuthToken, result.Token);
 
@@ -69,10 +68,10 @@ public class AuthenticationManager : IAuthenticationManager
         ((ClientAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsAuthenticated(result.Id);
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", result.Token);
 
-        return await Result.SuccessAsync();
+        return Result.Ok();
     }
 
-    public async Task<IResult> Logout()
+    public async Task<Result> Logout()
     {
         // TODO: Should we revoke the token first?
         await _localStorage.RemoveItemAsync(StorageConstants.AuthToken);
@@ -82,7 +81,7 @@ public class AuthenticationManager : IAuthenticationManager
 
         _httpClient.DefaultRequestHeaders.Authorization = null;
 
-        return await Result.SuccessAsync();
+        return Result.Ok();
     }
 
     public async Task<string?> TryRefreshToken()
@@ -103,7 +102,10 @@ public class AuthenticationManager : IAuthenticationManager
 
         var remainingMinutes = await GetTokenExpirationTime();
 
-        if (remainingMinutes > 2) { return await _localStorage.GetItemAsStringAsync(StorageConstants.AuthToken); }
+        if (remainingMinutes > 2)
+        {
+            return await _localStorage.GetItemAsStringAsync(StorageConstants.AuthToken);
+        }
 
         try
         {
@@ -128,11 +130,11 @@ public class AuthenticationManager : IAuthenticationManager
 
     private async Task<string?> RefreshToken()
     {
-        var response = await _httpClient.PostAsync(ApiRoutes.Identity.RefreshToken, null);
+        var response = await _httpClient.PostAsync(ApiRoutes.Identity.RefreshTokenUri, null);
 
         if (!response.IsSuccessStatusCode)
         {
-            throw new ApplicationException("Something went wrong when refreshing token");
+            throw new ApplicationException($"Refresh Token Failed: Error: {response.StatusCode}");
         }
 
         var result = await response.Content.ReadFromJsonAsync<AuthenticationResponse>();

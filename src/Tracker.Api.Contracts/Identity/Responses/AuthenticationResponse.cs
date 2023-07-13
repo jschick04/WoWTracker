@@ -2,20 +2,20 @@
 
 namespace Tracker.Api.Contracts.Identity.Responses;
 
-public class AuthenticationResponse
+public record AuthenticationResponse
 {
-    public int Id { get; set; }
+    public int Id { get; init; }
 
-    public string? Username { get; set; }
+    public string? Username { get; init; }
 
-    public DateTime Created { get; set; }
+    public DateTime Created { get; init; }
 
-    public DateTime? Updated { get; set; }
+    public DateTime? Updated { get; init; }
 
-    public bool IsVerified { get; set; }
+    public bool IsVerified { get; init; }
 
-    public string? Token { get; set; }
+    public string? Token { get; init; }
 
     [JsonIgnore]
-    public string? RefreshToken { get; set; }
+    public string? RefreshToken { get; init; }
 }

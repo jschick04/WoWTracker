@@ -1,7 +1,7 @@
 ﻿using Fluxor;
-using Tracker.Client.Library.Features.State;
+using Tracker.UI.Library.Features.State;
 
-namespace Tracker.Client.Library.Features.NavMenu;
+namespace Tracker.UI.Library.Features.NavMenu;
 
 public class NavMenuFeature : Feature<NavMenuState>
 {

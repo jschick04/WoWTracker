@@ -1,8 +1,8 @@
 ﻿using Fluxor;
 using Tracker.Api.Contracts.V1.Requests;
-using Tracker.Client.Library.Features.NeededItem;
+using Tracker.UI.Library.Features.NeededItem;
 
-namespace Tracker.Client.Library.StateProviders;
+namespace Tracker.UI.Library.StateProviders;
 
 public class NeededItemStateProvider : INeededItemStateProvider
 {

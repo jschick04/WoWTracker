@@ -1,6 +1,6 @@
 ﻿using Tracker.Api.Contracts.V1.Requests;
 
-namespace Tracker.Client.Library.StateProviders;
+namespace Tracker.UI.Library.StateProviders;
 
 public interface INeededItemStateProvider
 {

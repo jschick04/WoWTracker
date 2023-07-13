@@ -1,6 +1,6 @@
 ﻿@page "/character/{id:int}"
-
-@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+@using Fluxor.Blazor.Web.Components
+@inherits FluxorComponent
 
 @if (CharacterState.Value.Selected is null || CharacterState.Value.IsRefreshing)
 {

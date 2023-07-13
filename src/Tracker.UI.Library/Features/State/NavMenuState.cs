@@ -1,3 +1,3 @@
-﻿namespace Tracker.Client.Library.Features.State;
+﻿namespace Tracker.UI.Library.Features.State;
 
 public record NavMenuState(bool DrawerOpen);

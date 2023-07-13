@@ -1,8 +1,11 @@
 ﻿using Blazored.Modal;
+using Blazored.Modal.Services;
+using Fluxor;
 using Microsoft.AspNetCore.Components;
 using Tracker.Api.Contracts.V1.Requests;
-using Tracker.Api.Contracts.V1.Responses;
 using Tracker.UI.Helpers;
+using Tracker.UI.Library.Features.State;
+using Tracker.UI.Library.StateProviders;
 using Tracker.UI.Shared.Dialogs.Characters;
 using Tracker.UI.Shared.Dialogs.Items;
 
@@ -14,12 +17,23 @@ public partial class Character
 
     [CascadingParameter] protected bool IsDarkMode { get; set; }
 
+    [Inject] private IState<CharacterState> CharacterState { get; set; } = null!;
+
+    [Inject] private ICharacterStateProvider CharacterStateProvider { get; set; } = null!;
+
+    [Inject] private IState<CraftedItemState> CraftedItemState { get; set; } = null!;
+
+    [Inject] private IModalService ModalService { get; set; } = null!;
+
+    [Inject] private IState<NeededItemState> NeededItemState { get; set; } = null!;
+
+    [Inject] private INeededItemStateProvider NeededItemStateProvider { get; set; } = null!;
+
     protected override void OnParametersSet() => InitializeState();
 
     private void AddNeededItemDialog()
     {
-        if (CharacterState.Value.Selected?.Name is null)
-        { return; }
+        if (CharacterState.Value.Selected?.Name is null) { return; }
 
         var parameters = new ModalParameters();
         var options = new ModalOptions().GetClass(IsDarkMode);
@@ -28,13 +42,12 @@ public partial class Character
         parameters.Add(nameof(AddNeeded.Id), CharacterState.Value.Selected.Id);
         parameters.Add(nameof(AddNeeded.CharacterName), CharacterState.Value.Selected.Name);
 
-        DialogService.Show<AddNeeded>("Add Needed Item", parameters, options);
+        ModalService.Show<AddNeeded>("Add Needed Item", parameters, options);
     }
 
     private void DeleteDialog()
     {
-        if (CharacterState.Value.Selected is null)
-        { return; }
+        if (CharacterState.Value.Selected is null) { return; }
 
         var parameters = new ModalParameters();
         var options = new ModalOptions().GetClass(IsDarkMode, true);
@@ -45,7 +58,7 @@ public partial class Character
         parameters.Add(nameof(Delete.ButtonText), "Delete");
         parameters.Add(nameof(Delete.Id), CharacterState.Value.Selected.Id);
 
-        DialogService.Show<Delete>("Delete Character Confirmation", parameters, options);
+        ModalService.Show<Delete>("Delete Character Confirmation", parameters, options);
     }
 
     private void InitializeState()
@@ -56,8 +69,7 @@ public partial class Character
 
     private void RemoveNeededItemDialog(string profession, string name)
     {
-        if (CharacterState.Value.Selected is null)
-        { return; }
+        if (CharacterState.Value.Selected is null) { return; }
 
         var parameters = new ModalParameters();
         var options = new ModalOptions().GetClass(IsDarkMode, true);
@@ -67,13 +79,12 @@ public partial class Character
         parameters.Add(nameof(RemoveNeeded.Id), CharacterState.Value.Selected.Id);
         parameters.Add(nameof(RemoveNeeded.Item), new NeededItemRequest { Profession = profession, Name = name });
 
-        DialogService.Show<RemoveNeeded>("Remove Needed Item Confirmation", parameters, options);
+        ModalService.Show<RemoveNeeded>("Remove Needed Item Confirmation", parameters, options);
     }
 
     private void UpdateDialog()
     {
-        if (CharacterState.Value.Selected is null)
-        { return; }
+        if (CharacterState.Value.Selected is null) { return; }
 
         var parameters = new ModalParameters();
         var options = new ModalOptions().GetClass(IsDarkMode);
@@ -81,6 +92,6 @@ public partial class Character
         parameters.Add(nameof(Update.Character), CharacterState.Value.Selected);
         parameters.Add(nameof(Update.ButtonText), "Update");
 
-        DialogService.Show<Update>($"Edit {CharacterState.Value.Selected.Name}", parameters, options);
+        ModalService.Show<Update>($"Edit {CharacterState.Value.Selected.Name}", parameters, options);
     }
 }

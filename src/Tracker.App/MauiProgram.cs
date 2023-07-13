@@ -4,8 +4,8 @@ using Blazored.LocalStorage;
 using Microsoft.Extensions.Logging;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 using Tracker.App.Services;
-using Tracker.Client.Library.Handlers;
 using Tracker.UI.Helpers;
+using Tracker.UI.Library.Handlers;
 
 namespace Tracker.App;
 
@@ -37,12 +37,12 @@ public static class MauiProgram
         using var stream = app.GetManifestResourceStream("Tracker.App.appsettings.json");
 #endif
 
+        // TODO: Temp until appsettings works with MAUI
         // Not wrapping this in a try because app needs to crash if there is no appsettings
         var appsettings = JsonSerializer.Deserialize<Dictionary<string, string>>(stream!);
 
         builder.Services.AddHttpClient(
             "TrackerApi",
-            // TODO: Temp until appsettings works with MAUI
             client => client.BaseAddress = new Uri(appsettings["Api"])
         ).AddHttpMessageHandler<AuthenticationHeaderHandler>();
 

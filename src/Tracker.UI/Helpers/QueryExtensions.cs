@@ -2,7 +2,7 @@
 using System.Web;
 using Microsoft.AspNetCore.Components;
 
-namespace Tracker.Library.Helpers;
+namespace Tracker.UI.Helpers;
 
 public static class QueryExtensions
 {

@@ -15,7 +15,7 @@ public class AccountController : BaseApiController
     public AccountController(IUserManager user) => _user = user;
 
     [Authorize]
-    [HttpDelete(ApiRoutes.Account.Delete)]
+    [HttpDelete(ApiRoutes.Account.DeleteUri)]
     public async Task<IActionResult> Delete([FromRoute] int id)
     {
         if (id != Account?.Id && Account?.Role != Role.Admin)
@@ -28,7 +28,7 @@ public class AccountController : BaseApiController
         return NoContent();
     }
 
-    [HttpPost(ApiRoutes.Account.ForgotPassword)]
+    [HttpPost(ApiRoutes.Account.ForgotPasswordUri)]
     public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
     {
         await _user.ForgotPasswordAsync(request, Request.Headers["origin"]);
@@ -37,11 +37,11 @@ public class AccountController : BaseApiController
     }
 
     [Authorize(Role.Admin)]
-    [HttpGet(ApiRoutes.Account.GetAll)]
+    [HttpGet(ApiRoutes.Account.GetAllUri)]
     public async Task<ActionResult<IEnumerable<UserResponse>>> GetAll() => Ok(await _user.GetAllAsync());
 
     [Authorize]
-    [HttpGet(ApiRoutes.Account.GetById)]
+    [HttpGet(ApiRoutes.Account.GetByIdUri)]
     public async Task<ActionResult<UserResponse>> GetById([FromRoute] int id)
     {
         if (id != Account?.Id && Account?.Role != Role.Admin)
@@ -52,7 +52,7 @@ public class AccountController : BaseApiController
         return Ok(await _user.GetByIdAsync(id));
     }
 
-    [HttpPost(ApiRoutes.Account.ResetPassword)]
+    [HttpPost(ApiRoutes.Account.ResetPasswordUri)]
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
     {
         await _user.ResetPasswordAsync(request);
@@ -61,7 +61,7 @@ public class AccountController : BaseApiController
     }
 
     [Authorize]
-    [HttpPut(ApiRoutes.Account.Update)]
+    [HttpPut(ApiRoutes.Account.UpdateUri)]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateRequest request)
     {
         if (id != Account?.Id && Account?.Role != Role.Admin)
@@ -72,7 +72,7 @@ public class AccountController : BaseApiController
         return Ok(await _user.UpdateAsync(id, request));
     }
 
-    [HttpPost(ApiRoutes.Account.VerifyEmail)]
+    [HttpPost(ApiRoutes.Account.VerifyEmailUri)]
     public async Task<IActionResult> VerifyEmail([FromQuery] TokenRequest request)
     {
         await _user.VerifyEmailAsync(request.Token);

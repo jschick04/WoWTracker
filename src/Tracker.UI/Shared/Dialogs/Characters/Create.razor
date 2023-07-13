@@ -1,4 +1,7 @@
-﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+﻿@using Fluxor.Blazor.Web.Components
+@using Tracker.Shared.Helpers
+@using Tracker.UI.Helpers
+@inherits FluxorComponent
 
 <div class="global-modal-content">
     <EditForm id="CharacterCreation" Model="_request" OnValidSubmit="Submit">

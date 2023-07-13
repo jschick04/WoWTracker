@@ -13,6 +13,11 @@ public class ProfessionController : BaseApiController
 
     public ProfessionController(IProfessionData data) => _data = data;
 
-    [HttpGet(ApiRoutes.Profession.GetAll)]
-    public async Task<ActionResult<IEnumerable<ProfessionModel>>> Get() => await _data.GetAll();
+    [HttpGet(ApiRoutes.Profession.GetAllUri)]
+    public async Task<ActionResult<IEnumerable<string>>> Get()
+    {
+        var professions = await _data.GetAll();
+
+        return Ok(professions.Select(x => x.Name));
+    }
 }

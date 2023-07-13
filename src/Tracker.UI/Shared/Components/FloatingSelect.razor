@@ -6,11 +6,11 @@
         <i class="fa-regular fa-caret-down"></i>
     </label>
     <div class="dropdown-list" data-toggle="@_expanded.ToString()">
-        @if (AddEmpty || ItemList is null) {
+        @if (AddEmpty || !ItemList.Any()) {
             <div class="dropdown-list_item" @onclick="() => SetValue(string.Empty)">None</div>
         }
 
-        @if (ItemList is not null) {
+        @if (ItemList.Any()) {
             @foreach (var item in ItemList) {
                 <div class="dropdown-list_item" @onclick="() => SetValue(item)">@item</div>
             }

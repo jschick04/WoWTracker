@@ -10,7 +10,7 @@ public partial class FloatingSelect
     public bool AddEmpty { get; set; }
 
     [Parameter]
-    public List<string> ItemList { get; set; }
+    public IEnumerable<string> ItemList { get; set; } = Enumerable.Empty<string>();
 
     [Parameter]
     public string Label { get; set; } = null!;

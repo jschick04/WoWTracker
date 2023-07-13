@@ -1,20 +1,21 @@
-﻿using Blazored.Toast.Services;
+﻿using System.Net.Http.Json;
+using Blazored.Toast.Services;
 using Fluxor;
+using Tracker.Api.Contracts.Routes;
 using Tracker.Api.Contracts.V1.Requests;
 using Tracker.Api.Contracts.V1.Responses;
-using Tracker.Client.Library.Features.State;
-using Tracker.Library.Managers;
+using Tracker.UI.Library.Features.State;
 
-namespace Tracker.Client.Library.Features.Character;
+namespace Tracker.UI.Library.Features.Character;
 
 public class CharacterCreateEffects
 {
-    private readonly ICharacterManager _characterManager;
+    private readonly HttpClient _httpClient;
     private readonly IToastService _toastService;
 
-    public CharacterCreateEffects(ICharacterManager characterManager, IToastService toastService)
+    public CharacterCreateEffects(HttpClient httpClient, IToastService toastService)
     {
-        _characterManager = characterManager;
+        _httpClient = httpClient;
         _toastService = toastService;
     }
 
@@ -23,15 +24,15 @@ public class CharacterCreateEffects
     {
         try
         {
-            var character = await _characterManager.CreateAsync(action.Request);
+            var response = await _httpClient.PostAsJsonAsync(ApiRoutes.Character.CreateUri, action.Request);
 
-            if (character.Succeeded is not true || character.Data is null)
-            {
-                throw new Exception(character.Message);
-            }
+            response.EnsureSuccessStatusCode();
 
-            _toastService.ShowSuccess($"{character.Data.Name} has been created");
-            dispatcher.Dispatch(new CharacterCreateSuccessAction(character.Data));
+            var character = await response.Content.ReadFromJsonAsync<CharacterResponse>() ??
+                throw new Exception($"Error retrieving data from {ApiRoutes.Character.CreateUri}");
+
+            _toastService.ShowSuccess($"{character.Name} has been created");
+            dispatcher.Dispatch(new CharacterCreateSuccessAction(character));
         }
         catch (Exception ex)
         {
@@ -47,7 +48,7 @@ public class CharacterCreateReducers
 {
     [ReducerMethod(typeof(CharacterCreateAction))]
     public static CharacterState OnCreateAction(CharacterState state) =>
-        state with { CurrentErrorMessage = null, IsRefreshing = true };
+        state with { CurrentErrorMessage = string.Empty, IsRefreshing = true };
 
     [ReducerMethod]
     public static CharacterState OnCreateFailureAction(CharacterState state, CharacterCreateFailureAction action) =>

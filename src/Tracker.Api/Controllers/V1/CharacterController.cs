@@ -16,7 +16,7 @@ public class CharacterController : BaseApiController
 
     public CharacterController(ICharacterData data) => _data = data;
 
-    [HttpPut(ApiRoutes.Character.AddNeededItem)]
+    [HttpPut(ApiRoutes.Character.AddNeededItemUri)]
     public async Task<IActionResult> AddNeededItem([FromRoute] int id, [FromBody] NeededItemRequest request)
     {
         if (Account is null) { return Unauthorized(); }
@@ -39,7 +39,7 @@ public class CharacterController : BaseApiController
         return Ok();
     }
 
-    [HttpPost(ApiRoutes.Character.Create)]
+    [HttpPost(ApiRoutes.Character.CreateUri)]
     public async Task<ActionResult<CharacterResponse>> Create([FromBody] CreateCharacterRequest request)
     {
         if (Account is null) { return Unauthorized(); }
@@ -81,7 +81,7 @@ public class CharacterController : BaseApiController
         return Ok(response);
     }
 
-    [HttpDelete(ApiRoutes.Character.Delete)]
+    [HttpDelete(ApiRoutes.Character.DeleteUri)]
     public async Task<IActionResult> Delete([FromRoute] int id)
     {
         if (Account is null) { return Unauthorized(); }
@@ -95,7 +95,7 @@ public class CharacterController : BaseApiController
         return NoContent();
     }
 
-    [HttpGet(ApiRoutes.Character.GetAll)]
+    [HttpGet(ApiRoutes.Character.GetAllUri)]
     public async Task<ActionResult<IEnumerable<CharacterResponse>>> GetAll()
     {
         if (Account is null) { return Unauthorized(); }
@@ -119,7 +119,7 @@ public class CharacterController : BaseApiController
         return Ok(response);
     }
 
-    [HttpGet(ApiRoutes.Character.GetById)]
+    [HttpGet(ApiRoutes.Character.GetByIdUri)]
     public async Task<ActionResult<CharacterResponse>> GetById([FromRoute] int id)
     {
         if (Account is null) { return Unauthorized(); }
@@ -141,7 +141,7 @@ public class CharacterController : BaseApiController
         return Ok(response);
     }
 
-    [HttpGet(ApiRoutes.Character.GetNeededItems)]
+    [HttpGet(ApiRoutes.Character.GetNeededItemsUri)]
     public async Task<ActionResult<IEnumerable<NeededItemResponse>>> GetNeededItems([FromRoute] int id)
     {
         if (Account is null) { return Unauthorized(); }
@@ -160,7 +160,7 @@ public class CharacterController : BaseApiController
         return Ok(response);
     }
 
-    [HttpPut(ApiRoutes.Character.RemoveNeededItem)]
+    [HttpPut(ApiRoutes.Character.RemoveNeededItemUri)]
     public async Task<IActionResult> RemoveNeededItem([FromRoute] int id, [FromBody] NeededItemRequest request)
     {
         if (Account is null) { return Unauthorized(); }
@@ -183,7 +183,7 @@ public class CharacterController : BaseApiController
         return Ok();
     }
 
-    [HttpPut(ApiRoutes.Character.Update)]
+    [HttpPut(ApiRoutes.Character.UpdateUri)]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCharacterRequest request)
     {
         if (Account is null) { return Unauthorized(); }

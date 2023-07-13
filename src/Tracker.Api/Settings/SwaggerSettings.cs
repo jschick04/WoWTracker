@@ -1,10 +1,10 @@
 ﻿namespace Tracker.Api.Settings;
 
-public class SwaggerSettings
+public record SwaggerSettings
 {
-    public string Description { get; set; } = null!;
+    public string Description { get; init; } = null!;
 
-    public string JsonRoute { get; set; } = null!;
+    public string JsonRoute { get; init; } = null!;
 
-    public string UiEndpoint { get; set; } = null!;
+    public string UiEndpoint { get; init; } = null!;
 }

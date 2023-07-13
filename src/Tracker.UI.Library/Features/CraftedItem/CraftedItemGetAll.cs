@@ -1,16 +1,16 @@
-﻿using Fluxor;
+﻿using System.Net.Http.Json;
+using Fluxor;
+using Tracker.Api.Contracts.Routes;
 using Tracker.Api.Contracts.V1.Responses;
-using Tracker.Client.Library.Features.State;
-using Tracker.Library.Helpers;
-using Tracker.Library.Managers;
+using Tracker.UI.Library.Features.State;
 
-namespace Tracker.Client.Library.Features.CraftedItem;
+namespace Tracker.UI.Library.Features.CraftedItem;
 
 public class CraftedItemGetAllEffects
 {
-    private readonly IItemManager _itemManager;
+    private readonly HttpClient _httpClient;
 
-    public CraftedItemGetAllEffects(IItemManager itemManager) => _itemManager = itemManager;
+    public CraftedItemGetAllEffects(HttpClient httpClient) => _httpClient = httpClient;
 
     [EffectMethod]
     public async Task GetAllAsync(CraftedItemGetAllAction action, IDispatcher dispatcher)
@@ -22,14 +22,24 @@ public class CraftedItemGetAllEffects
         {
             if (!string.IsNullOrWhiteSpace(action.Primary))
             {
-                var first = await _itemManager.GetCraftableByProfession(action.Primary);
-                first.GetDataIfSuccess(ref firstList);
+                var first = await _httpClient.GetAsync(ApiRoutes.Item.GetCraftableByProfession(action.Primary));
+
+                first.EnsureSuccessStatusCode();
+
+                firstList = await first.Content.ReadFromJsonAsync<List<NeededItemResponse>>() ??
+                    throw new Exception($"Error retrieving data from " +
+                        $"{ApiRoutes.Item.GetCraftableByProfession(action.Primary)}");
             }
 
             if (!string.IsNullOrWhiteSpace(action.Secondary))
             {
-                var second = await _itemManager.GetCraftableByProfession(action.Secondary);
-                second.GetDataIfSuccess(ref secondList);
+                var second = await _httpClient.GetAsync(ApiRoutes.Item.GetCraftableByProfession(action.Secondary));
+
+                second.EnsureSuccessStatusCode();
+
+                secondList = await second.Content.ReadFromJsonAsync<List<NeededItemResponse>>() ??
+                    throw new Exception($"Error retrieving data from " +
+                        $"{ApiRoutes.Item.GetCraftableByProfession(action.Secondary)}");
             }
 
             var itemsToCraft = firstList.Concat(secondList)
@@ -51,7 +61,7 @@ public class CraftedItemGetAllReducers
 {
     [ReducerMethod(typeof(CraftedItemGetAllAction))]
     public static CraftedItemState OnGetAll(CraftedItemState state) =>
-        state with { CurrentErrorMessage = null, IsLoading = true };
+        state with { CurrentErrorMessage = string.Empty, IsLoading = true };
 
     [ReducerMethod]
     public static CraftedItemState OnGetAllFailure(CraftedItemState state, CraftedItemGetAllFailureAction action) =>

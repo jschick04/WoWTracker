@@ -1,12 +1,15 @@
 ﻿using Fluxor;
 using Microsoft.AspNetCore.Components;
-using Tracker.Client.Library.Features.State;
-using Tracker.Library.Helpers;
+using Tracker.Shared.Helpers;
+using Tracker.UI.Library.Features.State;
+using Tracker.UI.Library.Managers.Authentication;
 
 namespace Tracker.UI.Pages;
 
 public partial class VerifyAuth
 {
+    [Inject] private ClientAuthenticationStateProvider AuthenticationStateProvider { get; set; } = null!;
+
     [Inject] private IState<CharacterState> Characters1 { get; set; } = null!;
 
     [Inject] private IState<CharacterState> Characters2 { get; set; } = null!;
@@ -15,7 +18,7 @@ public partial class VerifyAuth
 
     protected override async Task OnInitializedAsync()
     {
-        var user = await ClientAuthStateProvider.GetAuthenticationStateProviderUserAsync();
+        var user = await AuthenticationStateProvider.GetAuthenticationStateProviderUserAsync();
 
         if (user.Identity?.IsAuthenticated is true)
         {
@@ -23,6 +26,6 @@ public partial class VerifyAuth
         }
     }
 
-    private static string GetProfession(string profession) =>
+    private static string GetProfession(string? profession) =>
         string.IsNullOrWhiteSpace(profession) ? "None" : profession;
 }

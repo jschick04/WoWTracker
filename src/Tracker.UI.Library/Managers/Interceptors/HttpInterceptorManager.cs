@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Components;
 using Toolbelt.Blazor;
 using Tracker.Api.Contracts.Routes;
-using Tracker.Client.Library.Managers.Authentication;
+using Tracker.UI.Library.Managers.Authentication;
 
-namespace Tracker.Client.Library.Managers.Interceptors;
+namespace Tracker.UI.Library.Managers.Interceptors;
 
 public class HttpInterceptorManager : IHttpInterceptorManager
 {
@@ -53,9 +53,9 @@ public class HttpInterceptorManager : IHttpInterceptorManager
         var ignorePaths = new[]
         {
             ApiRoutes.Identity.Uri,
-            ApiRoutes.Account.ForgotPassword,
-            ApiRoutes.Account.ResetPassword,
-            ApiRoutes.Account.VerifyEmail
+            ApiRoutes.Account.ForgotPasswordUri,
+            ApiRoutes.Account.ResetPasswordUri,
+            ApiRoutes.Account.VerifyEmailUri
         };
 
         if (uri is null) { return false; }

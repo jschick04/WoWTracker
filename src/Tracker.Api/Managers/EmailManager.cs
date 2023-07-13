@@ -20,7 +20,7 @@ public class EmailManager : IEmailManager
 
         if (!string.IsNullOrEmpty(origin))
         {
-            var verifyUri = $"{origin}/{ClientRoutes.Account.Verify}?token={user.VerificationToken}";
+            var verifyUri = $"{origin}/{ClientRoutes.Account.VerifyUri}?token={user.VerificationToken}";
 
             builder.AppendLine("<p>Please click the below link to confirm you account.</p>");
             builder.AppendFormat("<p><a href=\"{0}\">Verify</a></p>", verifyUri).AppendLine();
@@ -28,7 +28,7 @@ public class EmailManager : IEmailManager
         else
         {
             builder.AppendLine("<p>Please use the following API to confirm your account.</p>");
-            builder.AppendFormat("<p>API Route: {0}</p>", ApiRoutes.Account.VerifyEmail).AppendLine();
+            builder.AppendFormat("<p>API Route: {0}</p>", ApiRoutes.Account.VerifyEmailUri).AppendLine();
             builder.AppendFormat("<p>Token: <code>{0}</code></p>", user.VerificationToken).AppendLine();
         }
 
@@ -50,7 +50,7 @@ public class EmailManager : IEmailManager
 
         if (!string.IsNullOrEmpty(origin))
         {
-            var resetUri = $"{origin}/{ClientRoutes.Account.ResetPassword}?token={user.ResetToken}";
+            var resetUri = $"{origin}/{ClientRoutes.Account.ResetPasswordUri}?token={user.ResetToken}";
 
             builder.AppendLine("<p>Please click the below link to reset your password.</p>");
             builder.AppendFormat("<p><a href=\"{0}\">Reset</a></p>", resetUri).AppendLine();
@@ -58,7 +58,7 @@ public class EmailManager : IEmailManager
         else
         {
             builder.AppendLine("<p>Please use the following API to reset your password</p>");
-            builder.AppendFormat("<p>API Route: {0}</p>", ApiRoutes.Account.ResetPassword).AppendLine();
+            builder.AppendFormat("<p>API Route: {0}</p>", ApiRoutes.Account.ResetPasswordUri).AppendLine();
             builder.AppendFormat("<p>Token: <code>{0}</code></p>", user.ResetToken).AppendLine();
         }
 
@@ -75,7 +75,7 @@ public class EmailManager : IEmailManager
 
         if (!string.IsNullOrEmpty(origin))
         {
-            var verifyUri = $"{origin}/{ClientRoutes.Account.Verify}?token={user.VerificationToken}";
+            var verifyUri = $"{origin}/{ClientRoutes.Account.VerifyUri}?token={user.VerificationToken}";
 
             builder.AppendLine("<p>Please click the below link to verify your email address.</p>");
             builder.AppendFormat("<p><a href=\"{0}\">Verify</a></p>", verifyUri).AppendLine();
@@ -83,7 +83,7 @@ public class EmailManager : IEmailManager
         else
         {
             builder.AppendLine("<p>Please use the following API to verify your email</p>");
-            builder.AppendFormat("<p>API Route: {0}</p>", ApiRoutes.Account.VerifyEmail).AppendLine();
+            builder.AppendFormat("<p>API Route: {0}</p>", ApiRoutes.Account.VerifyEmailUri).AppendLine();
             builder.AppendFormat("<p>Token: <code>{0}</code></p>", user.VerificationToken).AppendLine();
         }
 

@@ -1,7 +1,7 @@
 ﻿using Fluxor;
-using Tracker.Client.Library.Features.State;
+using Tracker.UI.Library.Features.State;
 
-namespace Tracker.Client.Library.Features.NeededItem;
+namespace Tracker.UI.Library.Features.NeededItem;
 
 public class NeededItemFeature : Feature<NeededItemState>
 {

@@ -49,7 +49,7 @@ public class Tests
     protected async Task<string> GetJwtAsync()
     {
         var registrationResponse = await testClient.PostAsJsonAsync(
-            ApiRoutes.Identity.Register,
+            ApiRoutes.Identity.RegisterUri,
             new RegistrationRequest
             {
                 FirstName = "Api",
@@ -67,7 +67,7 @@ public class Tests
         }
 
         var authenticateResponse = await testClient.PostAsJsonAsync(
-            ApiRoutes.Identity.Authenticate,
+            ApiRoutes.Identity.AuthenticateUri,
             new AuthenticationRequest { Username = Username, Password = Password }
         );
 

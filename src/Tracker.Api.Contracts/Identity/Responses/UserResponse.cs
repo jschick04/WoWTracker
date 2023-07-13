@@ -1,20 +1,20 @@
 ﻿namespace Tracker.Api.Contracts.Identity.Responses;
 
-public class UserResponse
+public record UserResponse
 {
-    public int Id { get; set; }
+    public int Id { get; init; }
 
-    public string? FirstName { get; set; }
+    public string? FirstName { get; init; }
 
-    public string? LastName { get; set; }
+    public string? LastName { get; init; }
 
-    public string? Username { get; set; }
+    public string? Username { get; init; }
 
-    public string? Role { get; set; }
+    public string? Role { get; init; }
 
-    public DateTime Created { get; set; }
+    public DateTime Created { get; init; }
 
-    public DateTime? Updated { get; set; }
+    public DateTime? Updated { get; init; }
 
-    public bool IsVerified { get; set; }
+    public bool IsVerified { get; init; }
 }

@@ -1,5 +1,7 @@
-﻿using Tracker.Api.Contracts.Identity.Requests;
-using Tracker.UI.Helpers;
+﻿using Blazored.Toast.Services;
+using Microsoft.AspNetCore.Components;
+using Tracker.Api.Contracts.Identity.Requests;
+using Tracker.UI.Library.Managers.Authentication;
 
 namespace Tracker.UI.Pages.Identity;
 
@@ -9,11 +11,19 @@ public partial class Login
 
     private bool _isLoading;
 
+    [Inject] private IAuthenticationManager AuthenticationManager { get; set; } = null!;
+
+    [Inject] private ClientAuthenticationStateProvider AuthenticationStateProvider { get; set; } = null!;
+
+    [Inject] private NavigationManager NavigationManager { get; set; } = null!;
+
+    [Inject] private IToastService ToastService { get; set; } = null!;
+
     protected override async Task OnInitializedAsync()
     {
-        await ClientAuthStateProvider.GetAuthenticationStateAsync();
+        await AuthenticationStateProvider.GetAuthenticationStateAsync();
 
-        if (!ClientAuthStateProvider.IsAnonymous)
+        if (!AuthenticationStateProvider.IsAnonymous)
         {
             NavigationManager.NavigateTo("/");
         }
@@ -27,14 +37,17 @@ public partial class Login
 
         _isLoading = false;
 
-        if (result.Succeeded)
+        if (result.IsSuccess)
         {
             ToastService.ShowSuccess("You are now logged in");
             NavigationManager.NavigateTo("/");
         }
         else
         {
-            result.ToastError(ToastService);
+            foreach (var error in result.Errors)
+            {
+                ToastService.ShowError(error.Message);
+            }
         }
     }
 }

@@ -1,33 +1,35 @@
-﻿using Fluxor;
+﻿using System.Net.Http.Json;
+using Fluxor;
+using Tracker.Api.Contracts.Routes;
 using Tracker.Api.Contracts.V1.Responses;
-using Tracker.Client.Library.Features.CraftedItem;
-using Tracker.Client.Library.Features.State;
-using Tracker.Library.Managers;
+using Tracker.UI.Library.Features.CraftedItem;
+using Tracker.UI.Library.Features.State;
 
-namespace Tracker.Client.Library.Features.Character;
+namespace Tracker.UI.Library.Features.Character;
 
 public class CharacterSetSelectedEffects
 {
-    private readonly ICharacterManager _characterManager;
+    private readonly HttpClient _httpClient;
 
-    public CharacterSetSelectedEffects(ICharacterManager characterManager) => _characterManager = characterManager;
+    public CharacterSetSelectedEffects(HttpClient httpClient) => _httpClient = httpClient;
 
     [EffectMethod]
     public async Task SetSelectedAsync(CharacterSetSelectedAction action, IDispatcher dispatcher)
     {
         try
         {
-            var character = await _characterManager.GetByIdAsync(action.Id);
+            var response = await _httpClient.GetAsync(ApiRoutes.Character.GetById(action.Id));
 
-            if (character.Succeeded is not true || character.Data is null)
-            {
-                throw new Exception(character.Message);
-            }
+            response.EnsureSuccessStatusCode();
 
-            dispatcher.Dispatch(new CharacterSetSelectedSuccessAction(character.Data));
+            var character = await response.Content.ReadFromJsonAsync<CharacterResponse>() ??
+                throw new Exception($"Error retrieving data from " +
+                    $"{ApiRoutes.Character.GetById(action.Id)}");
 
-            dispatcher.Dispatch(new CraftedItemGetAllAction(character.Data.FirstProfession,
-                character.Data.SecondProfession));
+            dispatcher.Dispatch(new CharacterSetSelectedSuccessAction(character));
+
+            dispatcher.Dispatch(new CraftedItemGetAllAction(character.FirstProfession,
+                character.SecondProfession));
         }
         catch (Exception ex)
         {
@@ -42,7 +44,7 @@ public class CharacterSetSelectedReducers
 {
     [ReducerMethod(typeof(CharacterSetSelectedAction))]
     public static CharacterState OnSetSelected(CharacterState state) =>
-        state with { CurrentErrorMessage = null, IsRefreshing = true };
+        state with { CurrentErrorMessage = string.Empty, IsRefreshing = true };
 
     [ReducerMethod]
     public static CharacterState OnSetSelectedFailure(CharacterState state, CharacterSetSelectedFailureAction action) =>

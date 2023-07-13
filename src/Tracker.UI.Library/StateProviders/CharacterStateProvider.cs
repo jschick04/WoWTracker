@@ -1,8 +1,8 @@
 ﻿using Fluxor;
 using Tracker.Api.Contracts.V1.Requests;
-using Tracker.Client.Library.Features.Character;
+using Tracker.UI.Library.Features.Character;
 
-namespace Tracker.Client.Library.StateProviders;
+namespace Tracker.UI.Library.StateProviders;
 
 public class CharacterStateProvider : ICharacterStateProvider
 {
