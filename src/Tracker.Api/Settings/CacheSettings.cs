@@ -1,8 +1,8 @@
 ﻿namespace Tracker.Api.Settings;
 
-public class CacheSettings
+public record CacheSettings
 {
-    public bool Enabled { get; set; }
+    public bool Enabled { get; init; }
 
-    public string ConnectionString { get; set; } = null!;
+    public string ConnectionString { get; init; } = null!;
 }

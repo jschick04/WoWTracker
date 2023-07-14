@@ -2,7 +2,7 @@
 
 namespace Tracker.Api.Library.Models;
 
-public class CharacterModel
+public sealed record CharacterModel
 {
     public int Id { get; set; }
 

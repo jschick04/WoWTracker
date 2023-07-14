@@ -1,8 +1,9 @@
-﻿using Tracker.Api.Library.Models;
+﻿using FluentResults;
+using Tracker.Api.Library.Models;
 
 namespace Tracker.Api.Library.DataAccess;
 
 public interface IProfessionData
 {
-    Task<List<ProfessionModel>> GetAll();
+    Task<IResult<IEnumerable<ProfessionModel>>> GetAll();
 }

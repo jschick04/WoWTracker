@@ -4,14 +4,14 @@ public static class ClientRoutes
 {
     public static class Account
     {
-        public const string Verify = Root + "/verify";
+        public const string VerifyUri = Root + "/verify";
 
         private const string Root = "account";
 
 #region Passwords
 
-        public const string ForgotPassword = Root + "/forgot";
-        public const string ResetPassword = Root + "/reset";
+        public const string ForgotPasswordUri = Root + "/forgot";
+        public const string ResetPasswordUri = Root + "/reset";
 
 #endregion
     }

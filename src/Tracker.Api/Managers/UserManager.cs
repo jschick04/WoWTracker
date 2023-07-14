@@ -5,7 +5,6 @@ using Tracker.Api.Contracts.Identity.Requests;
 using Tracker.Api.Contracts.Identity.Responses;
 using Tracker.Api.Data;
 using Tracker.Api.Entities;
-using Tracker.Api.Library.Helpers;
 
 namespace Tracker.Api.Managers;
 
@@ -32,9 +31,8 @@ public class UserManager : IUserManager
 
     public async Task ForgotPasswordAsync(ForgotPasswordRequest request, string? origin)
     {
-        var user = await _data.Users.SingleOrDefaultAsync(u => u.Username == request.Username);
-
-        if (user is null) { throw new ApiException("An error has occurred"); }
+        var user = await _data.Users.SingleOrDefaultAsync(u => u.Username == request.Username) ??
+            throw new Exception("An error has occurred");
 
         user.ResetToken = _tokenManager.GenerateEmailToken(user.Username);
         user.ResetTokenExpires = DateTime.UtcNow.AddDays(1);
@@ -47,18 +45,19 @@ public class UserManager : IUserManager
 
     public async Task<IEnumerable<UserResponse>> GetAllAsync()
     {
-        return (await _data.Users.ToListAsync()).Select(user => new UserResponse
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Username = user.Username,
-                Role = user.Role.ToString(),
-                Created = user.Created,
-                Updated = user.Updated,
-                IsVerified = user.IsVerified
-            }
-        ).ToList();
+        return (await _data.Users.ToListAsync())
+            .Select(user => new UserResponse
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Username = user.Username,
+                    Role = user.Role.ToString(),
+                    Created = user.Created,
+                    Updated = user.Updated,
+                    IsVerified = user.IsVerified
+                }
+            );
     }
 
     public async Task<UserResponse> GetByIdAsync(int id)
@@ -82,7 +81,7 @@ public class UserManager : IUserManager
     {
         if (await _data.Users.AnyAsync(u => u.Username == request.Username))
         {
-            throw new ApiException("Username is already registered");
+            throw new Exception("Username is already registered");
         }
 
         var isFirstAccount = await _data.Users.AnyAsync() == false;
@@ -114,10 +113,9 @@ public class UserManager : IUserManager
     public async Task ResetPasswordAsync(ResetPasswordRequest request)
     {
         var user = await _data.Users.SingleOrDefaultAsync(
-            t => t.ResetToken == request.Token && t.ResetTokenExpires > DateTime.UtcNow
-        );
-
-        if (user is null) { throw new ApiException("An error has occured"); }
+                t => t.ResetToken == request.Token && t.ResetTokenExpires > DateTime.UtcNow
+            ) ??
+            throw new Exception("An error has occured");
 
         CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
@@ -136,7 +134,7 @@ public class UserManager : IUserManager
 
         if (user.Username != request.Username && _data.Users.Any(u => u.Username == request.Username))
         {
-            throw new ApiException("Username is already registered");
+            throw new Exception("Username is already registered");
         }
 
         if (request.Password is not null)
@@ -171,9 +169,8 @@ public class UserManager : IUserManager
 
     public async Task VerifyEmailAsync(string token)
     {
-        var user = await _data.Users.SingleOrDefaultAsync(u => u.VerificationToken == token);
-
-        if (user is null) { throw new ApiException("Verification failed"); }
+        var user = await _data.Users.SingleOrDefaultAsync(u => u.VerificationToken == token) ??
+            throw new Exception("Verification failed");
 
         user.Verified = DateTime.UtcNow;
         user.VerificationToken = null;
@@ -195,12 +192,6 @@ public class UserManager : IUserManager
         passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
     }
 
-    private async Task<User> GetUserAsync(int id)
-    {
-        var user = await _data.Users.FindAsync(id);
-
-        if (user is null) { throw new KeyNotFoundException("User not found"); }
-
-        return user;
-    }
+    private async Task<User> GetUserAsync(int id) =>
+        await _data.Users.FindAsync(id) ?? throw new KeyNotFoundException("User not found");
 }

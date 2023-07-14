@@ -30,7 +30,7 @@
                         </NavLink>
                     </li>
                 }
-                else if (CharacterState.Value.Characters?.Any() is true)
+                else if (CharacterState.Value.Characters.Any())
                 {
                     @foreach (var character in CharacterState.Value.Characters)
                     {
@@ -40,15 +40,6 @@
                             </NavLink>
                         </li>
                     }
-                }
-                
-                @if (CharacterState.Value.IsRefreshing)
-                {
-                    <li>
-                        <NavLink class="nav-links">
-                            <i class="fa-solid fa-spinner-third fa-spin"></i>Updating...
-                        </NavLink>
-                    </li>
                 }
 
                 <li>

@@ -13,7 +13,7 @@ public class TokenController : BaseApiController
 
     public TokenController(IIdentityManager identity) => _identity = identity;
 
-    [HttpPost(ApiRoutes.Identity.RefreshToken)]
+    [HttpPost(ApiRoutes.Identity.RefreshTokenUri)]
     public async Task<IActionResult> RefreshToken()
     {
         Request.Headers.TryGetValue("RefreshToken", out var refreshToken);
@@ -26,7 +26,7 @@ public class TokenController : BaseApiController
     }
 
     [Authorize]
-    [HttpPost(ApiRoutes.Identity.RevokeToken)]
+    [HttpPost(ApiRoutes.Identity.RevokeTokenUri)]
     public async Task<IActionResult> RevokeToken([FromBody] TokenRequest request)
     {
         if (string.IsNullOrEmpty(request.Token)) { return BadRequest(new { Error = "Token is required" }); }
@@ -41,7 +41,7 @@ public class TokenController : BaseApiController
         return NoContent();
     }
 
-    [HttpPost(ApiRoutes.Identity.ValidateToken)]
+    [HttpPost(ApiRoutes.Identity.ValidateTokenUri)]
     public async Task<IActionResult> ValidateResetToken([FromBody] TokenRequest request)
     {
         await _identity.ValidateResetTokenAsync(request);

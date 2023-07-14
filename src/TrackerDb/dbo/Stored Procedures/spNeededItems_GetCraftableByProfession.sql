@@ -5,8 +5,8 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT c.Id,
-           c.Name AS CharacterName,
+    SELECT c.Id AS CharacterId,
+           c.Name As CharacterName,
            i.ProfessionId,
            i.Name,
            ni.Amount

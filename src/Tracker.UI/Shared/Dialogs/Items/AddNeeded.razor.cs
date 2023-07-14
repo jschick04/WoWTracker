@@ -1,7 +1,10 @@
 ﻿using Blazored.Modal;
 using Blazored.Modal.Services;
+using Fluxor;
 using Microsoft.AspNetCore.Components;
 using Tracker.Api.Contracts.V1.Requests;
+using Tracker.UI.Library.Features.State;
+using Tracker.UI.Library.StateProviders;
 
 namespace Tracker.UI.Shared.Dialogs.Items;
 
@@ -15,9 +18,13 @@ public partial class AddNeeded
 
     [Parameter] public string CharacterName { get; set; } = null!;
 
-    [Parameter] public int Id { get; set; }
+    [Parameter] public string Id { get; set; } = null!;
 
     [CascadingParameter] private BlazoredModalInstance Modal { get; set; } = null!;
+
+    [Inject] private INeededItemStateProvider NeededItemStateProvider { get; set; } = null!;
+
+    [Inject] private IState<ProfessionState> ProfessionState { get; set; } = null!;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -29,21 +36,20 @@ public partial class AddNeeded
 
     private void Cancel() => Modal.CancelAsync();
 
-    private List<string> GetAvailableItems()
+    private IEnumerable<string> GetAvailableItems()
     {
-        if (string.IsNullOrWhiteSpace(_request.Profession))
-        { return null; }
+        if (string.IsNullOrWhiteSpace(_request.Profession)) { return Enumerable.Empty<string>(); }
 
-        var items = ItemManager.Items?[_request.Profession];
+        var items = ProfessionState.Value.Items[_request.Profession].ToList();
 
-        if (items?.Count > 0)
+        if (items.Any())
         {
-            return items.Select(item => item.Name).ToList();
+            return items.Select(item => item.Name);
         }
 
         _request.Name = string.Empty;
 
-        return null;
+        return Enumerable.Empty<string>();
     }
 
     private async Task Submit()

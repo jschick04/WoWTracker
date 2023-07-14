@@ -4,48 +4,68 @@ using Tracker.Api.Contracts.Routes;
 using Tracker.Api.Contracts.V1.Responses;
 using Tracker.Api.Library.DataAccess;
 using Tracker.Api.Library.Helpers;
-using Tracker.Api.Library.Models;
+using Tracker.Api.Managers;
 
 namespace Tracker.Api.Controllers.V1;
 
 public class ItemController : BaseApiController
 {
     private readonly IItemData _data;
+    private readonly IHashIdManager _hashIdManager;
 
-    public ItemController(IItemData data) => _data = data;
-
-    [HttpGet(ApiRoutes.Item.GetAll)]
-    public async Task<ActionResult<Dictionary<string, List<ItemModel>>>> GetAll()
+    public ItemController(IItemData data, IHashIdManager hashIdManager)
     {
-        Dictionary<string, List<ItemModel>> response = new();
+        _data = data;
+        _hashIdManager = hashIdManager;
+    }
 
-        try
+    [HttpGet(ApiRoutes.Item.GetAllUri)]
+    public async Task<ActionResult<Dictionary<string, IEnumerable<ItemResponse>>>> GetAll()
+    {
+        Dictionary<string, IEnumerable<ItemResponse>> response = new();
+
+        foreach (var professionId in (Professions[])Enum.GetValues(typeof(Professions)))
         {
-            foreach (var professionId in (Professions[])Enum.GetValues(typeof(Professions)))
-            {
-                var profession = professionId.GetName();
-                var items = await _data.GetByProfession(profession);
-                response[profession] = items;
-            }
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
+            var profession = professionId.GetName();
+            var result = await _data.GetByProfession(profession);
+
+            if (result.IsFailed) { return Problem(result.Errors.FirstOrDefault()?.Message); }
+
+            response[profession] = result.Value.Select(x => new ItemResponse { Name = x.Name });
         }
 
         return Ok(response);
     }
 
-    [HttpGet(ApiRoutes.Item.GetByProfession)]
-    public async Task<ActionResult<IEnumerable<ItemModel>>> GetByProfession(string name) =>
-        await _data.GetByProfession(name);
+    [HttpGet(ApiRoutes.Item.GetByProfessionUri)]
+    public async Task<ActionResult<IEnumerable<ItemResponse>>> GetByProfession(string name)
+    {
+        var result = await _data.GetByProfession(name);
 
-    [HttpGet(ApiRoutes.Item.GetBySlot)]
-    public async Task<ActionResult<IEnumerable<ItemModel>>> GetBySlot(string name) => await _data.GetBySlot(name);
+        return result switch
+        {
+            { IsSuccess: true } => Ok(result.Value.Select(x => new ItemResponse { Name = x.Name })),
+            { IsFailed: true } => Problem(result.Errors.FirstOrDefault()?.Message),
+            _ => Problem()
+        };
+    }
+
+    [HttpGet(ApiRoutes.Item.GetBySlotUri)]
+    public async Task<ActionResult<IEnumerable<ItemResponse>>> GetBySlot(string name)
+    {
+        var result = await _data.GetBySlot(name);
+
+        return result switch
+        {
+            { IsSuccess: true } => Ok(result.Value.Select(x => new ItemResponse { Name = x.Name })),
+            { IsFailed: true } => Problem(result.Errors.FirstOrDefault()?.Message),
+            _ => Problem()
+        };
+    }
 
     [Authorize]
-    [HttpGet(ApiRoutes.Item.GetCraftableByProfession)]
-    public async Task<ActionResult<IEnumerable<NeededItemModel>>> GetCraftableByProfession(string name)
+    [HttpGet(ApiRoutes.Item.GetCraftableByProfessionUri)]
+    public async Task<ActionResult<IEnumerable<NeededItemResponse>>> GetCraftableByProfession(string name)
     {
         if (Account is null) { return Unauthorized(); }
 
@@ -54,19 +74,22 @@ public class ItemController : BaseApiController
             return NotFound();
         }
 
-        var model = await _data.GetCraftableByProfession(Account.Id, (int)professionId);
+        var result = await _data.GetCraftableByProfession(Account.Id, (int)professionId);
 
-        var response = model.Select(
-            item => new NeededItemResponse
-            {
-                Id = item.Id,
-                CharacterName = item.CharacterName,
-                Profession = item.ProfessionId.GetName(),
-                Name = item.Name,
-                Amount = item.Amount
-            }
-        );
-
-        return Ok(response);
+        return result switch
+        {
+            { IsSuccess: true } => Ok(result.Value.Select(
+                item => new NeededItemResponse
+                {
+                    CharacterId = _hashIdManager.Encode(item.CharacterId),
+                    CharacterName = item.CharacterName,
+                    Profession = item.ProfessionId.GetName(),
+                    Name = item.Name,
+                    Amount = item.Amount
+                }
+            )),
+            { IsFailed: true } => Problem(result.Errors.FirstOrDefault()?.Message),
+            _ => Problem()
+        };
     }
 }

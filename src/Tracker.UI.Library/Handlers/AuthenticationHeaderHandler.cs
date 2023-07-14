@@ -1,9 +1,9 @@
 ﻿using System.Net.Http.Headers;
 using Blazored.LocalStorage;
 using Tracker.Api.Contracts.Routes;
-using Tracker.Library.Constants.Storage;
+using Tracker.Shared.Constants.Storage;
 
-namespace Tracker.Client.Library.Handlers;
+namespace Tracker.UI.Library.Handlers;
 
 public class AuthenticationHeaderHandler : DelegatingHandler
 {
@@ -18,7 +18,7 @@ public class AuthenticationHeaderHandler : DelegatingHandler
     {
         var path = request.RequestUri?.AbsolutePath;
 
-        if (path?.Contains(ApiRoutes.Identity.RefreshToken) is true)
+        if (path?.Contains(ApiRoutes.Identity.RefreshTokenUri) is true)
         {
             await AddRefreshTokenHeader(request);
         }
@@ -44,7 +44,8 @@ public class AuthenticationHeaderHandler : DelegatingHandler
     {
         var refresh = await _localStorage.GetItemAsStringAsync(StorageConstants.RefreshToken);
 
-        if (string.IsNullOrWhiteSpace(refresh)) { return; }
+        if (string.IsNullOrWhiteSpace(refresh))
+        { return; }
 
         if (request.Headers.TryGetValues("RefreshToken", out var _))
         {

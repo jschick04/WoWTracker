@@ -1,19 +1,20 @@
-﻿using Blazored.Toast.Services;
+﻿using System.Net.Http.Json;
+using Blazored.Toast.Services;
 using Fluxor;
+using Tracker.Api.Contracts.Routes;
 using Tracker.Api.Contracts.V1.Requests;
-using Tracker.Client.Library.Features.State;
-using Tracker.Library.Managers;
+using Tracker.UI.Library.Features.State;
 
-namespace Tracker.Client.Library.Features.Character;
+namespace Tracker.UI.Library.Features.Character;
 
 public class CharacterUpdateSelectedEffects
 {
-    private readonly ICharacterManager _characterManager;
+    private readonly HttpClient _httpClient;
     private readonly IToastService _toastService;
 
-    public CharacterUpdateSelectedEffects(ICharacterManager characterManager, IToastService toastService)
+    public CharacterUpdateSelectedEffects(HttpClient httpClient, IToastService toastService)
     {
-        _characterManager = characterManager;
+        _httpClient = httpClient;
         _toastService = toastService;
     }
 
@@ -22,12 +23,9 @@ public class CharacterUpdateSelectedEffects
     {
         try
         {
-            var result = await _characterManager.UpdateAsync(action.Id, action.Request);
+            var response = await _httpClient.PutAsJsonAsync(ApiRoutes.Character.Update(action.Id), action.Request);
 
-            if (result.Succeeded is not true)
-            {
-                throw new Exception(result.Message);
-            }
+            response.EnsureSuccessStatusCode();
 
             _toastService.ShowSuccess($"{action.Request.Name} has been updated");
             dispatcher.Dispatch(new CharacterUpdateSelectedSuccessAction(action.Id, action.Request));
@@ -46,7 +44,7 @@ public class CharacterUpdateSelectedReducers
 {
     [ReducerMethod(typeof(CharacterUpdateSelectedAction))]
     public static CharacterState OnUpdateSelected(CharacterState state) =>
-        state with { CurrentErrorMessage = null, IsRefreshing = true };
+        state with { CurrentErrorMessage = string.Empty, IsRefreshing = true };
 
     [ReducerMethod]
     public static CharacterState OnUpdateSelectedFailure(CharacterState state,
@@ -60,8 +58,8 @@ public class CharacterUpdateSelectedReducers
 
         if (updatedCharacter is null) { return state; }
 
-        updatedCharacter.Name = action.Request.Name;
-        updatedCharacter.Class = action.Request.Class;
+        updatedCharacter.Name = action.Request.Name!;
+        updatedCharacter.Class = action.Request.Class!;
         updatedCharacter.FirstProfession = action.Request.FirstProfession;
         updatedCharacter.SecondProfession = action.Request.SecondProfession;
         updatedCharacter.HasCooking = action.Request.HasCooking;
@@ -72,10 +70,10 @@ public class CharacterUpdateSelectedReducers
 
 #region Actions
 
-public record CharacterUpdateSelectedAction(int Id, UpdateCharacterRequest Request);
+public record CharacterUpdateSelectedAction(string Id, UpdateCharacterRequest Request);
 
 public record CharacterUpdateSelectedFailureAction(string ErrorMessage) : FailureAction(ErrorMessage);
 
-public record CharacterUpdateSelectedSuccessAction(int Id, UpdateCharacterRequest Request);
+public record CharacterUpdateSelectedSuccessAction(string Id, UpdateCharacterRequest Request);
 
 #endregion

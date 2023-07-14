@@ -1,12 +1,12 @@
 ﻿using Tracker.Api.Contracts.V1.Requests;
 
-namespace Tracker.Client.Library.StateProviders;
+namespace Tracker.UI.Library.StateProviders;
 
 public interface INeededItemStateProvider
 {
-    void AddNeededItem(int id, string name, NeededItemRequest request);
+    void AddNeededItem(string id, string name, NeededItemRequest request);
 
-    void GetAllNeededItems(int id);
+    void GetAllNeededItems(string id);
 
-    void RemoveNeededItem(int id, NeededItemRequest request);
+    void RemoveNeededItem(string id, NeededItemRequest request);
 }

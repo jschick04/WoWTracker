@@ -1,18 +1,18 @@
 ﻿using Blazored.Toast.Services;
 using Fluxor;
-using Tracker.Client.Library.Features.State;
-using Tracker.Library.Managers;
+using Tracker.Api.Contracts.Routes;
+using Tracker.UI.Library.Features.State;
 
-namespace Tracker.Client.Library.Features.Character;
+namespace Tracker.UI.Library.Features.Character;
 
 public class CharacterDeleteSelectedEffects
 {
-    private readonly ICharacterManager _characterManager;
+    private readonly HttpClient _httpClient;
     private readonly IToastService _toastService;
 
-    public CharacterDeleteSelectedEffects(ICharacterManager characterManager, IToastService toastService)
+    public CharacterDeleteSelectedEffects(HttpClient httpClient, IToastService toastService)
     {
-        _characterManager = characterManager;
+        _httpClient = httpClient;
         _toastService = toastService;
     }
 
@@ -21,12 +21,9 @@ public class CharacterDeleteSelectedEffects
     {
         try
         {
-            var result = await _characterManager.DeleteAsync(action.Id);
+            var response = await _httpClient.DeleteAsync(ApiRoutes.Character.Delete(action.Id));
 
-            if (result.Succeeded is not true)
-            {
-                throw new Exception(result.Message);
-            }
+            response.EnsureSuccessStatusCode();
 
             _toastService.ShowSuccess("Delete Successful");
             dispatcher.Dispatch(new CharacterDeleteSelectedSuccessAction(action.Id));
@@ -42,7 +39,8 @@ public class CharacterDeleteSelectedEffects
 public class CharacterDeleteSelectedReducers
 {
     [ReducerMethod(typeof(CharacterDeleteSelectedAction))]
-    public static CharacterState OnDeleteSelected(CharacterState state) => state with { CurrentErrorMessage = null };
+    public static CharacterState OnDeleteSelected(CharacterState state) =>
+        state with { CurrentErrorMessage = string.Empty };
 
     [ReducerMethod]
     public static CharacterState OnDeleteSelectedFailure(CharacterState state,
@@ -52,7 +50,7 @@ public class CharacterDeleteSelectedReducers
     public static CharacterState OnDeleteSelectedSuccess(CharacterState state,
         CharacterDeleteSelectedSuccessAction action)
     {
-        var updatedList = state.Characters.Where(c => c.Id != action.Id).ToList();
+        var updatedList = state.Characters.Where(c => c.Id != action.Id);
 
         return state with { Characters = updatedList, Selected = null };
     }
@@ -60,10 +58,10 @@ public class CharacterDeleteSelectedReducers
 
 #region Actions
 
-public record CharacterDeleteSelectedAction(int Id);
+public record CharacterDeleteSelectedAction(string Id);
 
 public record CharacterDeleteSelectedFailureAction(string ErrorMessage) : FailureAction(ErrorMessage);
 
-public record CharacterDeleteSelectedSuccessAction(int Id);
+public record CharacterDeleteSelectedSuccessAction(string Id);
 
 #endregion

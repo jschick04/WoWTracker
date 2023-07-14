@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Tracker.Api.Contracts.Helpers;
+using Tracker.Api.Contracts.Attributes;
 
 namespace Tracker.Api.Contracts.Identity.Requests;
 
-public class RegistrationRequest
+public sealed record RegistrationRequest
 {
     [Required(ErrorMessage = "First Name is required")]
     public string FirstName { get; set; } = null!;

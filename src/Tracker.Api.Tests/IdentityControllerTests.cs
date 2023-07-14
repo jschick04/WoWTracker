@@ -17,7 +17,7 @@ public class IdentityControllerTests : Tests
     {
         await AuthenticateAsync();
 
-        var response = await testClient.GetAsync(ApiRoutes.Account.GetByIdReplace(1));
+        var response = await testClient.GetAsync(ApiRoutes.Account.GetById(1));
         var returnedUser = await response.Content.ReadFromJsonAsync<UserResponse>();
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -36,7 +36,7 @@ public class IdentityControllerTests : Tests
             LastName = "User",
         };
 
-        var response = await testClient.PutAsJsonAsync(ApiRoutes.Account.UpdateReplace(1), updates);
+        var response = await testClient.PutAsJsonAsync(ApiRoutes.Account.Update(1), updates);
         var returnedUser = await response.Content.ReadFromJsonAsync<UserResponse>();
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);

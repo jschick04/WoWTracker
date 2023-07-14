@@ -1,5 +1,5 @@
 ﻿CREATE PROCEDURE [dbo].[spNeededItems_Add]
-    @id INT,
+    @characterId INT,
     @characterName NVARCHAR(50),
     @professionId INT,
     @name NVARCHAR(50),
@@ -13,13 +13,13 @@ BEGIN
     SELECT @itemId = Id FROM dbo.Items WHERE Name = @name AND ProfessionId = @professionId;
 
     BEGIN TRY
-        IF EXISTS (SELECT * FROM dbo.NeededItems WHERE CharacterId = @id AND ItemId = @itemId)
+        IF EXISTS (SELECT * FROM dbo.NeededItems WHERE CharacterId = @characterId AND ItemId = @itemId)
             BEGIN
-                UPDATE dbo.NeededItems SET Amount = Amount + @amount WHERE CharacterId = @id AND ItemId = @itemId;
+                UPDATE dbo.NeededItems SET Amount = Amount + @amount WHERE CharacterId = @characterId AND ItemId = @itemId;
             END;
         ELSE
             BEGIN
-                INSERT INTO dbo.NeededItems (CharacterId, ItemId, Amount) VALUES (@id, @itemId, @amount);
+                INSERT INTO dbo.NeededItems (CharacterId, ItemId, Amount) VALUES (@characterId, @itemId, @amount);
             END;
     END TRY
     BEGIN CATCH

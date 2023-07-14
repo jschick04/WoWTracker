@@ -2,7 +2,7 @@
 
 namespace Tracker.Api.Contracts.Identity.Requests;
 
-public class ForgotPasswordRequest
+public sealed record ForgotPasswordRequest
 {
     [Required(ErrorMessage = "Please enter a valid username")]
     [EmailAddress]

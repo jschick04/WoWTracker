@@ -1,7 +1,7 @@
 ﻿using Fluxor;
-using Tracker.Client.Library.Features.State;
+using Tracker.UI.Library.Features.State;
 
-namespace Tracker.Client.Library.Features.Character;
+namespace Tracker.UI.Library.Features.Character;
 
 public class CharacterFeature : Feature<CharacterState>
 {

@@ -1,6 +1,6 @@
 ﻿namespace Tracker.Api.Contracts.V1.Requests;
 
-public class UpdateCharacterRequest : BaseRequest
+public sealed class UpdateCharacterRequest : BaseRequest
 {
     private string? _name;
     private string? _class;

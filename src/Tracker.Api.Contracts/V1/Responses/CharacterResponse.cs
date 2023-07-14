@@ -1,12 +1,12 @@
 ﻿namespace Tracker.Api.Contracts.V1.Responses;
 
-public class CharacterResponse
+public sealed class CharacterResponse
 {
-    public int Id { get; set; }
+    public string Id { get; set; } = null!;
 
-    public string? Name { get; set; }
+    public string Name { get; set; } = null!;
 
-    public string? Class { get; set; }
+    public string Class { get; set; } = null!;
 
     public string? FirstProfession { get; set; }
 

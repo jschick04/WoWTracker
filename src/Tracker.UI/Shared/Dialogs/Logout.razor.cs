@@ -1,6 +1,8 @@
 ﻿using Blazored.Modal;
 using Blazored.Modal.Services;
+using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components;
+using Tracker.UI.Library.Managers.Authentication;
 
 namespace Tracker.UI.Shared.Dialogs;
 
@@ -10,7 +12,13 @@ public partial class Logout
 
     [Parameter] public string ContextText { get; set; } = null!;
 
+    [Inject] private IAuthenticationManager AuthenticationManager { get; set; } = null!;
+
     [CascadingParameter] private BlazoredModalInstance Modal { get; set; } = null!;
+
+    [Inject] private NavigationManager NavigationManager { get; set; } = null!;
+
+    [Inject] private IToastService ToastService { get; set; } = null!;
 
     private void Cancel() => Modal.CancelAsync();
 

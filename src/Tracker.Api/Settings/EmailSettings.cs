@@ -1,8 +1,8 @@
 ﻿namespace Tracker.Api.Settings;
 
-public class EmailSettings
+public record EmailSettings
 {
-    public string ApiKey { get; set; } = null!;
+    public string ApiKey { get; init; } = null!;
 
-    public string From { get; set; } = null!;
+    public string From { get; init; } = null!;
 }

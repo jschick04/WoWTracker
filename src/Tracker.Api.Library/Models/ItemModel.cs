@@ -1,6 +1,3 @@
 ﻿namespace Tracker.Api.Library.Models;
 
-public class ItemModel
-{
-    public string Name { get; set; } = null!;
-}
+public sealed record ItemModel(string Name);

@@ -16,7 +16,7 @@ public class IdentityController : BaseApiController
         _user = user;
     }
 
-    [HttpPost(ApiRoutes.Identity.Authenticate)]
+    [HttpPost(ApiRoutes.Identity.AuthenticateUri)]
     public async Task<IActionResult> Authenticate([FromBody] AuthenticationRequest request)
     {
         var response = await _identity.AuthenticateAsync(request, GetIpAddress());
@@ -27,7 +27,7 @@ public class IdentityController : BaseApiController
         return Ok(response);
     }
 
-    [HttpPost(ApiRoutes.Identity.Register)]
+    [HttpPost(ApiRoutes.Identity.RegisterUri)]
     public async Task<IActionResult> Register([FromBody] RegistrationRequest request)
     {
         await _user.RegisterAsync(request, Request.Headers["origin"]);

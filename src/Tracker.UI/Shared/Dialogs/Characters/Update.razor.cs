@@ -1,8 +1,11 @@
 ﻿using Blazored.Modal;
 using Blazored.Modal.Services;
+using Fluxor;
 using Microsoft.AspNetCore.Components;
 using Tracker.Api.Contracts.V1.Requests;
 using Tracker.Api.Contracts.V1.Responses;
+using Tracker.UI.Library.Features.State;
+using Tracker.UI.Library.StateProviders;
 
 namespace Tracker.UI.Shared.Dialogs.Characters;
 
@@ -13,6 +16,10 @@ public partial class Update
     [Parameter] public string ButtonText { get; set; } = null!;
 
     [Parameter] public CharacterResponse Character { get; set; } = null!;
+
+    [Inject] private IState<CharacterState> CharacterState { get; set; } = null!;
+
+    [Inject] private ICharacterStateProvider CharacterStateProvider { get; set; } = null!;
 
     [CascadingParameter] private BlazoredModalInstance Modal { get; set; } = null!;
 

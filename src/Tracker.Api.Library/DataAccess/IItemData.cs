@@ -1,12 +1,13 @@
-﻿using Tracker.Api.Library.Models;
+﻿using FluentResults;
+using Tracker.Api.Library.Models;
 
 namespace Tracker.Api.Library.DataAccess;
 
 public interface IItemData
 {
-    Task<List<ItemModel>> GetByProfession(string profession);
+    Task<IResult<IEnumerable<ItemModel>>> GetByProfession(string profession);
 
-    Task<List<ItemModel>> GetBySlot(string slot);
+    Task<IResult<IEnumerable<ItemModel>>> GetBySlot(string slot);
 
-    Task<List<NeededItemModel>> GetCraftableByProfession(int userId, int professionId);
+    Task<IResult<IEnumerable<CraftableItemModel>>> GetCraftableByProfession(int userId, int professionId);
 }

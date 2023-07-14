@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.Serialization;
 
-namespace Tracker.Library.Helpers;
+namespace Tracker.Shared.Helpers;
 
 public enum Classes
 {

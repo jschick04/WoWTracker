@@ -1,6 +1,6 @@
 ﻿namespace Tracker.Api.Entities;
 
-public class User
+public record User
 {
     public int Id { get; set; }
 
@@ -34,5 +34,5 @@ public class User
 
     public DateTime? PasswordReset { get; set; }
 
-    public bool OwnsToken(string token) => RefreshTokens?.Find(t => t.Token == token) is not null;
+    public bool OwnsToken(string token) => RefreshTokens.Find(t => t.Token == token) is not null;
 }

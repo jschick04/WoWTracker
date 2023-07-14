@@ -1,10 +1,29 @@
-﻿using Tracker.Library.Helpers;
+﻿using Blazored.Toast.Services;
+using Fluxor;
+using Microsoft.AspNetCore.Components;
+using Tracker.Api.Contracts.Routes;
+using Tracker.Shared.Helpers;
+using Tracker.UI.Library.Features.Profession;
+using Tracker.UI.Library.Managers.Authentication;
+using Tracker.UI.Library.Managers.Interceptors;
 
 namespace Tracker.UI.Shared;
 
 public partial class MainLayout : IDisposable
 {
     private bool _isDarkMode;
+
+    [Inject] private IAuthenticationManager AuthenticationManager { get; set; } = null!;
+
+    [Inject] private ClientAuthenticationStateProvider AuthenticationStateProvider { get; set; } = null!;
+
+    [Inject] private IDispatcher Dispatcher { get; set; } = null!;
+
+    [Inject] private HttpClient HttpClient { get; set; } = null!;
+
+    [Inject] private IHttpInterceptorManager Interceptor { get; set; } = null!;
+
+    [Inject] private IToastService ToastService { get; set; } = null!;
 
     public void Dispose()
     {
@@ -25,16 +44,19 @@ public partial class MainLayout : IDisposable
 
     private async Task LoadDataAsync()
     {
-        await ItemManager.GetAllAsync();
+        Dispatcher.Dispatch(new ProfessionGetAllItemsAction());
 
-        var user = await ClientAuthStateProvider.GetAuthenticationStateProviderUserAsync();
+        var user = await AuthenticationStateProvider.GetAuthenticationStateProviderUserAsync();
 
-        if (user.Identity?.IsAuthenticated is not true)
-        { return; }
+        if (user.Identity?.IsAuthenticated is not true) { return; }
 
-        var result = await UserManager.GetAsync(user.GetId());
+        try
+        {
+            var response = await HttpClient.GetAsync(ApiRoutes.Account.GetById(user.GetId()));
 
-        if (!result.Succeeded || result.Data is null)
+            response.EnsureSuccessStatusCode();
+        }
+        catch
         {
             ToastService.ShowError("You are not logged in");
             await AuthenticationManager.Logout();

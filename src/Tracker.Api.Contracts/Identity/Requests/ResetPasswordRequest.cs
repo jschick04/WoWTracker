@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Tracker.Api.Contracts.Helpers;
+using Tracker.Api.Contracts.Attributes;
 
 namespace Tracker.Api.Contracts.Identity.Requests;
 
-public class ResetPasswordRequest
+public sealed record ResetPasswordRequest
 {
     [Required]
     public string Token { get; set; } = null!;

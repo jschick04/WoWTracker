@@ -1,11 +1,16 @@
-﻿<div class="global-modal-content">
+﻿@using Tracker.UI.Helpers
+
+<div class="global-modal-content">
     <div>@ContextText</div>
 </div>
 
 <div class="global-modal-buttons">
-    @if (NeededItemState.Value.IsLoading) {
+    @if (NeededItemState.Value.IsLoading)
+    {
         <LoadingButton Color="ButtonColor.Accent" IsDisabled="true" />
-    } else {
+    }
+    else
+    {
         <button class="btn cancel-btn" @onclick="Submit">@ButtonText</button>
     }
     <button class="btn clear-btn" @onclick="Cancel">Cancel</button>

@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Text.Json;
 
-namespace Tracker.Library.Helpers;
+namespace Tracker.Shared.Helpers;
 
 public static class JwtParser
 {
@@ -12,9 +12,8 @@ public static class JwtParser
 
         var jsonBytes = ParseBase64WithoutPadding(payload);
 
-        var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
-
-        if (keyValuePairs is null) { throw new Exception("Invalid JWT"); }
+        var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes) ??
+            throw new Exception("Invalid JWT");
 
         ExtractRolesFromJwt(claims, keyValuePairs);
 

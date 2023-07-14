@@ -1,5 +1,5 @@
 ﻿CREATE PROCEDURE [dbo].[spNeededItems_Remove]
-    @id INT,
+    @characterId INT,
     @characterName NVARCHAR(50),
     @professionId INT,
     @name NVARCHAR(50),
@@ -14,15 +14,15 @@ BEGIN
     SELECT @itemId = Id FROM dbo.Items WHERE Name = @name AND ProfessionId = @professionId;
 
     BEGIN TRY
-        SELECT @oldAmount = Amount FROM dbo.NeededItems WHERE CharacterId = @id AND ItemId = @itemId;
+        SELECT @oldAmount = Amount FROM dbo.NeededItems WHERE CharacterId = @characterId AND ItemId = @itemId;
 
         IF (@oldAmount - @amount <= 0)
             BEGIN
-                DELETE FROM dbo.NeededItems WHERE CharacterId = @id AND ItemId = @itemId;
+                DELETE FROM dbo.NeededItems WHERE CharacterId = @characterId AND ItemId = @itemId;
             END;
         ELSE
             BEGIN
-                UPDATE dbo.NeededItems SET Amount = Amount - @amount WHERE CharacterId = @id AND ItemId = @itemId;
+                UPDATE dbo.NeededItems SET Amount = Amount - @amount WHERE CharacterId = @characterId AND ItemId = @itemId;
             END;
     END TRY
     BEGIN CATCH

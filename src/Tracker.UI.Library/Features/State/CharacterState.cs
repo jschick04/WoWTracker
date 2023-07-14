@@ -1,6 +1,6 @@
 ﻿using Tracker.Api.Contracts.V1.Responses;
 
-namespace Tracker.Client.Library.Features.State;
+namespace Tracker.UI.Library.Features.State;
 
 public record CharacterState : RootState
 {

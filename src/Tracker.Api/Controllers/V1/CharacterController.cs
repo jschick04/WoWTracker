@@ -6,18 +6,24 @@ using Tracker.Api.Contracts.V1.Responses;
 using Tracker.Api.Library.DataAccess;
 using Tracker.Api.Library.Helpers;
 using Tracker.Api.Library.Models;
+using Tracker.Api.Managers;
 
 namespace Tracker.Api.Controllers.V1;
 
 [Authorize]
-public class CharacterController : BaseApiController
+public sealed class CharacterController : BaseApiController
 {
     private readonly ICharacterData _data;
+    private readonly IHashIdManager _hashIdManager;
 
-    public CharacterController(ICharacterData data) => _data = data;
+    public CharacterController(ICharacterData data, IHashIdManager hashIdManager)
+    {
+        _data = data;
+        _hashIdManager = hashIdManager;
+    }
 
-    [HttpPut(ApiRoutes.Character.AddNeededItem)]
-    public async Task<IActionResult> AddNeededItem([FromRoute] int id, [FromBody] NeededItemRequest request)
+    [HttpPut(ApiRoutes.Character.AddNeededItemUri)]
+    public async Task<IActionResult> AddNeededItem([FromRoute] string id, [FromBody] NeededItemRequest request)
     {
         if (Account is null) { return Unauthorized(); }
 
@@ -26,20 +32,23 @@ public class CharacterController : BaseApiController
             return NotFound();
         }
 
-        var model = new NeededItemModel
+        var result = await _data.AddNeededItem(
+            new NeededItemModel(
+                _hashIdManager.Decode(id),
+                request.CharacterName ?? string.Empty,
+                professionId,
+                request.Name,
+                request.Amount));
+
+        return result switch
         {
-            Id = id,
-            ProfessionId = professionId,
-            Name = request.Name,
-            Amount = request.Amount
+            { IsSuccess: true } => Ok(),
+            { IsFailed: true } => Problem(result.Errors.FirstOrDefault()?.Message),
+            _ => Problem()
         };
-
-        await _data.AddNeededItem(model);
-
-        return Ok();
     }
 
-    [HttpPost(ApiRoutes.Character.Create)]
+    [HttpPost(ApiRoutes.Character.CreateUri)]
     public async Task<ActionResult<CharacterResponse>> Create([FromBody] CreateCharacterRequest request)
     {
         if (Account is null) { return Unauthorized(); }
@@ -66,102 +75,120 @@ public class CharacterController : BaseApiController
             model.SecondProfessionId = secondProfessionId;
         }
 
-        var newId = await _data.Create(model);
+        var result = await _data.Create(model);
 
-        var response = new CharacterResponse
+        return result switch
         {
-            Id = newId,
-            Name = model.Name,
-            Class = classId.GetName(),
-            FirstProfession = request.FirstProfession,
-            SecondProfession = request.SecondProfession,
-            HasCooking = request.HasCooking
+            { IsSuccess: true } => CreatedAtAction(nameof(GetById),
+                new { id = _hashIdManager.Encode(result.Value)},
+                new CharacterResponse
+                {
+                    Id = _hashIdManager.Encode(result.Value),
+                    Name = model.Name,
+                    Class = classId.GetName(),
+                    FirstProfession = request.FirstProfession,
+                    SecondProfession = request.SecondProfession,
+                    HasCooking = request.HasCooking
+                }),
+            { IsFailed: true } => Problem(result.Errors.FirstOrDefault()?.Message),
+            _ => Problem()
         };
-
-        return Ok(response);
     }
 
-    [HttpDelete(ApiRoutes.Character.Delete)]
-    public async Task<IActionResult> Delete([FromRoute] int id)
+    [HttpDelete(ApiRoutes.Character.DeleteUri)]
+    public async Task<IActionResult> Delete([FromRoute] string id)
     {
         if (Account is null) { return Unauthorized(); }
 
-        var model = await _data.GetById(id, Account.Id);
+        var model = await _data.GetById(_hashIdManager.Decode(id), Account.Id);
 
-        if (model is null) { return NotFound(); }
+        if (model.Value is null) { return NotFound(); }
 
-        await _data.Delete(model.Id);
+        var result = await _data.Delete(model.Value.Id);
 
-        return NoContent();
+        return result switch
+        {
+            { IsSuccess: true } => NoContent(),
+            { IsFailed: true } => Problem(result.Errors.FirstOrDefault()?.Message),
+            _ => Problem()
+        };
     }
 
-    [HttpGet(ApiRoutes.Character.GetAll)]
+    [HttpGet(ApiRoutes.Character.GetAllUri)]
     public async Task<ActionResult<IEnumerable<CharacterResponse>>> GetAll()
     {
         if (Account is null) { return Unauthorized(); }
 
-        var model = await _data.GetAll(Account.Id);
+        var result = await _data.GetAll(Account.Id);
 
-        if (model.Count == 0) { return NotFound(); }
-
-        var response = model.Select(
-            character => new CharacterResponse
-            {
-                Id = character.Id,
-                Name = character.Name,
-                Class = character.ClassId.GetName(),
-                FirstProfession = character.FirstProfessionId.GetName(),
-                SecondProfession = character.SecondProfessionId.GetName(),
-                HasCooking = character.HasCooking
-            }
-        );
-
-        return Ok(response);
-    }
-
-    [HttpGet(ApiRoutes.Character.GetById)]
-    public async Task<ActionResult<CharacterResponse>> GetById([FromRoute] int id)
-    {
-        if (Account is null) { return Unauthorized(); }
-
-        var model = await _data.GetById(id, Account.Id);
-
-        if (model is null) { return NotFound(); }
-
-        var response = new CharacterResponse
+        return result switch
         {
-            Id = model.Id,
-            Name = model.Name,
-            Class = model.ClassId.GetName(),
-            FirstProfession = model.FirstProfessionId.ToString(),
-            SecondProfession = model.SecondProfessionId.ToString(),
-            HasCooking = model.HasCooking
+            { IsSuccess: true } => Ok(result.Value.Select(
+                character => new CharacterResponse
+                {
+                    Id = _hashIdManager.Encode(character.Id),
+                    Name = character.Name,
+                    Class = character.ClassId.GetName(),
+                    FirstProfession = character.FirstProfessionId.GetName(),
+                    SecondProfession = character.SecondProfessionId.GetName(),
+                    HasCooking = character.HasCooking
+                }
+            )),
+            { IsFailed: true } => Problem(result.Errors.FirstOrDefault()?.Message),
+            _ => Problem()
         };
-
-        return Ok(response);
     }
 
-    [HttpGet(ApiRoutes.Character.GetNeededItems)]
-    public async Task<ActionResult<IEnumerable<NeededItemResponse>>> GetNeededItems([FromRoute] int id)
+    [HttpGet(ApiRoutes.Character.GetByIdUri)]
+    public async Task<ActionResult<CharacterResponse>> GetById([FromRoute] string id)
     {
         if (Account is null) { return Unauthorized(); }
 
-        var model = await _data.GetNeededItems(id);
+        var result = await _data.GetById(_hashIdManager.Decode(id), Account.Id);
 
-        var response = model.Select(
-            item => new NeededItemResponse
+        return result switch
+        {
+            { IsSuccess: true, ValueOrDefault: { } value } => Ok(new CharacterResponse
             {
-                Profession = item.ProfessionId.GetName(),
-                Name = item.Name,
-                Amount = item.Amount
-            }
-        );
-
-        return Ok(response);
+                Id = _hashIdManager.Encode(value.Id),
+                Name = value.Name,
+                Class = value.ClassId.GetName(),
+                FirstProfession = value.FirstProfessionId.ToString(),
+                SecondProfession = value.SecondProfessionId.ToString(),
+                HasCooking = value.HasCooking
+            }),
+            { IsFailed: true } => Problem(result.Errors.FirstOrDefault()?.Message),
+            { ValueOrDefault: null } => NotFound(),
+            _ => Problem()
+        };
     }
 
-    [HttpPut(ApiRoutes.Character.RemoveNeededItem)]
-    public async Task<IActionResult> RemoveNeededItem([FromRoute] int id, [FromBody] NeededItemRequest request)
+    [HttpGet(ApiRoutes.Character.GetNeededItemsUri)]
+    public async Task<ActionResult<IEnumerable<NeededItemResponse>>> GetNeededItems([FromRoute] string id)
+    {
+        if (Account is null) { return Unauthorized(); }
+
+        var result = await _data.GetNeededItems(_hashIdManager.Decode(id));
+
+        return result switch
+        {
+            { IsSuccess: true } => Ok(result.Value.Select(
+                item => new NeededItemResponse
+                {
+                    CharacterId = id,
+                    CharacterName = item.CharacterName,
+                    Profession = item.ProfessionId.GetName(),
+                    Name = item.Name,
+                    Amount = item.Amount
+                }
+            )),
+            { IsFailed: true } => Problem(result.Errors.FirstOrDefault()?.Message),
+            _ => Problem()
+        };
+    }
+
+    [HttpPut(ApiRoutes.Character.RemoveNeededItemUri)]
+    public async Task<IActionResult> RemoveNeededItem([FromRoute] string id, [FromBody] NeededItemRequest request)
     {
         if (Account is null) { return Unauthorized(); }
 
@@ -170,59 +197,67 @@ public class CharacterController : BaseApiController
             return NotFound();
         }
 
-        var model = new NeededItemModel
+        var result = await _data.RemoveNeededItem(
+            new NeededItemModel(
+                _hashIdManager.Decode(id),
+                request.CharacterName ?? string.Empty,
+                professionId,
+                request.Name,
+                request.Amount));
+
+        return result switch
         {
-            Id = id,
-            ProfessionId = professionId,
-            Name = request.Name,
-            Amount = request.Amount
+            { IsSuccess: true } => Ok(),
+            { IsFailed: true } => Problem(result.Errors.FirstOrDefault()?.Message),
+            _ => Problem()
         };
-
-        await _data.RemoveNeededItem(model);
-
-        return Ok();
     }
 
-    [HttpPut(ApiRoutes.Character.Update)]
-    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCharacterRequest request)
+    [HttpPut(ApiRoutes.Character.UpdateUri)]
+    public async Task<IActionResult> Update([FromRoute] string id, [FromBody] UpdateCharacterRequest request)
     {
         if (Account is null) { return Unauthorized(); }
 
-        var model = await _data.GetById(id, Account.Id);
+        var model = await _data.GetById(_hashIdManager.Decode(id), Account.Id);
 
-        if (model is null) { return NotFound(); }
+        if (model.Value is null) { return NotFound(); }
 
-        model.Name = request.Name ?? model.Name;
+        model.Value.Name = request.Name ?? model.Value.Name;
 
         if (Converter.TryParseWithMemberName(request.Class, out Classes classId))
         {
-            model.ClassId = classId;
+            model.Value.ClassId = classId;
         }
 
         // TODO: Figure out a better way to do this to allow dropping a profession without specifying all params
         // Maybe just set an Enum value of 0 = None
         if (Converter.TryParseWithMemberName(request.FirstProfession, out Professions firstProfessionId))
         {
-            model.FirstProfessionId = firstProfessionId;
+            model.Value.FirstProfessionId = firstProfessionId;
         }
         else
         {
-            model.FirstProfessionId = null;
+            model.Value.FirstProfessionId = null;
         }
 
         if (Converter.TryParseWithMemberName(request.SecondProfession, out Professions secondProfessionId))
         {
-            model.SecondProfessionId = secondProfessionId;
+            model.Value.SecondProfessionId = secondProfessionId;
         }
         else
         {
-            model.SecondProfessionId = null;
+            model.Value.SecondProfessionId = null;
         }
 
-        model.HasCooking = request.HasCooking; // ?? model.HasCooking;
+        model.Value.HasCooking = request.HasCooking;
 
-        await _data.Update(model);
+        var result = await _data.Update(model.Value);
 
-        return Ok();
+        return result switch
+        {
+            { IsSuccess: true } => Ok(),
+            { IsFailed: true } => Problem(result.Errors.FirstOrDefault()?.Message),
+            _ => Problem()
+        };
     }
 }

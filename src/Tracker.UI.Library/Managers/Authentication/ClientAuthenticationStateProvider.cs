@@ -2,10 +2,10 @@
 using System.Security.Claims;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
-using Tracker.Library.Constants.Storage;
-using Tracker.Library.Helpers;
+using Tracker.Shared.Constants.Storage;
+using Tracker.Shared.Helpers;
 
-namespace Tracker.Client.Library.Managers.Authentication;
+namespace Tracker.UI.Library.Managers.Authentication;
 
 public class ClientAuthenticationStateProvider : AuthenticationStateProvider
 {
@@ -42,13 +42,11 @@ public class ClientAuthenticationStateProvider : AuthenticationStateProvider
 
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", savedToken);
 
-        var state = new AuthenticationState(
-            new ClaimsPrincipal(new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(savedToken), "jwt"))
-        );
-
         IsAnonymous = false;
 
-        return state;
+        return new AuthenticationState(
+            new ClaimsPrincipal(new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(savedToken), "jwt"))
+        );
     }
 
     public void MarkUserAsAuthenticated(int id)
@@ -57,17 +55,15 @@ public class ClientAuthenticationStateProvider : AuthenticationStateProvider
             new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, id.ToString()) }, "jwt")
         );
 
-        var authState = Task.FromResult(new AuthenticationState(user));
         IsAnonymous = false;
 
-        NotifyAuthenticationStateChanged(authState);
+        NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
     }
 
     public void MarkUserAsLoggedOut()
     {
-        var authState = Task.FromResult(_anonymous);
         IsAnonymous = true;
 
-        NotifyAuthenticationStateChanged(authState);
+        NotifyAuthenticationStateChanged(Task.FromResult(_anonymous));
     }
 }

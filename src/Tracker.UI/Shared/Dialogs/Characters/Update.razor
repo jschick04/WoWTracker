@@ -1,4 +1,7 @@
-﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+﻿@using Fluxor.Blazor.Web.Components
+@using Tracker.Shared.Helpers
+@using Tracker.UI.Helpers
+@inherits FluxorComponent
 
 <div class="global-modal-content">
     <EditForm id="EditCharacter" Model="_request" OnValidSubmit="Submit">
@@ -28,9 +31,12 @@
 </div>
 
 <div class="global-modal-buttons">
-    @if (CharacterState.Value.IsRefreshing) {
+    @if (CharacterState.Value.IsRefreshing)
+    {
         <LoadingButton Color="ButtonColor.Accent" IsDisabled="true" />
-    } else {
+    }
+    else
+    {
         <button class="btn ok-btn" form="EditCharacter" type="submit">@ButtonText</button>
     }
     <button class="btn clear-btn" @onclick="Cancel">Cancel</button>

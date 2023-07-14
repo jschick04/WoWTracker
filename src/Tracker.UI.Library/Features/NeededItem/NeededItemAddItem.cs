@@ -1,20 +1,21 @@
-﻿using Blazored.Toast.Services;
+﻿using System.Net.Http.Json;
+using Blazored.Toast.Services;
 using Fluxor;
+using Tracker.Api.Contracts.Routes;
 using Tracker.Api.Contracts.V1.Requests;
 using Tracker.Api.Contracts.V1.Responses;
-using Tracker.Client.Library.Features.State;
-using Tracker.Library.Managers;
+using Tracker.UI.Library.Features.State;
 
-namespace Tracker.Client.Library.Features.NeededItem;
+namespace Tracker.UI.Library.Features.NeededItem;
 
 public class NeededItemAddItemEffects
 {
-    private readonly ICharacterManager _characterManager;
+    private readonly HttpClient _httpClient;
     private readonly IToastService _toastService;
 
-    public NeededItemAddItemEffects(ICharacterManager characterManager, IToastService toastService)
+    public NeededItemAddItemEffects(HttpClient httpClient, IToastService toastService)
     {
-        _characterManager = characterManager;
+        _httpClient = httpClient;
         _toastService = toastService;
     }
 
@@ -23,23 +24,22 @@ public class NeededItemAddItemEffects
     {
         try
         {
-            var result = await _characterManager.AddNeededItemAsync(action.Id, action.Request);
+            var response = await _httpClient.PutAsJsonAsync(
+                ApiRoutes.Character.AddNeededItem(action.Id),
+                action.Request);
 
-            if (result.Succeeded is not true)
-            {
-                throw new Exception(result.Message);
-            }
+            response.EnsureSuccessStatusCode();
 
             var newItem = new NeededItemResponse
             {
-                Id = action.Id,
+                CharacterId = action.Id,
                 CharacterName = action.CharacterName,
                 Profession = action.Request.Profession,
                 Name = action.Request.Name,
                 Amount = action.Request.Amount
             };
 
-            _toastService.ShowSuccess($"{action.Request.Name} has been added");
+            _toastService.ShowSuccess($"{newItem.Name} has been added");
             dispatcher.Dispatch(new NeededItemAddItemSuccessAction(newItem));
         }
         catch (Exception ex)
@@ -56,7 +56,7 @@ public class NeededItemAddItemReducers
 {
     [ReducerMethod(typeof(NeededItemAddItemAction))]
     public static NeededItemState OnAddItem(NeededItemState state) =>
-        state with { CurrentErrorMessage = null, IsLoading = true };
+        state with { CurrentErrorMessage = string.Empty, IsLoading = true };
 
     [ReducerMethod]
     public static NeededItemState OnAddItemFailure(NeededItemState state, NeededItemAddItemFailureAction action) =>
@@ -83,7 +83,7 @@ public class NeededItemAddItemReducers
 
 #region Actions
 
-public record NeededItemAddItemAction(int Id, string CharacterName, NeededItemRequest Request);
+public record NeededItemAddItemAction(string Id, string CharacterName, NeededItemRequest Request);
 
 public record NeededItemAddItemFailureAction(string ErrorMessage) : FailureAction(ErrorMessage);
 
