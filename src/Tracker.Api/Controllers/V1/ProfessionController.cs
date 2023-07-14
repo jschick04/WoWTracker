@@ -2,7 +2,6 @@
 using Tracker.Api.Authorization;
 using Tracker.Api.Contracts.Routes;
 using Tracker.Api.Library.DataAccess;
-using Tracker.Api.Library.Models;
 
 namespace Tracker.Api.Controllers.V1;
 
@@ -16,8 +15,13 @@ public class ProfessionController : BaseApiController
     [HttpGet(ApiRoutes.Profession.GetAllUri)]
     public async Task<ActionResult<IEnumerable<string>>> Get()
     {
-        var professions = await _data.GetAll();
+        var result = await _data.GetAll();
 
-        return Ok(professions.Select(x => x.Name));
+        return result switch
+        {
+            { IsSuccess: true } => Ok(result.Value.Select(x => x.Name)),
+            { IsFailed: true } => Problem(result.Errors.FirstOrDefault()?.Message),
+            _ => Problem()
+        };
     }
 }

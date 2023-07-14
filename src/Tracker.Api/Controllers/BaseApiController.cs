@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 using Tracker.Api.Entities;
 
 namespace Tracker.Api.Controllers;
@@ -11,9 +12,9 @@ public class BaseApiController : ControllerBase
 
     protected string GetIpAddress()
     {
-        if (Request.Headers.ContainsKey("X-Forwarded-For"))
+        if (Request.Headers.TryGetValue("X-Forwarded-For", out StringValues header))
         {
-            return Request.Headers["X-Forwarded-For"]!;
+            return header!;
         }
 
         // TODO: Add check for IPv6

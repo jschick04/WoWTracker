@@ -3,7 +3,7 @@ using Tracker.Api.Contracts.Attributes;
 
 namespace Tracker.Api.Contracts.Identity.Requests;
 
-public record ResetPasswordRequest
+public sealed record ResetPasswordRequest
 {
     [Required]
     public string Token { get; set; } = null!;

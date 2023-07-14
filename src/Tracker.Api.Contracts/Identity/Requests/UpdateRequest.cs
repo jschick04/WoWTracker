@@ -3,7 +3,7 @@ using Tracker.Api.Contracts.Attributes;
 
 namespace Tracker.Api.Contracts.Identity.Requests;
 
-public record UpdateRequest
+public sealed record UpdateRequest
 {
     private string? _firstName;
     private string? _lastName;

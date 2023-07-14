@@ -53,7 +53,7 @@ public partial class NavMenu : IDisposable
         ModalService.Show<Create>("Create Character", parameters, options);
     }
 
-    private void LoadCharacter(int id) { NavigationManager.NavigateTo($"/character/{id}"); }
+    private void LoadCharacter(string id) { NavigationManager.NavigateTo($"/character/{id}"); }
 
     private void ToggleDropdown() => _dropdownActive = !_dropdownActive;
 }

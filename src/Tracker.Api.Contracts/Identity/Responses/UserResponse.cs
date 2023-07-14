@@ -1,6 +1,6 @@
 ﻿namespace Tracker.Api.Contracts.Identity.Responses;
 
-public record UserResponse
+public sealed record UserResponse
 {
     public int Id { get; init; }
 

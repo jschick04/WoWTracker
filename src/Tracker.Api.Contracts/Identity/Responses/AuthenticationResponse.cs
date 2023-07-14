@@ -2,7 +2,7 @@
 
 namespace Tracker.Api.Contracts.Identity.Responses;
 
-public record AuthenticationResponse
+public sealed record AuthenticationResponse
 {
     public int Id { get; init; }
 

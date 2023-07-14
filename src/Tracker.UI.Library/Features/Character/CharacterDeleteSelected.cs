@@ -58,10 +58,10 @@ public class CharacterDeleteSelectedReducers
 
 #region Actions
 
-public record CharacterDeleteSelectedAction(int Id);
+public record CharacterDeleteSelectedAction(string Id);
 
 public record CharacterDeleteSelectedFailureAction(string ErrorMessage) : FailureAction(ErrorMessage);
 
-public record CharacterDeleteSelectedSuccessAction(int Id);
+public record CharacterDeleteSelectedSuccessAction(string Id);
 
 #endregion

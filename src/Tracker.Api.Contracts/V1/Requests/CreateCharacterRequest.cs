@@ -2,7 +2,7 @@
 
 namespace Tracker.Api.Contracts.V1.Requests;
 
-public class CreateCharacterRequest : BaseRequest
+public sealed class CreateCharacterRequest : BaseRequest
 {
     private string? _firstProfession;
     private string? _secondProfession;

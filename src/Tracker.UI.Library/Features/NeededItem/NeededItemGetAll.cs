@@ -52,7 +52,7 @@ public class NeededItemGetAllReducers
 
 #region Actions
 
-public record NeededItemGetAllAction(int Id);
+public record NeededItemGetAllAction(string Id);
 
 public record NeededItemGetAllFailureAction(string ErrorMessage) : FailureAction(ErrorMessage);
 

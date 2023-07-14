@@ -6,11 +6,11 @@ public interface ICharacterStateProvider
 {
     void CreateCharacter(CreateCharacterRequest request);
 
-    void DeleteSelectedCharacter(int id);
+    void DeleteSelectedCharacter(string id);
 
     void GetAllCharacters();
 
-    void SetSelectedCharacter(int id);
+    void SetSelectedCharacter(string id);
 
-    void UpdateSelectedCharacter(int id, UpdateCharacterRequest request);
+    void UpdateSelectedCharacter(string id, UpdateCharacterRequest request);
 }

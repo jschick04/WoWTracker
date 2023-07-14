@@ -32,7 +32,7 @@ public class NeededItemAddItemEffects
 
             var newItem = new NeededItemResponse
             {
-                Id = action.Id,
+                CharacterId = action.Id,
                 CharacterName = action.CharacterName,
                 Profession = action.Request.Profession,
                 Name = action.Request.Name,
@@ -83,7 +83,7 @@ public class NeededItemAddItemReducers
 
 #region Actions
 
-public record NeededItemAddItemAction(int Id, string CharacterName, NeededItemRequest Request);
+public record NeededItemAddItemAction(string Id, string CharacterName, NeededItemRequest Request);
 
 public record NeededItemAddItemFailureAction(string ErrorMessage) : FailureAction(ErrorMessage);
 

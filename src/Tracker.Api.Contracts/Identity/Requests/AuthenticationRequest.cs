@@ -3,7 +3,7 @@ using Tracker.Api.Contracts.Attributes;
 
 namespace Tracker.Api.Contracts.Identity.Requests;
 
-public record AuthenticationRequest
+public sealed record AuthenticationRequest
 {
     [Required(ErrorMessage = "Username is required")]
     [EmailAddress]

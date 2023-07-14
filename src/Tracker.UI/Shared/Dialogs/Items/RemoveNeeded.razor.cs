@@ -14,7 +14,7 @@ public partial class RemoveNeeded
 
     [Parameter] public string ContextText { get; set; } = null!;
 
-    [Parameter] public int Id { get; set; }
+    [Parameter] public string Id { get; set; } = null!;
 
     [Parameter] public NeededItemRequest Item { get; set; } = null!;
 

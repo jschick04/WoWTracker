@@ -58,8 +58,8 @@ public class CharacterUpdateSelectedReducers
 
         if (updatedCharacter is null) { return state; }
 
-        updatedCharacter.Name = action.Request.Name;
-        updatedCharacter.Class = action.Request.Class;
+        updatedCharacter.Name = action.Request.Name!;
+        updatedCharacter.Class = action.Request.Class!;
         updatedCharacter.FirstProfession = action.Request.FirstProfession;
         updatedCharacter.SecondProfession = action.Request.SecondProfession;
         updatedCharacter.HasCooking = action.Request.HasCooking;
@@ -70,10 +70,10 @@ public class CharacterUpdateSelectedReducers
 
 #region Actions
 
-public record CharacterUpdateSelectedAction(int Id, UpdateCharacterRequest Request);
+public record CharacterUpdateSelectedAction(string Id, UpdateCharacterRequest Request);
 
 public record CharacterUpdateSelectedFailureAction(string ErrorMessage) : FailureAction(ErrorMessage);
 
-public record CharacterUpdateSelectedSuccessAction(int Id, UpdateCharacterRequest Request);
+public record CharacterUpdateSelectedSuccessAction(string Id, UpdateCharacterRequest Request);
 
 #endregion

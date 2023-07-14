@@ -57,7 +57,7 @@ public class CharacterSetSelectedReducers
 
 #region Actions
 
-public record CharacterSetSelectedAction(int Id);
+public record CharacterSetSelectedAction(string Id);
 
 public record CharacterSetSelectedFailureAction(string ErrorMessage) : FailureAction(ErrorMessage);
 

@@ -13,7 +13,7 @@ namespace Tracker.UI.Pages.Characters;
 
 public partial class Character
 {
-    [Parameter] public int Id { get; set; }
+    [Parameter] public string Id { get; set; } = null!;
 
     [CascadingParameter] protected bool IsDarkMode { get; set; }
 

@@ -41,17 +41,17 @@ public static class ApiRoutes
 
         private const string Root = $"{Version}/character";
 
-        public static string AddNeededItem(int id) => $"{Root}/{id}/needed/add";
+        public static string AddNeededItem(string id) => $"{Root}/{id}/needed/add";
 
-        public static string Delete(int id) => $"{Root}/{id}";
+        public static string Delete(string id) => $"{Root}/{id}";
 
-        public static string GetById(int id) => $"{Root}/{id}";
+        public static string GetById(string id) => $"{Root}/{id}";
 
-        public static string GetNeededItems(int id) => $"{Root}/{id}/needed";
+        public static string GetNeededItems(string id) => $"{Root}/{id}/needed";
 
-        public static string RemoveNeededItem(int id) => $"{Root}/{id}/needed/remove";
+        public static string RemoveNeededItem(string id) => $"{Root}/{id}/needed/remove";
 
-        public static string Update(int id) => $"{Root}/{id}";
+        public static string Update(string id) => $"{Root}/{id}";
     }
 
     public static class Identity

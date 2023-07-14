@@ -3,7 +3,7 @@ using Tracker.Api.Contracts.Attributes;
 
 namespace Tracker.Api.Contracts.Identity.Requests;
 
-public record RegistrationRequest
+public sealed record RegistrationRequest
 {
     [Required(ErrorMessage = "First Name is required")]
     public string FirstName { get; set; } = null!;

@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace Tracker.Api.Contracts.Attributes;
 
-public partial class PasswordAttribute : ValidationAttribute
+public sealed partial class PasswordAttribute : ValidationAttribute
 {
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {

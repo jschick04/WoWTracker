@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Tracker.Api.Library.Database;
 
-public class SqlDataAccess : ISqlDataAccess
+public sealed class SqlDataAccess : ISqlDataAccess
 {
     private readonly IConfiguration _configuration;
 
@@ -13,19 +13,17 @@ public class SqlDataAccess : ISqlDataAccess
 
     public string ConnectionStringName { get; set; } = "TrackerDb";
 
-    public async Task<List<T>> LoadData<T, TU>(string storedProcedure, TU parameters)
+    public async Task<IEnumerable<T>> LoadData<T, TU>(string storedProcedure, TU parameters)
     {
         string connectionString = GetConnectionString();
 
         using IDbConnection db = new SqlConnection(connectionString);
 
-        IEnumerable<T> data = await db.QueryAsync<T>(
+        return await db.QueryAsync<T>(
             storedProcedure,
             parameters,
             commandType: CommandType.StoredProcedure
         );
-
-        return data.ToList();
     }
 
     public async Task SaveData<T>(string storedProcedure, T parameters)

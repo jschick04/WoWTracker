@@ -2,7 +2,7 @@
 
 namespace Tracker.Api.Contracts.Identity.Requests;
 
-public record TokenRequest
+public sealed record TokenRequest
 {
     [Required]
     public string Token { get; set; } = null!;

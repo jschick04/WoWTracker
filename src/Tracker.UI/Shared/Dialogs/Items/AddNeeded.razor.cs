@@ -18,7 +18,7 @@ public partial class AddNeeded
 
     [Parameter] public string CharacterName { get; set; } = null!;
 
-    [Parameter] public int Id { get; set; }
+    [Parameter] public string Id { get; set; } = null!;
 
     [CascadingParameter] private BlazoredModalInstance Modal { get; set; } = null!;
 

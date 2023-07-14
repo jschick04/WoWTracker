@@ -78,7 +78,7 @@ public class NeededItemRemoveItemReducers
 
 #region Actions
 
-public record NeededItemRemoveItemAction(int Id, NeededItemRequest Request);
+public record NeededItemRemoveItemAction(string Id, NeededItemRequest Request);
 
 public record NeededItemRemoveItemFailureAction(string ErrorMessage) : FailureAction(ErrorMessage);
 

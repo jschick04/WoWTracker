@@ -1,20 +1,51 @@
-﻿using Tracker.Api.Library.Database;
+﻿using FluentResults;
+using Tracker.Api.Library.Database;
 using Tracker.Api.Library.Models;
 
 namespace Tracker.Api.Library.DataAccess;
 
-public class ItemData : IItemData
+public sealed class ItemData : IItemData
 {
     private readonly ISqlDataAccess _db;
 
     public ItemData(ISqlDataAccess db) => _db = db;
 
-    public Task<List<ItemModel>> GetByProfession(string profession) =>
-        _db.LoadData<ItemModel, dynamic>("spItems_GetByProfession", new { name = profession });
+    public async Task<IResult<IEnumerable<ItemModel>>> GetByProfession(string profession)
+    {
+        try
+        {
+            return Result.Ok(
+                await _db.LoadData<ItemModel, dynamic>("spItems_GetByProfession", new { name = profession }));
+        }
+        catch (Exception ex)
+        {
+            return Result.Fail<IEnumerable<ItemModel>>(ex.Message);
+        }
+    }
 
-    public Task<List<ItemModel>> GetBySlot(string slot) =>
-        _db.LoadData<ItemModel, dynamic>("spItems_GetBySlot", new { name = slot });
+    public async Task<IResult<IEnumerable<ItemModel>>> GetBySlot(string slot)
+    {
+        try
+        {
+            return Result.Ok(await _db.LoadData<ItemModel, dynamic>("spItems_GetBySlot", new { name = slot }));
+        }
+        catch (Exception ex)
+        {
+            return Result.Fail<IEnumerable<ItemModel>>(ex.Message);
+        }
+    }
 
-    public Task<List<NeededItemModel>> GetCraftableByProfession(int userId, int professionId) =>
-        _db.LoadData<NeededItemModel, dynamic>("spNeededItems_GetCraftableByProfession", new { userId, professionId });
+    public async Task<IResult<IEnumerable<CraftableItemModel>>> GetCraftableByProfession(int userId, int professionId)
+    {
+        try
+        {
+            return Result.Ok(
+                await _db.LoadData<CraftableItemModel, dynamic>("spNeededItems_GetCraftableByProfession",
+                    new { userId, professionId }));
+        }
+        catch (Exception ex)
+        {
+            return Result.Fail<IEnumerable<CraftableItemModel>>(ex.Message);
+        }
+    }
 }
